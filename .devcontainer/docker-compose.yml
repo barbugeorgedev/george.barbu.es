@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  nodejs:
+    build:
+      context: "."
+    ports:
+      - 3000:3000
+    environment:
+      NODE_ENV: development
+    tty: true
+    working_dir: "/var/www/html"
+    volumes:
+      - "./../:/var/www/html"
+    networks:
+      - node
+    container_name: george_barbu_es_nodejs
+
+  # mongo:
+  #   image: mongo:latest
+  #   ports:
+  #     - 27017:27017
+  #   volumes:
+  #     - 'mongodb:/data/db'
+  #     - 'mongodb-config:/data/configdb'
+  #   networks:
+  #         - node
+  #   container_name: george_barbu_es_mongo
+networks:
+  node:
+    driver: bridge
+# volumes:
+# mongodb:
+#     driver: local
+# mongodb-config:
+#     driver: local
