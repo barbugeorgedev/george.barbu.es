@@ -1,5 +1,5 @@
 export { default as Header } from "./Header";
-export { default as TopHeader } from "./TopHeader";
+export { default as TopSide } from "./TopSide";
 export { default as Contact } from "./Contact";
 export { default as Summary } from "./Summary";
 export { default as Experience } from "./Experience";

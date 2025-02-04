@@ -15,7 +15,8 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@templates/*": ["./src/templates/*"]
+      "@templates/*": ["./src/templates/*"],
+      "@styles/*": ["./src/styles/*"]
     },
     "plugins": [
       {

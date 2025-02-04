@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, Linking } from "react-native";
 import Icon from "ui/icon";
+import { View as ViewWEB } from "ui/view";
 
 interface SocialLink {
   service: string;
@@ -12,7 +13,7 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ social }) => {
   return (
-    <View
+    <ViewWEB
       data-exclude="true"
       className="max-w-screen-pdf py-6 mb-5 mx-auto items-center justify-between w-full md:flex lg:flex-row"
     >
@@ -55,7 +56,7 @@ const Footer: React.FC<FooterProps> = ({ social }) => {
           ))}
         </Text>
       )}
-    </View>
+    </ViewWEB>
   );
 };
 

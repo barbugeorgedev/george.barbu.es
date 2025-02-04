@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate-pdf": "npx babel-node scripts/generate-pdf.js",
-    "generatePDF": "node scripts/generatePDF.js"
+    "dev-pdf": "next dev -p 3001",
+    "generate-pdf": "node scripts/generatePDF.js",
+    "postinstall": "cpy ../../packages/assets/fonts apps/web/public/fonts --flat"
   },
   "dependencies": {
     "@expo/next-adapter": "^6.0.0",
@@ -18,7 +19,6 @@
     "data": "*",
     "dotenv": "^16.4.7",
     "next": "14.2.4",
-    "puppeteer": "^24.1.1",
     "react": "^18",
     "react-dom": "^18",
     "react-native-web": "^0.19.12",

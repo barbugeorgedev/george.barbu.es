@@ -3,6 +3,15 @@ const { withExpo } = require("@expo/next-adapter");
 
 module.exports = withExpo({
   reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/**",
+      },
+    ],
+  },
   transpilePackages: [
     "react-native",
     "react-native-web",
@@ -15,7 +24,8 @@ module.exports = withExpo({
       ...(config.resolve.alias || {}),
       "react-native$": "react-native-web",
       "@expo/vector-icons": false,
-      "@templates": path.resolve(__dirname, "templates"), // Fix alias path
+      "@templates": path.resolve(__dirname, "templates"),
+      "@styles": path.resolve(__dirname, "styles"),
     };
 
     config.module.rules.push({

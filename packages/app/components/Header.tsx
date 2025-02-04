@@ -1,23 +1,14 @@
 import React from "react";
-import {
-  Platform,
-  View,
-  Text,
-  Alert,
-  TouchableOpacity,
-  Linking,
-} from "react-native";
+import { Platform, Alert, TouchableOpacity } from "react-native";
 import * as Sharing from "expo-sharing";
 import * as FileSystem from "expo-file-system";
 import Icon from "ui/icon";
-
-// Define the types for the component props (empty for now)
+import { View as ViewWEB } from "ui/view";
 
 const Header: React.FC = () => {
   const isWEB = Platform.OS === "web";
   const pdfName = "george-barbu.pdf";
-  const pdfUrl =
-    "process.env.EXPO_PUBLIC_SITE_URL + process.env.EXPO_PUBLIC_PDF_EXPORT_PATH";
+  const pdfUrl = "/exports/george.barbu.pdf";
   const localUri = FileSystem.documentDirectory + pdfName;
 
   const downloadPDFmobile = async (): Promise<void> => {
@@ -118,16 +109,16 @@ const Header: React.FC = () => {
   const downloadPDF = isWEB ? downloadPDFweb : downloadPDFmobile;
 
   return (
-    <View
+    <ViewWEB
       data-exclude="true"
-      className="max-w-screen-pdf relative flex-row mx-auto items-center justify-center text-center pt-6 sm:pb-2 lg:pb-5 "
+      className="max-w-screen-pdf relative flex flex-row mx-auto items-center justify-center text-center pt-6 sm:pb-2 lg:pb-5 "
     >
       <TouchableOpacity onPress={downloadPDF} className="mr-2">
         <Icon
           type="fa"
           name="download"
           color="#313638"
-          className="!text-[28px] mb-12 pb-1 sm:mb-0"
+          className="!text-[28px] pb-1 sm:mb-0"
         />
       </TouchableOpacity>
 
@@ -137,7 +128,8 @@ const Header: React.FC = () => {
             type="ai"
             name="AiFillPrinter"
             color="#313638"
-            className="!text-[28px] mb-12 pb-1 sm:mb-0"
+            size={30}
+            className="!text-[28px] pb-1 sm:mb-0"
           />
         </TouchableOpacity>
       )}
@@ -147,11 +139,11 @@ const Header: React.FC = () => {
           <Icon
             name="share-alt"
             color="#313638"
-            className="!text-[28px] mb-12 pb-1 sm:mb-0"
+            className="!text-[28px] pb-1 sm:mb-0"
           />
         </TouchableOpacity>
       )}
-    </View>
+    </ViewWEB>
   );
 };
 

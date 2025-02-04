@@ -14,7 +14,9 @@
   "packageManager": "yarn@1.22.19",
   "devDependencies": {
     "clsx": "^2.1.1",
+    "cpy-cli": "^5.0.0",
     "prettier": "^3.3.2",
+    "tailwind-merge": "^3.0.1",
     "tailwindcss-break": "^1.0.0",
     "turbo": "^2.0.4"
   },
@@ -27,6 +29,7 @@
   "dependencies": {
     "@expo/vector-icons": "^14.0.4",
     "autoprefixer": "^10.4.20",
+    "react-native-fast-image": "^8.6.3",
     "react-native-svg": "^15.11.1"
   }
 }

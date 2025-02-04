@@ -36,9 +36,13 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["Roboto", "Helvetica", "Arial", "sans-serif"],
-        Norwester: ["Norwester", "sans-serif"],
-        Montserrat: ["Montserrat", "sans-serif"],
-        Lato: ["Lato", "sans-serif"],
+        norwester: ["Norwester", "sans-serif"],
+        montserrat: ["Montserrat", "sans-serif"],
+        montserratLight: ["MontserratLight", "sans-serif"],
+        montserratSemiBold: ["MontserratSemiBold", "sans-serif"],
+        lato: ["Lato", "sans-serif"],
+        latoBlack: ["LatoBlack", "sans-serif"],
+        latoThin: ["LatoThin", "sans-serif"],
       },
       screens: {
         print: { raw: "print" },

@@ -10,10 +10,10 @@ interface PageProps {
 
 export default function DefaultTemplate({ children }: PageProps) {
   return (
-    <div className="w-full text-gray bg-[#525659] first-letter:min-h-screen">
+    <main className="w-full text-gray bg-[#525659] first-letter:min-h-screen">
       <Header />
       {children}
       <Footer social={resume.social} />
-    </div>
+    </main>
   );
 }
