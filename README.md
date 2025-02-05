@@ -56,4 +56,4 @@ Interested in setting up a similar project from scratch? Check out the article [
 
 ### Author
 
-#### [Adebayo Ilerioluwa](https://github.com/adebayoileri)
+#### [George Barbu](https://george.barbu.es)
