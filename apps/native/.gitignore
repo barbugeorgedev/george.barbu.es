@@ -1,0 +1,65 @@
+node_modules/
+.expo/
+dist/
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+
+# macOS
+.DS_Store
+
+# React Native
+# Ignore the build directories
+/android/.gradle
+/android/build
+/ios/Pods
+/ios/build
+/ios/.vscode
+
+# Dependency directories
+/node_modules
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# React Native Packager
+/.expo
+.expo-shared
+
+# Watchman
+.watchmanconfig
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.idea
+.vscode
+*.sublime-workspace
+*.sublime-project
+
+# Xcode
+*.xcworkspace
+*.xcodeproj
+*.xcuserstate
+*.xcode-userstate
+
+# Android Studio
+.gradle
+/local.properties
+.cxx
+/.idea
+
+# Java
+*.class
+*.jar
+*.war
+*.ear

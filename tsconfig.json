@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
+    "paths": {
+      "ui/*": ["./packages/ui/*"],
+      "app/*": ["./packages/app/*"],
+      "data/*": ["./packages/data/*"],
+      "assets/*": ["./packages/assets/*"]
+    },
+    "types": ["nativewind/types"],
+    "jsx": "react-jsx"
+  },
+  "exclude": ["node_modules", "packages/*/node_modules", "packages/*/dist"],
+  "extends": "expo/tsconfig.base"
+}

@@ -1,0 +1,70 @@
+.yarn
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# Swap the comments on the following lines if you don't wish to use zero-installs
+# Documentation here: https://yarnpkg.com/features/zero-installs
+!.yarn/cache
+#.pnp.*
+
+# Node modules
+**/node_modules
+
+# Yarn
+.yarn/*
+.yarnrc.yml
+.yarn.lock
+
+# NPM
+package-lock.json
+
+# Build output and distribution folders
+/dist
+/build
+/out
+/lib
+/.next
+/.turbo
+/.cache
+/.next
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE and editor directories
+.vscode/    # Include the root .vscode folder
+**/.vscode/ # Ignore .vscode folders in subdirectories
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Expo (if using)
+.expo
+.expo-shared
+
+# Temporary files
+*.swp
+*.swo
+
+# Other artifacts
+*.log
+*.bak
+
+.history
+.turbo

@@ -1,0 +1,394 @@
+{
+  "contact": {
+    "label": "CONTACT DETAILS",
+    "items": [
+      {
+        "service": "location",
+        "value": "Manilva, Spain"
+      },
+      {
+        "service": "phone",
+        "value": "+34 722 85 31 39"
+      },
+      {
+        "service": "homephone",
+        "value": "+40 727 97 12 15"
+      },
+      {
+        "service": "email",
+        "value": "george@barbu.cc"
+      },
+      {
+        "service": "website",
+        "value": "https://george.barbu.cc"
+      }
+    ]
+  },
+  "header": {
+    "fullname": "GEORGE BARBU",
+    "role": "Technical Solutions Leader",
+    "slogan": "Driving innovation through technical excellence."
+  },
+  "summary": {
+    "label": "SUMMARY",
+    "text": "Highly skilled full-stack developer with over 10 years of experience delivering scalable, high-performance software solutions. Proven ability to lead cross-functional teams, design innovative systems, and optimize workflows. Strong background in front-end and back-end technologies with a focus on collaboration and technical leadership. Passionate about integrating technology and business goals to achieve measurable results."
+  },
+  "skills": [
+    {
+      "title": "SKILLS",
+      "type": "tag",
+      "items": [
+        {
+          "name": "JavaScript"
+        },
+        {
+          "name": "NextJS"
+        },
+        {
+          "name": "PHP"
+        },
+        {
+          "name": "Docker"
+        },
+        {
+          "name": "Vue.js"
+        },
+        {
+          "name": "MySQL"
+        },
+        {
+          "name": "Webpack"
+        },
+        {
+          "name": "TailwindCSS"
+        },
+        {
+          "name": "GIT"
+        },
+        {
+          "name": "GraphQL"
+        },
+        {
+          "name": "Gatsby.js"
+        },
+        {
+          "name": "WordPress"
+        },
+        {
+          "name": "CMS"
+        },
+        {
+          "name": "AJAX"
+        },
+        {
+          "name": "GULP"
+        },
+        {
+          "name": "Jquery"
+        },
+        {
+          "name": "Laravel"
+        },
+        {
+          "name": "Alpine.js"
+        },
+        {
+          "name": "SiteCore"
+        },
+        {
+          "name": "CakePHP"
+        },
+        {
+          "name": "LESS/SCSS"
+        },
+        {
+          "name": "Backbone.js"
+        },
+        {
+          "name": "SOAP/REST"
+        },
+        {
+          "name": "HTML5/PUG"
+        },
+        {
+          "name": "HeadlessCMS"
+        }
+      ]
+    },
+    {
+      "title": "SOFT SKILLS",
+      "type": "tag",
+      "items": [
+        {
+          "name": "Resilience"
+        },
+        {
+          "name": "Team Spirit"
+        },
+        {
+          "name": "Self-starting"
+        },
+        {
+          "name": "Communicative"
+        },
+        {
+          "name": "Ownership"
+        },
+        {
+          "name": "Adaptability"
+        },
+        {
+          "name": "Continuous Learning"
+        }
+      ]
+    }
+  ],
+  "social": [
+    {
+      "service": "github",
+      "url": "https://github.com/george-barbu-cc"
+    },
+    {
+      "service": "linkedin",
+      "url": "https://www.linkedin.com/in/barbugeorge/"
+    }
+  ],
+  "education": [
+    {
+      "label": "EDUCATION HISTORY",
+      "items": [
+        {
+          "institution": "EDMOND NICOLAU TECHNICAL COLLEGE",
+          "degree": "Compuer Science",
+          "type": "Hight Scool",
+          "certifications": [
+            {
+              "name": "ORACLE Certification: Award of Achievement Computer Science Certified"
+            },
+            {
+              "name": "Organiser at National Festival \"Mihai Eminescu\" Editions 4-6 (2007-2009)"
+            },
+            {
+              "name": "Computer Science Certification"
+            }
+          ]
+        },
+        {
+          "institution": "EDMOND NICOLAU TECHNICAL COLLEGE",
+          "degree": "Electronics",
+          "type": "Junior College",
+          "certifications": [
+            {
+              "name": "CISCO: CCNA Discovery: Networking for Home and Small Businesses"
+            },
+            {
+              "name": "Electronic Automation Equipment Technician Certification"
+            },
+            {
+              "name": "CISCO: IT Essentials: PC Hardware and Software"
+            },
+            {
+              "name": "ORACLE: Java Fundamentals"
+            },
+            {
+              "name": "ORACLE: Java Programming"
+            },
+            {
+              "name": "ORACLE: Database Design"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "label": "PROFESSIONAL  EXPERIENCE",
+      "items": [
+        {
+          "start": "2021",
+          "presentDate": "Yes",
+          "endDate": "",
+          "startDate": "2021",
+          "duties": [
+            {
+              "duty": "Overseeing the development and deployment of Docker-based solutions"
+            },
+            {
+              "duty": "Lead complex projects from concept to implementation"
+            },
+            {
+              "duty": "A pivotal role in advancing and enhancing web-based software solutions"
+            },
+            {
+              "duty": "Revamp the asset management system using Gulp for refactoring"
+            }
+          ],
+          "service": "Yes",
+          "role": "FULL STACK DEVELOPER",
+          "end": "2021",
+          "company": "Kindred Group"
+        },
+        {
+          "start": "2019",
+          "presentDate": "No",
+          "endDate": "2021",
+          "startDate": "2019",
+          "duties": [
+            {
+              "duty": "Designed and implemented a novel Landing Pages Platform, significantly cutting down the creation time from 3 hours to just 15 minutes"
+            },
+            {
+              "duty": "Refactor the WordPress blog for a 95% improvement in page speed"
+            },
+            {
+              "duty": "Ensure client/stakeholder satisfaction through effective communication"
+            },
+            {
+              "duty": "Offer technical leadership, guide teams, and ensure best practices"
+            }
+          ],
+          "service": "No",
+          "role": "STAFF ENGINEER",
+          "end": "2021",
+          "company": "ENTAIN"
+        },
+        {
+          "start": "2018",
+          "presentDate": "No",
+          "endDate": "2019",
+          "startDate": "2018",
+          "duties": [
+            {
+              "duty": "Enhance web app performance, security, and scalability"
+            },
+            {
+              "duty": "Work with the brand content team to make sure new requests are in line with the technical capabilities of the platform and the team"
+            },
+            {
+              "duty": "Team up with product, QA, and operations for project success"
+            }
+          ],
+          "service": "No",
+          "role": "WEB DEVELOPER",
+          "end": "2019",
+          "company": "ENTAIN"
+        },
+        {
+          "start": "2016",
+          "presentDate": "No",
+          "endDate": "2018",
+          "startDate": "2015",
+          "duties": [
+            {
+              "duty": "Central role in transitioning and deliver the platform migration from MicroGaming to Finnplay"
+            },
+            {
+              "duty": "Collaborate with cross-functional teams to design and architect complex software system"
+            },
+            {
+              "duty": "Help content team align requests with technical capabilities"
+            },
+            {
+              "duty": "Track industry trends and tech advances for product enhancement"
+            }
+          ],
+          "service": "No",
+          "role": "TECH LEAD",
+          "end": "2018",
+          "company": "GoWild Gaming"
+        },
+        {
+          "start": "2015",
+          "presentDate": "No",
+          "endDate": "2015",
+          "startDate": "2014",
+          "duties": [
+            {
+              "duty": "Lead, mentor, and motivate a team of 5, setting clear goals and offering ongoing guidance and feedback"
+            },
+            {
+              "duty": "Take the lead in assessing and designing innovative technical solutions"
+            },
+            {
+              "duty": "Formulate the team strategy and development plans"
+            },
+            {
+              "duty": "Conduct performance reviews, pinpoint improvement areas, and aid in team members' professional development"
+            }
+          ],
+          "service": "No",
+          "role": "PROJECT TEAM LEAD",
+          "end": "2016",
+          "company": "GoWild Gaming"
+        },
+        {
+          "start": "2014",
+          "presentDate": "No",
+          "endDate": "2014",
+          "startDate": "2014",
+          "duties": [
+            {
+              "duty": "Enhance the existing Learning Management System (LMS) by adding new features and capabilities"
+            },
+            {
+              "duty": "Build additional reports within the internal reporting system by leveraging MySQL"
+            },
+            {
+              "duty": "Gain proficiency in backend technologies and build internal applications"
+            },
+            {
+              "duty": "Acquire proficiency in CSS and HTML"
+            }
+          ],
+          "service": "No",
+          "role": "PROGRAMING - INTERNSHIP",
+          "end": "2014",
+          "company": "The EXP Group"
+        },
+        {
+          "start": "2012",
+          "presentDate": "No",
+          "endDate": "2014",
+          "startDate": "2012",
+          "duties": [
+            {
+              "duty": "Responsible for optimizing the customer experience, ensuring a pleasurable time at the casino, and fostering increased brand loyalty"
+            },
+            {
+              "duty": "Craft an engaging gaming atmosphere for players"
+            },
+            {
+              "duty": "Guarantee strict adherence to all betting rules"
+            }
+          ],
+          "service": "No",
+          "role": "CASINO DEALER",
+          "end": "2014",
+          "company": "Casino Metropolis"
+        },
+        {
+          "start": "2011",
+          "presentDate": "No",
+          "endDate": "2012",
+          "startDate": "2011",
+          "duties": [
+            {
+              "duty": "Identify bugs or faulty hardware subassemblies"
+            },
+            {
+              "duty": "Resolve bugs according to existing procedures"
+            },
+            {
+              "duty": "Create and run test plans"
+            }
+          ],
+          "service": "No",
+          "role": "SOFTWARE TEST TECHNICIAN",
+          "end": "2012",
+          "company": "HP"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+@font-face {
+  font-family: "Norwester";
+  src: url("/fonts/Norwester/Norwester.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "MontserratLight";
+  src: url("/fonts/Montserrat/Montserrat-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "MontserratSemiBold";
+  src: url("/fonts/Montserrat/Montserrat-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Lato";
+  src: url("/fonts/Lato/Lato-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "LatoBlack";
+  src: url("/fonts/Lato/Lato-Black.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "LatoThin";
+  src: url("/fonts/Lato/Lato-Thin.ttf") format("truetype");
+}
