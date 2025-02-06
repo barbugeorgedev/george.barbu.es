@@ -9,7 +9,7 @@
     "lint": "next lint",
     "dev-pdf": "next dev -p 3001",
     "generate-pdf": "node scripts/generatePDF.js",
-    "postinstall": "cpy ../../packages/assets/fonts apps/web/public/fonts --flat"
+    "postinstall": "cpy '../../packages/assets/fonts/**' 'public/fonts' --cwd=."
   },
   "dependencies": {
     "@expo/next-adapter": "^6.0.0",
