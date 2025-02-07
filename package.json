@@ -13,6 +13,7 @@
   ],
   "packageManager": "yarn@1.22.19",
   "devDependencies": {
+    "@types/react-native-dotenv": "^0.2.2",
     "clsx": "^2.1.1",
     "cpy-cli": "^5.0.0",
     "prettier": "^3.3.2",

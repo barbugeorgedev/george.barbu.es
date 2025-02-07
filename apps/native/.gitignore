@@ -63,3 +63,6 @@ Thumbs.db
 *.jar
 *.war
 *.ear
+
+
+.env

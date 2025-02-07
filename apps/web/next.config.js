@@ -24,6 +24,7 @@ module.exports = withExpo({
       ...(config.resolve.alias || {}),
       "react-native$": "react-native-web",
       "@expo/vector-icons": false,
+      "@dotenv": path.resolve(__dirname, "./env.ts"),
       "@templates": path.resolve(__dirname, "templates"),
       "@styles": path.resolve(__dirname, "styles"),
     };

@@ -15,6 +15,7 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
+      "@dotenv": ["./env"],
       "@templates/*": ["./src/templates/*"],
       "@styles/*": ["./src/styles/*"]
     },
