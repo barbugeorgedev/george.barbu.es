@@ -6,6 +6,7 @@
       "ui/*": ["./packages/ui/*"],
       "app/*": ["./packages/app/*"],
       "data/*": ["./packages/data/*"],
+      "libs/*": ["./packages/libs/*"],
       "assets/*": ["./packages/assets/*"]
     },
     "types": ["nativewind/types"],

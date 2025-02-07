@@ -1,15 +1,19 @@
+// src/app/layout.tsx
 "use client";
-import "@styles/globals.css";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+import { ReactNode } from 'react';
+import { ApolloProvider } from '@apollo/client';
+import client from 'libs/apolloClient';
+import '@styles/globals.css'; // Import your global styles
+
+export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <head></head>
-      <body>{children}</body>
+      <body>
+        <ApolloProvider client={client}>
+          {children}
+        </ApolloProvider>
+      </body>
     </html>
   );
 }
