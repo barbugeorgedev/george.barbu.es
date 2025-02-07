@@ -22,5 +22,5 @@ config.resolver.disableHierarchicalLookup = true;
 
 // Apply nativewind plugin
 module.exports = withNativeWind(config, {
-  input: "./global.css",
+  input: "./src/styles/global.css",
 });

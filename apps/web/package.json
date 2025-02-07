@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "postinstall": "cpy '../../packages/assets/fonts/**' 'public/fonts' --cwd=.",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "dev-pdf": "next dev -p 3001",
-    "generate-pdf": "node scripts/generatePDF.js",
-    "postinstall": "cpy '../../packages/assets/fonts/**' 'public/fonts' --cwd=."
+    "generate-pdf": "node scripts/generatePDF.js"
   },
   "dependencies": {
     "@expo/next-adapter": "^6.0.0",
