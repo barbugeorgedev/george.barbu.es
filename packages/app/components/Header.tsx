@@ -70,7 +70,7 @@ const Header: React.FC = () => {
   const downloadPDFweb = (): void => {
     const element = document.createElement("a");
     element.target = "_blank";
-    element.setAttribute("href", process.env.EXPO_PUBLIC_PDF_EXPORT_PATH || "");
+    element.setAttribute("href", "");
     element.setAttribute("download", pdfName);
 
     element.style.display = "none";
@@ -86,10 +86,7 @@ const Header: React.FC = () => {
 
     if (!resumePdfIframe) {
       resumePdfIframe = document.createElement("iframe") as HTMLIFrameElement;
-      resumePdfIframe.setAttribute(
-        "src",
-        process.env.EXPO_PUBLIC_PDF_EXPORT_PATH || "",
-      );
+      resumePdfIframe.setAttribute("src", "");
       resumePdfIframe.setAttribute("id", "resumePdfIframe");
       resumePdfIframe.setAttribute("name", "resumePdfIframe");
       resumePdfIframe.style.display = "none";

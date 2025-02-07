@@ -3,6 +3,7 @@
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
     "paths": {
+      "env": ["./packages/env/*"],
       "ui/*": ["./packages/ui/*"],
       "app/*": ["./packages/app/*"],
       "data/*": ["./packages/data/*"],

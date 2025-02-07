@@ -1,11 +1,18 @@
-"use client" 
-import { gql, useQuery } from '@apollo/client';
+"use client";
+import { gql, useQuery } from "@apollo/client";
+import { useEffect } from "react";
+
 import DefaultTemplate from "@templates/Default";
 import { Home } from "app/screens/Home";
+import LoadingScreen from "app/screens/Loading";
+import ErrorScreen from "app/screens/Error";
+import env from "@dotenv";
+
+console.log("env-web", env);
 
 // GraphQL Query
-const GET_POSTS = gql`
-  query {
+const GET_RESUME = gql`
+  query GetResume {
     allResume {
       cvpurpose
       fullname
@@ -15,7 +22,7 @@ const GET_POSTS = gql`
   }
 `;
 
-// TypeScript interfaces
+// Type Definitions
 interface Resume {
   cvpurpose: string;
   fullname: string;
@@ -27,24 +34,16 @@ interface ResumeData {
   allResume: Resume[];
 }
 
-interface ResumeVariables {
-  // Define any query variables here, if applicable
-  // Example: id: string; if you're passing an ID as a variable in the query
-}
-
-
 export default function Page() {
-  const { loading, error, data } = useQuery<ResumeData>(GET_POSTS);
+  const { loading, error, data } = useQuery<ResumeData>(GET_RESUME);
 
-  // Handle loading and error states
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-
-  console.log('data-sanity', data);
+  console.log("data-sanity", data ?? "Fetching...");
 
   return (
     <DefaultTemplate>
-      <Home />
+      {loading && <LoadingScreen />}
+      {error && <ErrorScreen message={error.message} />}
+      {!loading && !error && <Home />}
     </DefaultTemplate>
   );
 }

@@ -2,19 +2,12 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "paths": {
-      "@screens/*": [
-        "./src/screens/*"
-      ],
-      "@templates/*": [
-        "./src/templates/*"
-      ]
+      "@screens/*": ["./src/screens/*"],
+      "@templates/*": ["./src/templates/*"],
+      "@env": ["../../node_modules/react-native-dotenv"],
+      "@dotenv": ["./env"]
     },
     "jsx": "react-native"
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "nativewind-env.d.ts",
-    "nativewind.d.ts"
-  ]
+  "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts", "nativewind.d.ts"]
 }
