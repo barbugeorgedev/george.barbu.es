@@ -1,5 +1,4 @@
-const chromium = require("@sparticuz/chromium");
-const puppeteer = require("puppeteer-core");
+const puppeteer = require("puppeteer");
 const axios = require("axios");
 const { put } = require("@vercel/blob");
 require("dotenv").config();
@@ -133,12 +132,19 @@ const generateAndUploadPDF = async (page, route) => {
   try {
     await checkServerAvailability();
 
+    const install = require(
+      `puppeteer/internal/node/install.js`,
+    ).downloadBrowser;
+    await install();
+
     browser = await puppeteer.launch({
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(),
-      headless: chromium.headless,
-      ignoreHTTPSErrors: true,
+      args: [
+        "--use-gl=angle",
+        "--use-angle=swiftshader",
+        "--single-process",
+        "--no-sandbox",
+      ],
+      headless: true,
     });
 
     const page = await browser.newPage();
