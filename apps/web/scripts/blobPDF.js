@@ -58,7 +58,7 @@ async function generatePDF(route) {
     });
 
     const page = await browser.newPage();
-    const url = `${SITE_URL}${route}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}${route}`;
     console.log(`📄 Generating PDF for: ${url}`);
 
     await page.goto(url, { waitUntil: "networkidle2" });
