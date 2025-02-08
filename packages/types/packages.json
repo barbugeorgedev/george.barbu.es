@@ -1,0 +1,27 @@
+{
+  "name": "types",
+  "private": true,
+  "version": "1.0.0",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "require": "./src/index.ts",
+      "types": "./src/index.ts"
+    },
+    "./ui": {
+      "import": "./src/ui/index.ts",
+      "require": "./src/ui/index.ts",
+      "types": "./src/ui/index.ts"
+    },
+    "./page": {
+      "import": "./src/page/index.ts",
+      "require": "./src/page/index.ts",
+      "types": "./src/page/index.ts"
+    },
+    "./components": {
+      "import": "./src/components/index.ts",
+      "require": "./src/components/index.ts",
+      "types": "./src/components/index.ts"
+    }
+  }
+}

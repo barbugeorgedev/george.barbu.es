@@ -2,10 +2,7 @@ import { SafeAreaView, StatusBar, Text, TouchableOpacity } from "react-native";
 import Icon from "ui/icon";
 import React from "react";
 
-interface NetworkCheckProps {
-  title?: string;
-  tryAgain?: string;
-}
+import { NetworkCheckProps } from "types/page";
 
 const Offline: React.FC<NetworkCheckProps> = ({
   title = "Nu ești conectat la internet",

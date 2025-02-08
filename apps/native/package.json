@@ -13,6 +13,7 @@
     "@expo/vector-icons": "^14.0.0",
     "@react-navigation/native": "^6.0.2",
     "app": "*",
+    "types": "*",
     "assets": "*",
     "data": "*",
     "env": "*",

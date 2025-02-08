@@ -14,6 +14,7 @@
   "dependencies": {
     "@expo/next-adapter": "^6.0.0",
     "app": "*",
+    "types": "*",
     "assets": "*",
     "axios": "^1.7.9",
     "data": "*",

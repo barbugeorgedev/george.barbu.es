@@ -8,6 +8,8 @@ import LoadingScreen from "app/screens/Loading";
 import ErrorScreen from "app/screens/Error";
 import env from "@dotenv";
 
+import { ResumeData } from "types/page";
+
 console.log("env-web", env);
 
 // GraphQL Query
@@ -23,16 +25,6 @@ const GET_RESUME = gql`
 `;
 
 // Type Definitions
-interface Resume {
-  cvpurpose: string;
-  fullname: string;
-  role: string;
-  slogan: string;
-}
-
-interface ResumeData {
-  allResume: Resume[];
-}
 
 export default function Page() {
   const { loading, error, data } = useQuery<ResumeData>(GET_RESUME);
