@@ -1,10 +1,8 @@
-import chromium from "chrome-aws-lambda";
-import puppeteer from "puppeteer-core";
-import axios from "axios";
-import { put } from "@vercel/blob";
-import dotenv from "dotenv";
-
-dotenv.config();
+const chromium = require("chrome-aws-lambda");
+const puppeteer = require("puppeteer-core");
+const { put } = require("@vercel/blob");
+const axios = require("axios");
+require("dotenv").config();
 
 const SITE_URL = process.env.NEXT_PUBLIC_API_URL;
 const DEFAULT_PDF_NAME = process.env.DEFAULT_PDF_NAME || "george.barbu";
@@ -45,8 +43,11 @@ const checkServerAvailability = async () => {
 async function generatePDF(route) {
   let browser;
   try {
+    const executablePath =
+      (await chromium.executablePath) || "/usr/bin/chromium-browser";
+
     browser = await puppeteer.launch({
-      executablePath: await chromium.executablePath,
+      executablePath,
       args: chromium.args,
       headless: chromium.headless,
     });
