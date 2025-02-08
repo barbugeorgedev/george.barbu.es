@@ -4,6 +4,8 @@ const { put } = require("@vercel/blob");
 require("dotenv").config();
 
 const SITE_URL = process.env.NEXT_PUBLIC_API_URL;
+const BLESS_TOKEN =
+  process.env.BLESS_TOKEN || "RjqthAbPwIgeJwdc38d38908114afa2ccbbd5ee959";
 const BLOB_TOKEN = process.env.BLOB_READ_WRITE_TOKEN;
 const STORAGE_NAME = process.env.BLOB_STORAGE_NAME || "pdf";
 const BASE_BLOB_URL = "https://fjzxtnzjts3m1a6q.public.blob.vercel-storage.com"; // Your Vercel Blob Base URL
@@ -129,10 +131,22 @@ const generateAndUploadPDF = async (page, route) => {
 
   try {
     await checkServerAvailability();
-    browser = await puppeteer.launch({
-      headless: "new",
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    });
+
+    if (process.env.NODE_ENV !== "development") {
+      const chromium = require("@sparticuz/chromium");
+      // Optional: If you'd like to disable webgl, true is the default.
+      chromium.setGraphicsMode = false;
+      const puppeteer = require("puppeteer-core");
+      browser = await puppeteer.launch({
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
+      });
+    } else {
+      const puppeteer = require("puppeteer");
+      browser = await puppeteer.launch({ headless: "new" });
+    }
 
     const page = await browser.newPage();
 

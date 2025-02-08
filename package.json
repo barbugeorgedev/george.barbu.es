@@ -31,12 +31,14 @@
     "@apollo/client": "^3.12.9",
     "@expo/vector-icons": "^14.0.4",
     "@sanity/client": "^6.27.2",
+    "@sparticuz/chromium": "^132.0.0",
     "@vercel/analytics": "^1.4.1",
     "@vercel/blob": "^0.27.1",
     "@vercel/speed-insights": "^1.1.0",
     "autoprefixer": "^10.4.20",
     "graphql": "^16.10.0",
     "graphql-request": "^7.1.2",
+    "puppeteer-core": "^24.2.0",
     "react-native-fast-image": "^8.6.3",
     "react-native-svg": "^15.11.1"
   }
