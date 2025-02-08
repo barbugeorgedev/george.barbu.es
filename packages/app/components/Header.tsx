@@ -8,7 +8,7 @@ import { View as ViewWEB } from "ui/view";
 const Header: React.FC = () => {
   const isWEB = Platform.OS === "web";
   const pdfName = "george-barbu.pdf";
-  const pdfUrl = "/api/" + pdfName;
+  const pdfUrl = "/api/download-pdf";
   const localUri = FileSystem.documentDirectory + pdfName;
 
   const fetchPDFBlob = async (): Promise<Blob | null> => {
