@@ -35,32 +35,15 @@ const checkServerAvailability = async () => {
 };
 
 async function getBrowserInstance() {
-  try {
-    console.log("📊 Launching Puppeteer...");
+  const executablePath = await chromium.executablePath;
 
-    const executablePath = await chromium.executablePath();
-    console.log("🔍 Using Chromium path:", executablePath);
+  const browser = await puppeteer.launch({
+    args: chromium.args,
+    executablePath,
+    headless: chromium.headless,
+  });
 
-    const browser = await puppeteer.launch({
-      args: [
-        ...chromium.args,
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-gpu",
-        "--single-process",
-        "--no-zygote",
-      ],
-      executablePath,
-      headless: chromium.headless,
-      ignoreHTTPSErrors: true,
-    });
-
-    console.log("✅ Puppeteer launched successfully");
-    return browser;
-  } catch (error) {
-    console.error("🚨 Puppeteer launch error:", error);
-    throw error;
-  }
+  return browser;
 }
 
 async function generatePDF(route) {

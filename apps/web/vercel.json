@@ -1,9 +1,4 @@
 {
-  "functions": {
-    "apps/web/api/**": {
-      "includeFiles": "node_modules/@sparticuz/chromium/**"
-    }
-  },
   "build": {
     "env": {
       "PUPPETEER_SKIP_DOWNLOAD": "true",
