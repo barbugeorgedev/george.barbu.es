@@ -1,3 +1,4 @@
+/** @type {import('eslint').Linter.Config} */
 export default {
   extends: ["next", "next/core-web-vitals"],
   rules: {
