@@ -2,12 +2,15 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "paths": {
-      "env": ["./packages/env/*"],
-      "ui/*": ["./packages/ui/*"],
+      "env": ["./packages/env/src/*"],
+      "ui/*": ["./packages/ui/src/*"],
       "app/*": ["./packages/app/*"],
       "data/*": ["./packages/data/*"],
-      "libs/*": ["./packages/libs/*"],
+      "libs/*": ["./packages/libs/src/*"],
+      "types/*": ["./packages/types/src/*"],
       "assets/*": ["./packages/assets/*"]
     },
     "types": ["nativewind/types"],

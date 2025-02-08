@@ -4,8 +4,8 @@ import Offline from "@screens/Offline";
 import { StatusBar, View, ActivityIndicator } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 
-import { ApolloProvider } from '@apollo/client';
-import client from 'libs/apolloClient';
+import { ApolloProvider } from "@apollo/client";
+import client from "libs/apolloClient";
 
 const HomePage: React.FC = () => {
   // State to hold network connection status
@@ -42,7 +42,6 @@ const HomePage: React.FC = () => {
       )}
     </View>
   );
-  
 };
 
 export default HomePage;

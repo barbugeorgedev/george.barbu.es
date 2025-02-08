@@ -2,6 +2,30 @@
   "name": "ui",
   "private": true,
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./icon": {
+      "import": "./src/icon.tsx",
+      "require": "./src/icon.tsx",
+      "types": "./src/icon.tsx"
+    },
+    "./image": {
+      "import": "./src/image.tsx",
+      "require": "./src/image.tsx",
+      "types": "./src/image.tsx"
+    },
+    "./view": {
+      "import": "./src/view.tsx",
+      "require": "./src/view.tsx",
+      "types": "./src/view.tsx"
+    }
+  },
   "license": "MIT"
 }

@@ -1,12 +1,10 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { SafeAreaView, ScrollView } from "react-native";
 import Header from "app/components/Header";
 import Footer from "app/components/Footer";
 import { resume } from "data";
 
-interface DefaultTemplateProps {
-  children: ReactNode;
-}
+import { DefaultTemplateProps } from "types/components";
 
 const DefaultTemplate: React.FC<DefaultTemplateProps> = ({ children }) => {
   return (

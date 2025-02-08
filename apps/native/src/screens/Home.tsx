@@ -6,6 +6,8 @@ import LoadingScreen from "app/screens/Loading";
 import ErrorScreen from "app/screens/Error";
 import env from "@dotenv";
 
+import { ResumeData } from "types/page";
+
 console.log("env-web", env);
 
 // GraphQL Query
@@ -19,23 +21,6 @@ const GET_POSTS = gql`
     }
   }
 `;
-
-// TypeScript interfaces
-interface Resume {
-  cvpurpose: string;
-  fullname: string;
-  role: string;
-  slogan: string;
-}
-
-interface ResumeData {
-  allResume: Resume[];
-}
-
-interface ResumeVariables {
-  // Define any query variables here, if applicable
-  // Example: id: string; if you're passing an ID as a variable in the query
-}
 
 export default function Home(): JSX.Element {
   const { loading, error, data } = useQuery<ResumeData>(GET_POSTS, {
