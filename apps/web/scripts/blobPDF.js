@@ -35,14 +35,22 @@ const checkServerAvailability = async () => {
 };
 
 async function getBrowserInstance() {
+  console.log("📊 Launching Puppeteer...");
+
+  // Ensure executablePath is awaited correctly
   const executablePath = await chromium.executablePath;
+
+  if (typeof executablePath !== "string") {
+    throw new Error(`Invalid executablePath: ${executablePath}`);
+  }
 
   const browser = await puppeteer.launch({
     args: chromium.args,
-    executablePath,
+    executablePath, // Use correctly awaited path
     headless: chromium.headless,
   });
 
+  console.log("✅ Puppeteer launched successfully");
   return browser;
 }
 
