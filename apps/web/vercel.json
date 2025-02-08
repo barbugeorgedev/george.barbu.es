@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/*": {
+    "apps/web/api/**": {
       "includeFiles": "node_modules/@sparticuz/chromium/**"
     }
   },

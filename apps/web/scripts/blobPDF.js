@@ -36,22 +36,29 @@ const checkServerAvailability = async () => {
 
 async function getBrowserInstance() {
   try {
-    console.log("📊 Launching browser...");
+    console.log("📊 Launching Puppeteer...");
 
     const executablePath = await chromium.executablePath();
     console.log("🔍 Using Chromium path:", executablePath);
 
     const browser = await puppeteer.launch({
-      args: [...chromium.args, "--no-sandbox", "--disable-setuid-sandbox"],
+      args: [
+        ...chromium.args,
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-gpu",
+        "--single-process",
+        "--no-zygote",
+      ],
       executablePath,
       headless: chromium.headless,
       ignoreHTTPSErrors: true,
     });
 
-    console.log("✅ Browser launched successfully");
+    console.log("✅ Puppeteer launched successfully");
     return browser;
   } catch (error) {
-    console.error("🚨 Error launching browser:", error);
+    console.error("🚨 Puppeteer launch error:", error);
     throw error;
   }
 }
