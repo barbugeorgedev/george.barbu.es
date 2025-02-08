@@ -12,58 +12,63 @@ const STORAGE_NAME = process.env.BLOB_STORAGE_NAME || "pdf";
 const BASE_BLOB_URL = `https://${BLOB_BASE}.public.blob.vercel-storage.com`;
 const PAGES = ["/"];
 
-if (!BLOB_TOKEN) {
-  console.error("❌ Missing BLOB_READ_WRITE_TOKEN. Set it in your .env file.");
-  process.exit(1);
-}
-
-const checkServerAvailability = async () => {
-  let retries = 5;
-  let delay = 2000;
-
-  while (retries > 0) {
-    try {
-      const response = await axios.get(SITE_URL);
-      if (response.status === 200) {
-        console.log("✅ Server is ready!");
-        return true;
-      }
-    } catch (error) {
-      console.error(`❌ Server not ready, retrying in ${delay / 1000}s...`);
-    }
-
-    retries--;
-    await new Promise((resolve) => setTimeout(resolve, delay));
-    delay *= 1.5;
-  }
-
-  throw new Error("❌ Server did not start in time");
+// Chrome executable paths for different environments
+const CHROME_PATHS = {
+  win32: "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+  linux: "/usr/bin/chromium",
+  darwin: "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  vercel: "/var/task/node_modules/chromium/lib/chromium/chrome-linux/chrome",
 };
 
 async function getBrowserInstance() {
   try {
-    // Get the Chrome executable path from chrome-aws-lambda
-    const executablePath = await chromium.executablePath;
+    console.log(
+      "📊 Launching browser in",
+      process.env.VERCEL ? "Vercel" : "local",
+      "environment",
+    );
 
-    console.log("🔍 Chrome executable path:", executablePath);
+    let executablePath;
+    let launchOptions;
 
-    if (!executablePath) {
-      throw new Error("Chrome executable path not found");
+    if (process.env.VERCEL) {
+      // Vercel environment
+      executablePath = CHROME_PATHS.vercel;
+      launchOptions = {
+        args: [
+          ...chromium.args,
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--disable-gpu",
+          "--disable-dev-shm-usage",
+        ],
+        executablePath,
+        headless: true,
+        ignoreHTTPSErrors: true,
+      };
+    } else {
+      // Local environment
+      executablePath =
+        (await chromium.executablePath) || CHROME_PATHS[process.platform];
+      launchOptions = {
+        args: chromium.args,
+        executablePath,
+        headless: true,
+        ignoreHTTPSErrors: true,
+      };
     }
 
-    const options = {
-      args: chromium.args,
-      executablePath: executablePath,
-      headless: chromium.headless,
-      defaultViewport: {
-        width: 1280,
-        height: 720,
-        deviceScaleFactor: 1,
-      },
-      ignoreHTTPSErrors: true,
-    };
+    console.log("🔍 Using Chrome executable path:", executablePath);
 
-    return await puppeteer.launch(options);
+    if (!executablePath) {
+      throw new Error(
+        "No Chrome executable path found for current environment",
+      );
+    }
+
+    const browser = await puppeteer.launch(launchOptions);
+    console.log("✅ Browser launched successfully");
+    return browser;
   } catch (error) {
     console.error("🚨 Error launching browser:", error);
     throw error;
@@ -73,21 +78,27 @@ async function getBrowserInstance() {
 async function generatePDF(route) {
   let browser;
   try {
-    console.log("📊 Initializing browser...");
     browser = await getBrowserInstance();
-    console.log("✅ Browser initialized successfully");
-
     const page = await browser.newPage();
+
+    // Set viewport for consistent rendering
+    await page.setViewport({
+      width: 1200,
+      height: 800,
+      deviceScaleFactor: 1,
+    });
+
     const url = `${SITE_URL}${route}`;
     console.log(`📄 Generating PDF for: ${url}`);
 
+    // Navigate with extended timeout and wait options
     await page.goto(url, {
-      waitUntil: ["networkidle0", "domcontentloaded"],
-      timeout: 30000,
+      waitUntil: ["networkidle0", "load", "domcontentloaded"],
+      timeout: 60000, // 60 seconds
     });
 
-    // Wait for any dynamic content to load
-    await page.waitForTimeout(2000);
+    // Additional wait to ensure dynamic content loads
+    await page.waitForTimeout(5000);
 
     const pdfBuffer = await page.pdf({
       format: "A4",
@@ -98,6 +109,7 @@ async function generatePDF(route) {
         bottom: "20px",
         left: "20px",
       },
+      timeout: 60000,
     });
 
     return pdfBuffer;
@@ -149,7 +161,6 @@ const uploadPDF = async (pdfBuffer, fileName) => {
     console.error("❌ Error:", error.message);
     process.exit(1);
   } finally {
-    console.log("👋 Exiting script...");
     process.exit(0);
   }
 })();
