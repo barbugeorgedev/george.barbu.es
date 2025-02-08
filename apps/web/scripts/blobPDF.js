@@ -37,7 +37,7 @@ const checkServerAvailability = async () => {
 async function getBrowserInstance() {
   try {
     console.log("📊 Launching browser...");
-    const executablePath = await chromium.executablePath;
+    const executablePath = await chromium.executablePath();
 
     if (!executablePath) {
       throw new Error("No valid Chromium executable path found");
