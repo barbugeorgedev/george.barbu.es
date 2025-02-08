@@ -8,8 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "dev-pdf": "next dev -p 3001",
-    "generate-pdf": "node scripts/generatePDF.js"
+    "pdf:dev": "next dev -p 3001",
+    "pdf:generate": "node scripts/generatePDF.js",
+    "pdf:blob": "node scripts/blobPDF.js"
   },
   "dependencies": {
     "@expo/next-adapter": "^6.0.0",
