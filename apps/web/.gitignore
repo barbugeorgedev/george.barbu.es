@@ -43,4 +43,4 @@ Thumbs.db
 
 .env
 
-public/exports/*
+/public/exports
