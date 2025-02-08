@@ -41,31 +41,33 @@ const checkServerAvailability = async () => {
 };
 
 async function getBrowserInstance() {
-  // Define chrome executable path based on the platform
-  const executablePath =
-    process.env.CHROME_EXECUTABLE_PATH ||
-    (process.platform === "win32"
-      ? "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-      : process.platform === "linux"
-        ? "/usr/bin/google-chrome"
-        : "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome");
+  try {
+    // Get the Chrome executable path from chrome-aws-lambda
+    const executablePath = await chromium.executablePath;
 
-  const options = {
-    args: [
-      ...chromium.args,
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage",
-      "--disable-gpu",
-    ],
-    executablePath: (await chromium.executablePath) || executablePath,
-    headless: true,
-    defaultViewport: chromium.defaultViewport,
-    ignoreHTTPSErrors: true,
-  };
+    console.log("🔍 Chrome executable path:", executablePath);
 
-  console.log("🔍 Chrome executable path:", options.executablePath);
-  return puppeteer.launch(options);
+    if (!executablePath) {
+      throw new Error("Chrome executable path not found");
+    }
+
+    const options = {
+      args: chromium.args,
+      executablePath: executablePath,
+      headless: chromium.headless,
+      defaultViewport: {
+        width: 1280,
+        height: 720,
+        deviceScaleFactor: 1,
+      },
+      ignoreHTTPSErrors: true,
+    };
+
+    return await puppeteer.launch(options);
+  } catch (error) {
+    console.error("🚨 Error launching browser:", error);
+    throw error;
+  }
 }
 
 async function generatePDF(route) {
@@ -80,9 +82,12 @@ async function generatePDF(route) {
     console.log(`📄 Generating PDF for: ${url}`);
 
     await page.goto(url, {
-      waitUntil: "networkidle2",
+      waitUntil: ["networkidle0", "domcontentloaded"],
       timeout: 30000,
     });
+
+    // Wait for any dynamic content to load
+    await page.waitForTimeout(2000);
 
     const pdfBuffer = await page.pdf({
       format: "A4",
