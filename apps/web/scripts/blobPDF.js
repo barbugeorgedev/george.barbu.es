@@ -1,4 +1,5 @@
 const puppeteer = require("puppeteer");
+const chromium = require("chrome-aws-lambda");
 const axios = require("axios");
 const { put } = require("@vercel/blob");
 require("dotenv").config();
@@ -132,6 +133,10 @@ const generateAndUploadPDF = async (page, route) => {
     browser = await puppeteer.launch({
       headless: "new",
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      executablePath:
+        (await chromium.executablePath) || "/usr/bin/chromium-browser",
+      args: chromium.args,
+      headless: chromium.headless,
     });
 
     const page = await browser.newPage();

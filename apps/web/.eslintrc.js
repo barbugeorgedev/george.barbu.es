@@ -1,11 +1,11 @@
-module.exports = {
-  extends: ["next/core-web-vitals"],
+export default {
+  extends: ["next", "next/core-web-vitals"],
   rules: {
     "@next/next/no-html-link-for-pages": "off",
   },
   parserOptions: {
     babelOptions: {
-      presets: [require.resolve("next/babel")],
+      presets: ["next/babel"],
     },
   },
 };
