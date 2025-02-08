@@ -12,8 +12,14 @@ const STORAGE_NAME = process.env.BLOB_STORAGE_NAME || "pdf";
 const BASE_BLOB_URL = `https://${BLOB_BASE}.public.blob.vercel-storage.com`;
 const PAGES = ["/"];
 
+// Check for required environment variables
 if (!BLOB_TOKEN) {
   console.error("❌ Missing BLOB_READ_WRITE_TOKEN. Set it in your .env file.");
+  process.exit(1);
+}
+
+if (!SITE_URL) {
+  console.error("❌ Missing NEXT_PUBLIC_API_URL. Set it in your .env file.");
   process.exit(1);
 }
 
@@ -40,34 +46,56 @@ const checkServerAvailability = async () => {
   throw new Error("❌ Server did not start in time");
 };
 
-async function generatePDF(route) {
-  let browser;
-  try {
-    const executablePath = await chromium.executablePath;
+async function getBrowserInstance() {
+  // Check if running on Vercel
+  const isVercel = process.env.VERCEL === "1";
 
-    if (!executablePath) {
-      throw new Error("Chromium executablePath not found!");
-    }
-
-    browser = await puppeteer.launch({
-      executablePath,
+  if (isVercel) {
+    return puppeteer.launch({
       args: chromium.args,
-      headless: true,
+      executablePath: await chromium.executablePath,
+      headless: chromium.headless,
       defaultViewport: chromium.defaultViewport,
       ignoreHTTPSErrors: true,
     });
+  }
 
+  // Locally, use regular Chrome/Chromium
+  return puppeteer.launch({
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    headless: "new",
+    ignoreHTTPSErrors: true,
+  });
+}
+
+async function generatePDF(route) {
+  let browser;
+  try {
+    browser = await getBrowserInstance();
     const page = await browser.newPage();
-    const url = `${process.env.NEXT_PUBLIC_API_URL}${route}`;
+    const url = `${SITE_URL}${route}`;
     console.log(`📄 Generating PDF for: ${url}`);
 
-    await page.goto(url, { waitUntil: "networkidle2" });
+    await page.goto(url, {
+      waitUntil: "networkidle2",
+      timeout: 30000, // 30 second timeout
+    });
 
-    const pdfBuffer = await page.pdf({ format: "A4" });
+    const pdfBuffer = await page.pdf({
+      format: "A4",
+      printBackground: true,
+      margin: {
+        top: "20px",
+        right: "20px",
+        bottom: "20px",
+        left: "20px",
+      },
+    });
+
     return pdfBuffer;
   } catch (error) {
     console.error("❌ Puppeteer error:", error);
-    throw new Error("Failed to generate PDF.");
+    throw new Error(`Failed to generate PDF: ${error.message}`);
   } finally {
     if (browser) {
       await browser.close();
@@ -93,7 +121,8 @@ const uploadPDF = async (pdfBuffer, fileName) => {
     console.log(`🌐 Exported URL: ${exportedUrl}`);
     return exportedUrl;
   } catch (error) {
-    console.error("❌ Error uploading PDF:", error);
+    console.error("❌ Error uploading PDF:", error.message);
+    throw error;
   }
 };
 
@@ -109,7 +138,8 @@ const uploadPDF = async (pdfBuffer, fileName) => {
 
     console.log("🎉 All PDFs uploaded successfully!");
   } catch (error) {
-    console.error("❌ Error:", error);
+    console.error("❌ Error:", error.message);
+    process.exit(1);
   } finally {
     console.log("👋 Exiting script...");
     process.exit(0);
