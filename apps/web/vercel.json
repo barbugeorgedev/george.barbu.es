@@ -1,8 +1,13 @@
 {
+  "functions": {
+    "api/*": {
+      "includeFiles": "node_modules/@sparticuz/chromium/**"
+    }
+  },
   "build": {
     "env": {
       "PUPPETEER_SKIP_DOWNLOAD": "true",
-      "PUPPETEER_EXECUTABLE_PATH": "/usr/bin/chromium"
+      "PUPPETEER_EXECUTABLE_PATH": ""
     }
   },
   "git": {

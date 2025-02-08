@@ -37,13 +37,10 @@ const checkServerAvailability = async () => {
 async function getBrowserInstance() {
   try {
     console.log("📊 Launching browser...");
+
     const executablePath = await chromium.executablePath();
+    console.log("🔍 Using Chromium path:", executablePath);
 
-    if (!executablePath) {
-      throw new Error("No valid Chromium executable path found");
-    }
-
-    console.log("🔍 Using Chrome executable path:", executablePath);
     const browser = await puppeteer.launch({
       args: [...chromium.args, "--no-sandbox", "--disable-setuid-sandbox"],
       executablePath,
