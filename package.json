@@ -31,6 +31,7 @@
     "@apollo/client": "^3.12.9",
     "@expo/vector-icons": "^14.0.4",
     "@sanity/client": "^6.27.2",
+    "@sparticuz/chromium": "^132.0.0",
     "@vercel/analytics": "^1.4.1",
     "@vercel/blob": "^0.27.1",
     "@vercel/speed-insights": "^1.1.0",
