@@ -44,4 +44,7 @@ module.exports = withExpo({
 
     return config;
   },
+  experimental: {
+    serverComponentsExternalPackages: ["puppeteer-core", "@sparticuz/chromium"],
+  },
 });
