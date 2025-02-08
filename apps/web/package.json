@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "postinstall": "cpy '../../packages/assets/fonts/**' 'public/fonts' --cwd=.",
+    "postinstall": "cpy '../../packages/assets/fonts/**' 'public/fonts' --cwd=. && node node_modules/puppeteer/install.js",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

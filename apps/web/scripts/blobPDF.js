@@ -12,14 +12,8 @@ const STORAGE_NAME = process.env.BLOB_STORAGE_NAME || "pdf";
 const BASE_BLOB_URL = `https://${BLOB_BASE}.public.blob.vercel-storage.com`;
 const PAGES = ["/"];
 
-// Check for required environment variables
 if (!BLOB_TOKEN) {
   console.error("❌ Missing BLOB_READ_WRITE_TOKEN. Set it in your .env file.");
-  process.exit(1);
-}
-
-if (!SITE_URL) {
-  console.error("❌ Missing NEXT_PUBLIC_API_URL. Set it in your .env file.");
   process.exit(1);
 }
 
@@ -47,38 +41,47 @@ const checkServerAvailability = async () => {
 };
 
 async function getBrowserInstance() {
-  // Check if running on Vercel
-  const isVercel = process.env.VERCEL === "1";
+  // Define chrome executable path based on the platform
+  const executablePath =
+    process.env.CHROME_EXECUTABLE_PATH ||
+    (process.platform === "win32"
+      ? "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+      : process.platform === "linux"
+        ? "/usr/bin/google-chrome"
+        : "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome");
 
-  if (isVercel) {
-    return puppeteer.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath,
-      headless: chromium.headless,
-      defaultViewport: chromium.defaultViewport,
-      ignoreHTTPSErrors: true,
-    });
-  }
-
-  // Locally, use regular Chrome/Chromium
-  return puppeteer.launch({
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    headless: "new",
+  const options = {
+    args: [
+      ...chromium.args,
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-gpu",
+    ],
+    executablePath: (await chromium.executablePath) || executablePath,
+    headless: true,
+    defaultViewport: chromium.defaultViewport,
     ignoreHTTPSErrors: true,
-  });
+  };
+
+  console.log("🔍 Chrome executable path:", options.executablePath);
+  return puppeteer.launch(options);
 }
 
 async function generatePDF(route) {
   let browser;
   try {
+    console.log("📊 Initializing browser...");
     browser = await getBrowserInstance();
+    console.log("✅ Browser initialized successfully");
+
     const page = await browser.newPage();
     const url = `${SITE_URL}${route}`;
     console.log(`📄 Generating PDF for: ${url}`);
 
     await page.goto(url, {
       waitUntil: "networkidle2",
-      timeout: 30000, // 30 second timeout
+      timeout: 30000,
     });
 
     const pdfBuffer = await page.pdf({
