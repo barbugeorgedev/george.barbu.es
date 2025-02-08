@@ -43,13 +43,18 @@ const checkServerAvailability = async () => {
 async function generatePDF(route) {
   let browser;
   try {
-    const executablePath =
-      (await chromium.executablePath) || "/usr/bin/chromium-browser";
+    const executablePath = await chromium.executablePath;
+
+    if (!executablePath) {
+      throw new Error("Chromium executablePath not found!");
+    }
 
     browser = await puppeteer.launch({
       executablePath,
       args: chromium.args,
-      headless: chromium.headless,
+      headless: true,
+      defaultViewport: chromium.defaultViewport,
+      ignoreHTTPSErrors: true,
     });
 
     const page = await browser.newPage();

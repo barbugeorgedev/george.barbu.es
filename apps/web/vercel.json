@@ -3,5 +3,11 @@
     "deploymentEnabled": {
       "master": false
     }
+  },
+  "functions": {
+    "api/*": {
+      "runtime": "nodejs18.x",
+      "memory": 1024
+    }
   }
 }
