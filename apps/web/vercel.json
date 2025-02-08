@@ -1,15 +1,4 @@
 {
-  "functions": {
-    "api/*": {
-      "includeFiles": ["node_modules/puppeteer/.local-chromium/**"]
-    }
-  },
-  "build": {
-    "env": {
-      "PUPPETEER_SKIP_DOWNLOAD": "true",
-      "PUPPETEER_EXECUTABLE_PATH": "/usr/bin/chromium"
-    }
-  },
   "git": {
     "deploymentEnabled": {
       "master": false

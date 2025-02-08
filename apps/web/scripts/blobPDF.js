@@ -1,9 +1,12 @@
-const puppeteer = require("puppeteer");
+const chromium = require("@sparticuz/chromium");
+const puppeteer = require("puppeteer-core");
 const axios = require("axios");
 const { put } = require("@vercel/blob");
 require("dotenv").config();
 
 const SITE_URL = process.env.NEXT_PUBLIC_API_URL;
+const BLESS_TOKEN =
+  process.env.BLESS_TOKEN || "RjqthAbPwIgeJwdc38d38908114afa2ccbbd5ee959";
 const BLOB_TOKEN = process.env.BLOB_READ_WRITE_TOKEN;
 const STORAGE_NAME = process.env.BLOB_STORAGE_NAME || "pdf";
 const BASE_BLOB_URL = "https://fjzxtnzjts3m1a6q.public.blob.vercel-storage.com"; // Your Vercel Blob Base URL
@@ -129,10 +132,13 @@ const generateAndUploadPDF = async (page, route) => {
 
   try {
     await checkServerAvailability();
+
     browser = await puppeteer.launch({
-      executablePath: await chromium.executablePath,
-      headless: true,
       args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
     });
 
     const page = await browser.newPage();
