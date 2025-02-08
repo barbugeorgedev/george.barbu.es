@@ -20,6 +20,37 @@ const CHROME_PATHS = {
   vercel: "/var/task/node_modules/chromium/lib/chromium/chrome-linux/chrome",
 };
 
+const checkServerAvailability = async () => {
+  if (!SITE_URL) {
+    throw new Error("NEXT_PUBLIC_API_URL is not defined");
+  }
+
+  let retries = 5;
+  let delay = 2000;
+
+  while (retries > 0) {
+    try {
+      console.log(`🔍 Checking server availability: ${SITE_URL}`);
+      const response = await axios.get(SITE_URL);
+      if (response.status === 200) {
+        console.log("✅ Server is ready!");
+        return true;
+      }
+    } catch (error) {
+      console.error(
+        `❌ Server not ready (${retries} retries left), retrying in ${delay / 1000}s...`,
+      );
+      console.error(`Error details: ${error.message}`);
+    }
+
+    retries--;
+    await new Promise((resolve) => setTimeout(resolve, delay));
+    delay *= 1.5;
+  }
+
+  throw new Error("❌ Server did not start in time");
+};
+
 async function getBrowserInstance() {
   try {
     console.log(
