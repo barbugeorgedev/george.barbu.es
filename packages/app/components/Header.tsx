@@ -8,13 +8,19 @@ import { View as ViewWEB } from "ui/view";
 const Header: React.FC = () => {
   const isWEB = Platform.OS === "web";
   const pdfName = "george-barbu.pdf";
-  const pdfUrl = "/exports/george.barbu.pdf";
+  const pdfUrl = "/api/download-pdf";
   const localUri = FileSystem.documentDirectory + pdfName;
 
   const downloadPDFmobile = async (): Promise<void> => {
     try {
       // Fetch the file from the URL
-      const response = await fetch(pdfUrl);
+      // Fetch the actual PDF file as a blob
+      const response = await fetch(pdfUrl, { method: "GET" });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch the latest PDF.");
+      }
+
       const blob = await response.blob();
 
       // Read the blob as a Base64 string
@@ -45,15 +51,28 @@ const Header: React.FC = () => {
   const sharePDFmobile = async (): Promise<void> => {
     try {
       // Define the local file path where the PDF will be saved
-      const localFileUri = FileSystem.documentDirectory + pdfName;
+      const localFileUri = FileSystem.documentDirectory + pdfName; // You can use dynamic names based on the URL or timestamp
 
-      // Download the PDF to the local file system
-      const { uri } = await FileSystem.downloadAsync(pdfUrl, localFileUri);
-      console.log("File downloaded to:", uri);
+      // Fetch the PDF file from the URL
+      const response = await fetch(pdfUrl, { method: "GET" });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch the latest PDF.");
+      }
+
+      // Fetch the PDF as a blob and save it to the file system
+      const blob = await response.blob();
+
+      // Write the blob content as a file to the local file system
+      await FileSystem.writeAsStringAsync(localFileUri, await blob.text(), {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      console.log("File downloaded to:", localFileUri);
 
       // Now share the local file
       if (await Sharing.isAvailableAsync()) {
-        await Sharing.shareAsync(uri); // Share the local file
+        await Sharing.shareAsync(localFileUri); // Share the local file
         console.log("PDF shared successfully!");
       } else {
         Alert.alert(
@@ -67,16 +86,33 @@ const Header: React.FC = () => {
     }
   };
 
-  const downloadPDFweb = (): void => {
-    const element = document.createElement("a");
-    element.target = "_blank";
-    element.setAttribute("href", "");
-    element.setAttribute("download", pdfName);
+  const downloadPDFweb = async (): Promise<void> => {
+    try {
+      // Fetch the actual PDF file as a blob
+      const response = await fetch(pdfUrl, { method: "GET" });
 
-    element.style.display = "none";
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+      if (!response.ok) {
+        throw new Error("Failed to fetch the latest PDF.");
+      }
+
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      // Create a temporary link element
+      const element = document.createElement("a");
+      element.href = blobUrl;
+      element.download = pdfName; // Change filename if needed
+
+      // Trigger the download
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+
+      // Revoke the object URL to free up memory
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("❌ Error downloading PDF:", error);
+    }
   };
 
   const printPDF = (): void => {
@@ -86,21 +122,27 @@ const Header: React.FC = () => {
 
     if (!resumePdfIframe) {
       resumePdfIframe = document.createElement("iframe") as HTMLIFrameElement;
-      resumePdfIframe.setAttribute("src", "");
       resumePdfIframe.setAttribute("id", "resumePdfIframe");
       resumePdfIframe.setAttribute("name", "resumePdfIframe");
       resumePdfIframe.style.display = "none";
       document.body.appendChild(resumePdfIframe);
     }
 
-    if (resumePdfIframe.contentWindow) {
-      resumePdfIframe.contentWindow.focus();
-      resumePdfIframe.contentWindow.print();
-    } else {
-      console.error("Could not access iframe contentWindow");
-    }
+    // Set the src attribute to the PDF URL
+    resumePdfIframe.setAttribute("src", pdfUrl);
 
-    document.body.removeChild(resumePdfIframe);
+    // Ensure the iframe loads the PDF before attempting to print
+    resumePdfIframe.onload = () => {
+      if (resumePdfIframe.contentWindow) {
+        resumePdfIframe.contentWindow.focus();
+        resumePdfIframe.contentWindow.print();
+      } else {
+        console.error("Could not access iframe contentWindow");
+      }
+
+      // Remove the iframe after printing
+      document.body.removeChild(resumePdfIframe);
+    };
   };
 
   const downloadPDF = isWEB ? downloadPDFweb : downloadPDFmobile;

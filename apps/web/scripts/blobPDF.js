@@ -1,11 +1,11 @@
 const puppeteer = require("puppeteer");
 const axios = require("axios");
-const { upload } = require("@vercel/blob");
+const { put } = require("@vercel/blob");
 require("dotenv").config();
 
-const SITE_URL = process.env.EXPO_PUBLIC_SITE_URL;
+const SITE_URL = process.env.NEXT_PUBLIC_API_URL;
 const BLOB_TOKEN = process.env.BLOB_READ_WRITE_TOKEN;
-const STORAGE_NAME = process.env.BLOB_STORAGE_NAME || "blob-storage"; // Default: blob-storage
+const STORAGE_NAME = process.env.BLOB_STORAGE_NAME || "pdf";
 const BASE_BLOB_URL = "https://fjzxtnzjts3m1a6q.public.blob.vercel-storage.com"; // Your Vercel Blob Base URL
 
 const PAGES = ["/"];
@@ -101,13 +101,13 @@ const generateAndUploadPDF = async (page, route) => {
     });
 
     console.log(`⬆️ Uploading PDF to Vercel Blob...`);
-    const fileName = `${route.replace("/", "") || "default"}.pdf`;
-    const { url: blobUrl } = await upload(
+    const fileName = `${route.replace("/", "") || "george.barbu"}.pdf`;
+    const { url: blobUrl } = await put(
       `${STORAGE_NAME}/${fileName}`,
       pdfBuffer,
       {
         access: "public",
-        token: BLOB_TOKEN, // Pass the token here
+        token: BLOB_TOKEN,
       },
     );
 
