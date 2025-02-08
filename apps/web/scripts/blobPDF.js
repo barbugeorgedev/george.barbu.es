@@ -130,8 +130,9 @@ const generateAndUploadPDF = async (page, route) => {
   try {
     await checkServerAvailability();
     browser = await puppeteer.launch({
-      headless: "new",
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      executablePath: await chromium.executablePath,
+      headless: true,
+      args: chromium.args,
     });
 
     const page = await browser.newPage();
