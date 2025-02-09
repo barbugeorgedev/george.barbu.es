@@ -8,7 +8,7 @@ interface SidebarProps {
   className?: string;
   summary: {
     label: string;
-    text: string; // Rename 'content' to 'text'
+    summary: string; // Rename 'content' to 'text'
   };
   contacts: {
     label: string;

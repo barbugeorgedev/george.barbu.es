@@ -8,7 +8,6 @@
       "env": ["./packages/env/src/*"],
       "ui/*": ["./packages/ui/src/*"],
       "app/*": ["./packages/app/*"],
-      "data/*": ["./packages/data/*"],
       "libs/*": ["./packages/libs/src/*"],
       "types/*": ["./packages/types/src/*"],
       "assets/*": ["./packages/assets/*"]
