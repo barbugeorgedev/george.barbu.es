@@ -81,7 +81,7 @@ export const RESUME_EXPERIENCE_NGO = gql`
     ngoExperienceSection {
       label
       items {
-        organization
+        company
         experienceDates {
           startDate
           endDate
@@ -89,7 +89,7 @@ export const RESUME_EXPERIENCE_NGO = gql`
           presentDate
         }
         role
-        responsibilities
+        duties
       }
     }
   }

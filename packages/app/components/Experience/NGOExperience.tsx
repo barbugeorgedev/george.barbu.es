@@ -1,17 +1,17 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-interface ExperienceDates {
+interface NGOExperienceDates {
   startDate: string;
   endDate?: string;
   presentDate: boolean;
 }
 
 interface NGOExperienceItem {
-  organization: string;
-  experienceDates: ExperienceDates;
+  company: string;
+  experienceDates: NGOExperienceDates;
   role: string;
-  responsibilities: string[];
+  duties: string[];
 }
 
 export interface NGOExperienceData {
@@ -32,7 +32,7 @@ const NGOExperience: React.FC<NGOExperienceProps> = ({ className, data }) => (
     {data.items.map((item, index) => (
       <View key={index} className="bi-avoid bb-always mt-11 font-['Lato']">
         <Text className="text-secondary font-['LatoBlack'] uppercase text-sm font-semibold">
-          {item.organization}
+          {item.company}
         </Text>
         <View className="text-primary-dark text-xs font-semibold mb-4">
           <Text className="font-['LatoBlack'] text-primary-dark text-xs">
@@ -46,7 +46,7 @@ const NGOExperience: React.FC<NGOExperienceProps> = ({ className, data }) => (
           {item.role}
         </Text>
         <View className="text-xs flex flex-col">
-          {item.responsibilities.map((resp, respIndex) => (
+          {item.duties.map((resp, respIndex) => (
             <Text key={respIndex}>- {resp}</Text>
           ))}
         </View>

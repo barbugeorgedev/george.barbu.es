@@ -2,15 +2,19 @@ import React from "react";
 import { View, Text } from "react-native";
 
 interface ExperienceDates {
-  startDate: string;
+  startDate: string; // Now required
   endDate?: string;
   presentDate: boolean;
 }
 
 interface EarlyCareerItem {
-  company: string;
+  company?: string; // Allow undefined
   role: string;
-  experienceDates: ExperienceDates;
+  experienceDates: {
+    startDate?: string;
+    endDate?: string;
+    presentDate?: boolean;
+  };
   duties: string[];
 }
 
@@ -40,11 +44,11 @@ const EarlyCareer: React.FC<EarlyCareerProps> = ({ className, data }) => (
           </Text>
           <View className="text-primary-dark text-xs font-semibold mb-4">
             <Text className="font-['LatoBlack'] text-primary-dark text-xs">
-              {item.experienceDates.startDate.substring(0, 4)}
+              {item.experienceDates.startDate?.substring(0, 4) ?? "N/A"}
               &nbsp;-&nbsp;
               {item.experienceDates.presentDate
                 ? "Present"
-                : item.experienceDates.endDate?.substring(0, 4)}
+                : (item.experienceDates.endDate?.substring(0, 4) ?? "N/A")}
             </Text>
           </View>
           <View className="text-xs flex flex-col">

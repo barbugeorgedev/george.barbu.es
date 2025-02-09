@@ -11,20 +11,33 @@ import { ResumeData } from "types/graphql";
 import { GET_RESUME } from "libs/graphql/queries/resume";
 
 console.log("env-web", env);
-
+// Define a fallback `resumeData` object
 const defaultResumeData: ResumeData = {
   name: "",
   social: [],
   footer: "",
-  sidebar: function (arg0: string, sidebar: any): unknown {
-    throw new Error("Function not implemented.");
-  },
-  header: function (arg0: string, header: any): unknown {
-    throw new Error("Function not implemented.");
-  },
-  content: function (arg0: string, content: any): unknown {
-    throw new Error("Function not implemented.");
-  },
+  sidebar: [
+    {
+      skillsSections: [],
+      summarySection: { label: "Summary", summary: "" }, // Ensure object format
+      contactSection: { label: "Contacts", items: [] },
+    },
+  ],
+  header: [
+    {
+      fullname: "John Doe",
+      role: "Software Engineer",
+      slogan: "Building the future, one line at a time.",
+    },
+  ],
+  content: [
+    {
+      experienceSection: { label: "Experience", items: [] },
+      earlyCareerExperienceSection: { label: "Early Career", items: [] },
+      ngoExperienceSection: { label: "NGO Experience", items: [] },
+      educationSection: { label: "Education", items: [] },
+    },
+  ],
 };
 
 export default function Home(): JSX.Element {
