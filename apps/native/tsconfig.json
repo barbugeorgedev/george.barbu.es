@@ -6,7 +6,8 @@
       "@templates/*": ["./src/templates/*"],
       "@env": ["../../node_modules/react-native-dotenv"],
       "@dotenv": ["./env"],
-      "types/*": ["../../packages/types/src/*"]
+      "types/*": ["../../packages/types/src/*"],
+      "libs/*": ["../../packages/libs/src/*"]
     },
     "jsx": "react-native"
   },

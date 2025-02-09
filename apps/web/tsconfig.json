@@ -16,7 +16,8 @@
       "@dotenv": ["./env"],
       "@templates/*": ["./src/templates/*"],
       "@styles/*": ["./src/styles/*"],
-      "types/*": ["../../packages/types/src/*"]
+      "types/*": ["../../packages/types/src/*"],
+      "libs/*": ["../../packages/libs/src/*"]
     },
     "plugins": [
       {
