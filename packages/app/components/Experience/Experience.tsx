@@ -1,7 +1,28 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-const Experience = ({ className, data }) => {
+interface ExperienceItem {
+  company?: string;
+  role: string;
+  experienceDates: {
+    startDate?: string;
+    endDate?: string;
+    presentDate?: boolean;
+  };
+  duties: string[];
+}
+
+interface ExperienceData {
+  label: string;
+  items: ExperienceItem[];
+}
+
+interface ExperienceProps {
+  className?: string;
+  data: ExperienceData;
+}
+
+const Experience: React.FC<ExperienceProps> = ({ className, data }) => {
   if (!data || !data.items || data.items.length === 0) return null;
 
   // Normalize `presentDate`
@@ -11,12 +32,14 @@ const Experience = ({ className, data }) => {
   }));
 
   // Group by company
-  const groups = normalizedData.reduce((acc, item) => {
-    if (!item.company) return acc;
-    if (!acc[item.company]) acc[item.company] = [];
-    acc[item.company].push(item);
-    return acc;
-  }, {});
+  const groups = normalizedData.reduce<Record<string, ExperienceItem[]>>(
+    (acc, item) => {
+      if (!item.company) return acc;
+      (acc[item.company] = acc[item.company] || []).push(item);
+      return acc;
+    },
+    {},
+  );
 
   return (
     <View className={className}>
@@ -26,10 +49,10 @@ const Experience = ({ className, data }) => {
 
       {Object.keys(groups).map((company, index) => (
         <View key={index}>
-          {groups[company].length > 0 && (
+          {groups[company] && groups[company].length > 0 && (
             <View
               key={index}
-              className={"bi-avoid bb-always font-['Lato'] mt-11"}
+              className="bi-avoid bb-always font-['Lato'] mt-11"
             >
               <Text className="text-secondary font-['LatoBlack'] uppercase text-sm font-semibold">
                 {company}
