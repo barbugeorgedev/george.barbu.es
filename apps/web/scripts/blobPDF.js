@@ -4,8 +4,7 @@ const { put } = require("@vercel/blob");
 require("dotenv").config();
 
 const SITE_URL = process.env.NEXT_PUBLIC_API_URL;
-const BLESS_TOKEN =
-  process.env.BLESS_TOKEN || "RjqthAbPwIgeJwdc38d38908114afa2ccbbd5ee959";
+const REVALIDATE_URL = `${SITE_URL}/api/cache?clear=${process.env.REVALIDATE_SECRET}`;
 const BLOB_TOKEN = process.env.BLOB_READ_WRITE_TOKEN;
 const STORAGE_NAME = process.env.BLOB_STORAGE_NAME || "pdf";
 const BASE_BLOB_URL = "https://fjzxtnzjts3m1a6q.public.blob.vercel-storage.com"; // Your Vercel Blob Base URL
@@ -17,7 +16,22 @@ if (!BLOB_TOKEN) {
   process.exit(1);
 }
 
-// Function to check if the server is ready
+// **1. Clear Vercel Cache Before Generating PDFs**
+const clearCache = async () => {
+  try {
+    console.log("🧹 Clearing Vercel cache...");
+    const response = await axios.get(REVALIDATE_URL);
+    if (response.status === 200) {
+      console.log("✅ Cache cleared successfully!");
+    } else {
+      console.error("⚠️ Cache clear request failed:", response.data);
+    }
+  } catch (error) {
+    console.error("❌ Error clearing cache:", error.message);
+  }
+};
+
+// **2. Function to check if the server is ready**
 const checkServerAvailability = async () => {
   let retries = 5;
   let delay = 2000;
@@ -41,21 +55,7 @@ const checkServerAvailability = async () => {
   throw new Error("❌ Server did not start in time");
 };
 
-// Generate header and footer styles
-const generateAsideContent = ({
-  position = "top",
-  height = "30px",
-  width = "318px",
-} = {}) => `
-  <style>
-    html { -webkit-print-color-adjust: exact; }
-    main { background: transparent !important; }
-    #header, #footer { padding: 0!important; border: 0!important; background: transparent!important; }
-  </style>
-  <aside style="width: ${width}; background: #313638; height: ${height}; position: fixed; ${position}: 0; z-index: -999; border: 0!important;"></aside>
-`;
-
-// Function to generate a PDF and upload to Vercel Blob
+// **3. Function to Generate and Upload PDF**
 const generateAndUploadPDF = async (page, route) => {
   try {
     const url = `${SITE_URL}${route}`;
@@ -63,43 +63,10 @@ const generateAndUploadPDF = async (page, route) => {
 
     await page.goto(url, { waitUntil: "networkidle0", timeout: 120000 });
 
-    // Ensure all images are fully loaded
-    await page.evaluate(async () => {
-      const images = Array.from(document.images);
-      await Promise.all(
-        images.map((img) =>
-          img.complete
-            ? Promise.resolve()
-            : new Promise((resolve, reject) => {
-                img.onload = resolve;
-                img.onerror = reject;
-              }),
-        ),
-      );
-    });
-
-    await page.evaluate(() => {
-      document.querySelectorAll('[data-exclude="true"]').forEach((el) => {
-        el.style.visibility = "hidden";
-      });
-    });
-
-    const asideHTML = generateAsideContent({
-      height: "1080px",
-      width: "321px",
-    });
-
-    await page.evaluate((asideContent) => {
-      document.body.insertAdjacentHTML("beforeend", asideContent);
-    }, asideHTML);
-
     const pdfBuffer = await page.pdf({
       format: "A4",
       margin: { top: "30px", bottom: "30px" },
       printBackground: true,
-      displayHeaderFooter: true,
-      headerTemplate: generateAsideContent({ position: "top" }),
-      footerTemplate: generateAsideContent({ position: "bottom" }),
     });
 
     console.log(`⬆️ Uploading PDF to Vercel Blob...`);
@@ -113,11 +80,8 @@ const generateAndUploadPDF = async (page, route) => {
       },
     );
 
-    // Constructing the full URL based on BASE_BLOB_URL
     const exportedUrl = `${BASE_BLOB_URL}/${STORAGE_NAME}/${fileName}`;
-    console.log(`✅ PDF successfully uploaded.`);
-    console.log(`📂 Storage Name: ${STORAGE_NAME}`);
-    console.log(`🌐 Exported URL: ${exportedUrl}`);
+    console.log(`✅ PDF successfully uploaded: ${exportedUrl}`);
 
     return exportedUrl;
   } catch (error) {
@@ -125,16 +89,16 @@ const generateAndUploadPDF = async (page, route) => {
   }
 };
 
-// Main function
+// **4. Main function**
 (async () => {
   let browser;
 
   try {
+    await clearCache(); // 🧹 Clear Cache before generating PDFs
     await checkServerAvailability();
 
     if (process.env.NODE_ENV !== "development") {
       const chromium = require("@sparticuz/chromium");
-      // Optional: If you'd like to disable webgl, true is the default.
       chromium.setGraphicsMode = false;
       const puppeteer = require("puppeteer-core");
       browser = await puppeteer.launch({
@@ -144,7 +108,6 @@ const generateAndUploadPDF = async (page, route) => {
         headless: chromium.headless,
       });
     } else {
-      const puppeteer = require("puppeteer");
       browser = await puppeteer.launch({ headless: "new" });
     }
 
