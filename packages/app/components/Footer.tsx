@@ -15,7 +15,7 @@ const Footer: React.FC<FooterProps> = ({ social }) => {
   return (
     <ViewWEB
       data-exclude="true"
-      className="max-w-screen-pdf py-6 mb-5 mx-auto items-center justify-between w-full md:flex lg:flex-row"
+      className="max-w-screen-pdf py-6 mb-5 mx-auto items-center justify-between w-full md:flex lg:flex-row  print:hidden"
     >
       <View className="flex-row items-center tracking-wide mb-5 md:mb-0 justify-center ml-2 text-gray sm:ml-0">
         <Text className="text-gray text-sm mr-1 ">
