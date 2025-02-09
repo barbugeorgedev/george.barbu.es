@@ -1,38 +1,48 @@
+import { ResumeDataProvider } from "app/context/ResumeContext";
 import DefaultTemplate from "@templates/Default";
 import { Home as HomeShared } from "app/screens/Home";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 
 import LoadingScreen from "app/screens/Loading";
 import ErrorScreen from "app/screens/Error";
 import env from "@dotenv";
 
-import { ResumeData } from "types/page";
+import { ResumeData } from "types/graphql";
+import { GET_RESUME } from "libs/graphql/queries/resume";
 
 console.log("env-web", env);
 
-// GraphQL Query
-const GET_POSTS = gql`
-  query {
-    allResume {
-      cvpurpose
-      fullname
-      role
-      slogan
-    }
-  }
-`;
+const defaultResumeData: ResumeData = {
+  name: "",
+  social: [],
+  footer: "",
+  sidebar: function (arg0: string, sidebar: any): unknown {
+    throw new Error("Function not implemented.");
+  },
+  header: function (arg0: string, header: any): unknown {
+    throw new Error("Function not implemented.");
+  },
+  content: function (arg0: string, content: any): unknown {
+    throw new Error("Function not implemented.");
+  },
+};
 
 export default function Home(): JSX.Element {
-  const { loading, error, data } = useQuery<ResumeData>(GET_POSTS, {
-    fetchPolicy: "cache-first", // Ensures it only fetches if not cached
+  const { loading, error, data } = useQuery<ResumeData>(GET_RESUME, {
+    fetchPolicy: "cache-first",
   });
-  console.log("data-sanity", data);
+
+  const resumeData = data ?? defaultResumeData;
+
+  console.log("GraphQL Data:", data);
 
   return (
-    <DefaultTemplate>
-      {loading && <LoadingScreen />}
-      {error && <ErrorScreen message={error.message} />}
-      {!loading && !error && <HomeShared />}
-    </DefaultTemplate>
+    <ResumeDataProvider value={resumeData}>
+      <DefaultTemplate>
+        {loading && <LoadingScreen />}
+        {error && <ErrorScreen message={error.message} />}
+        {!loading && !error && <HomeShared />}
+      </DefaultTemplate>
+    </ResumeDataProvider>
   );
 }

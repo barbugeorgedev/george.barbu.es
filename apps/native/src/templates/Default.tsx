@@ -2,11 +2,17 @@ import React from "react";
 import { SafeAreaView, ScrollView } from "react-native";
 import Header from "app/components/Header";
 import Footer from "app/components/Footer";
-import { resume } from "data";
-
+import { useResumeData } from "app/context/ResumeContext";
 import { DefaultTemplateProps } from "types/components";
 
 const DefaultTemplate: React.FC<DefaultTemplateProps> = ({ children }) => {
+  const resumeData = useResumeData();
+
+  // Check if `footer` has the correct structure and extract `social`
+  const socialLinks = Array.isArray(resumeData?.footer)
+    ? resumeData?.footer[0]?.social || []
+    : [];
+
   return (
     <SafeAreaView className="flex">
       <ScrollView
@@ -15,7 +21,7 @@ const DefaultTemplate: React.FC<DefaultTemplateProps> = ({ children }) => {
       >
         <Header />
         {children}
-        <Footer social={resume.social} />
+        <Footer social={socialLinks} />
       </ScrollView>
     </SafeAreaView>
   );

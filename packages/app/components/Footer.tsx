@@ -2,20 +2,13 @@ import { View, Text, TouchableOpacity, Linking } from "react-native";
 import Icon from "ui/icon";
 import { View as ViewWEB } from "ui/view";
 
-interface SocialLink {
-  service: string;
-  url: string;
-}
-
-interface FooterProps {
-  social?: SocialLink[];
-}
-
-const Footer: React.FC<FooterProps> = ({ social }) => {
+const Footer: React.FC<{ social: { service: string; url: string }[] }> = ({
+  social,
+}) => {
   return (
     <ViewWEB
       data-exclude="true"
-      className="max-w-screen-pdf py-6 mb-5 mx-auto items-center justify-between w-full md:flex lg:flex-row"
+      className="max-w-screen-pdf py-6 mb-5 mx-auto items-center justify-between w-full md:flex lg:flex-row  print:hidden"
     >
       <View className="flex-row items-center tracking-wide mb-5 md:mb-0 justify-center ml-2 text-gray sm:ml-0">
         <Text className="text-gray text-sm mr-1 ">
@@ -24,7 +17,7 @@ const Footer: React.FC<FooterProps> = ({ social }) => {
 
         <TouchableOpacity
           onPress={() => Linking.openURL("https://reactnative.dev")}
-          className=" mr-1"
+          className="mr-1"
         >
           <Icon type="gi" name="react" color="#58c4dc" size={12} />
         </TouchableOpacity>
@@ -32,7 +25,7 @@ const Footer: React.FC<FooterProps> = ({ social }) => {
         <Text className="text-gray text-sm mr-1">by</Text>
 
         <TouchableOpacity onPress={() => Linking.openURL("/")}>
-          <Text className="text-primary-dark  hover:text-primary font-bold text-sm">
+          <Text className="text-primary-dark hover:text-primary font-bold text-sm">
             George Barbu
           </Text>
         </TouchableOpacity>

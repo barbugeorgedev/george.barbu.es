@@ -9,9 +9,9 @@
       "types": "./src/index.ts"
     },
     "./apolloClient": {
-      "import": "./src/apolloClient.ts",
-      "require": "./src/apolloClient.ts",
-      "types": "./src/apolloClient.ts"
+      "import": "./src/graphql/apolloClient.ts",
+      "require": "./src/graphql/apolloClient.ts",
+      "types": "./src/graphql/apolloClient.ts"
     }
   }
 }

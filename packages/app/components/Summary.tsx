@@ -3,8 +3,8 @@ import { View, Text } from "react-native";
 
 // Define the types for the data prop
 export interface SummaryData {
+  summary: string;
   label: string;
-  text: string;
 }
 
 interface SummaryProps {
@@ -18,7 +18,7 @@ const Summary: React.FC<SummaryProps> = ({ data, className }) => (
       {data.label}
     </Text>
     <Text className="text-[0.70rem] font-['Lato'] text-opacity-75 leading-4 text-white">
-      {data.text}
+      {data.summary}
     </Text>
   </View>
 );
