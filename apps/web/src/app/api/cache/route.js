@@ -1,12 +1,30 @@
-export default async function handler(req, res) {
-  if (req.query.clear !== process.env.REVALIDATE_SECRET) {
-    return res.status(401).json({ message: "Invalid token" });
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const secret = searchParams.get("clear");
+
+  if (secret !== process.env.REVALIDATE_SECRET) {
+    return new Response(JSON.stringify({ message: "Invalid token" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
   try {
-    await res.revalidate("/");
-    return res.json({ revalidated: true });
+    // Force revalidate using Next.js API
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/revalidate`, {
+      method: "POST", // ✅ Use POST instead of GET
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ path: "/" }),
+    });
+
+    return new Response(JSON.stringify({ revalidated: true }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (err) {
-    return res.status(500).json({ message: "Error revalidating" });
+    return new Response(JSON.stringify({ message: "Error revalidating" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }
