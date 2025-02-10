@@ -153,18 +153,13 @@ const generateAndUploadPDF = async (page, route) => {
       const chromium = require("@sparticuz/chromium");
       chromium.setGraphicsMode = false;
       const puppeteer = require("puppeteer-core");
+
+      console.log("Using Chromium from:", await chromium.executablePath());
+
       browser = await puppeteer.launch({
-        args: [
-          ...chromium.args,
-          "--no-sandbox",
-          "--disable-setuid-sandbox",
-          "--disable-gpu",
-          "--single-process",
-          "--disable-dev-shm-usage",
-          "--font-render-hinting=none",
-        ],
-        executablePath:
-          (await chromium.executablePath()) || "/usr/bin/chromium",
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
         headless: chromium.headless,
       });
     } else {
