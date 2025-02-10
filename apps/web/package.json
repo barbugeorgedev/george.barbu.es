@@ -14,24 +14,26 @@
   },
   "dependencies": {
     "@expo/next-adapter": "^6.0.0",
+    "@vercel/blob": "latest",
     "app": "*",
-    "types": "*",
     "assets": "*",
     "axios": "^1.7.9",
+    "chrome-aws-lambda": "^10.1.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "env": "*",
     "libs": "*",
     "next": "14.2.4",
+    "puppeteer-core": "^10.4.0",
     "react": "^18",
     "react-dom": "^18",
     "react-native-web": "^0.19.12",
     "shelljs": "^0.8.5",
-    "ui": "*",
-    "puppeteer-core": "^10.4.0",
-    "chrome-aws-lambda": "^10.1.0",
-    "@vercel/blob": "latest"
+    "types": "*",
+    "ui": "*"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -43,10 +45,10 @@
     "path": "^0.12.7",
     "postcss": "^8",
     "prettier": "^3.3.2",
+    "puppeteer": "22.13.1",
     "react-icons": "^5.4.0",
     "shelljs": "^0.8.5",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5",
-    "puppeteer": "22.13.1"
+    "typescript": "^5"
   }
 }

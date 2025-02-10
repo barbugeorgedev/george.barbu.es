@@ -1,9 +1,12 @@
 import { exec } from "child_process";
 
 export async function POST(req: Request): Promise<Response> {
+  console.log("📩 Received PDF generation request...");
+
   const secret = req.headers.get("x-sanity-secret");
 
   if (secret !== process.env.SANITY_WEBHOOK_SECRET) {
+    console.error("❌ Unauthorized request. Invalid secret.");
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 403,
       headers: { "Content-Type": "application/json" },
