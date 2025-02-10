@@ -11,7 +11,7 @@
   },
   "functions": {
     "api/download-pdf/route.js": {
-      "includeFiles": ["apps/web/scripts/blobPDF.js"]
+      "includeFiles": "apps/web/scripts/blobPDF.js"
     }
   }
 }
