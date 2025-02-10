@@ -191,7 +191,22 @@ const generateAndUploadPDF = async (page, route) => {
         executablePath,
         headless: chromium.headless ?? "new",
         ignoreDefaultArgs: true,
+        args: [
+          ...chromium.args,
+          "--disable-gpu",
+          "--disable-software-rasterizer",
+          "--no-zygote",
+          "--single-process",
+          "--disable-dev-shm-usage",
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+        ],
+        executablePath,
+        headless: chromium.headless ?? "new",
+        ignoreDefaultArgs: true,
       });
+
+      console.log("✅ Puppeteer launched successfully!");
 
       console.log("✅ Puppeteer launched successfully!");
     } else {
