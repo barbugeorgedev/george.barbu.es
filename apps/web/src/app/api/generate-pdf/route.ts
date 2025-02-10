@@ -35,8 +35,7 @@ export async function POST(req: Request): Promise<Response> {
   console.log("🖨️ Running PDF generation script...");
 
   return new Promise((resolve) => {
-    const __dirname = dirname(fileURLToPath(import.meta.url));
-    const scriptPath = join(__dirname, "../../../scripts/blobPDF.js");
+    const scriptPath = join(process.cwd(), "scripts/blobPDF.js");
 
     console.log("Current working directory:", process.cwd());
     console.log("Resolved script path:", scriptPath);

@@ -8,5 +8,10 @@
     "env": {
       "NODE_VERSION": "18"
     }
+  },
+  "functions": {
+    "api/download-pdf/route.js": {
+      "includeFiles": ["apps/web/scripts/blobPDF.js"]
+    }
   }
 }
