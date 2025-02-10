@@ -37,6 +37,9 @@ export async function POST(req: Request): Promise<Response> {
   return new Promise((resolve) => {
     const __dirname = dirname(fileURLToPath(import.meta.url));
     const scriptPath = join(__dirname, "../../../scripts/blobPDF.js");
+
+    console.log("Current working directory:", process.cwd());
+    console.log("Resolved script path:", scriptPath);
     exec(`node ${scriptPath}`, (error, stdout, stderr) => {
       if (error) {
         console.error(`❌ Error: ${error.message}`);
