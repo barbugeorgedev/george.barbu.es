@@ -7,6 +7,7 @@
   "build": {
     "env": {
       "NODE_VERSION": "18"
-    }
+    },
+    "install": "apt-get install -y libnss3"
   }
 }
