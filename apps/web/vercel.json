@@ -3,5 +3,10 @@
     "deploymentEnabled": {
       "master": false
     }
+  },
+  "build": {
+    "env": {
+      "NODE_VERSION": "18"
+    }
   }
 }
