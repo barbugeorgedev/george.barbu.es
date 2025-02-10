@@ -136,7 +136,7 @@ const generatePDF = async (page, route) => {
   try {
     killServerProcess();
     console.log("🚀 Starting local server...");
-    serverProcess = spawn("yarn", ["dev-pdf"], {
+    serverProcess = spawn("yarn", ["pdf:dev"], {
       cwd: path.join(__dirname, ".."),
       stdio: "inherit",
       shell: true, // Important for Windows

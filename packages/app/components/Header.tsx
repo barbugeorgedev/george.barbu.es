@@ -12,7 +12,7 @@ const Header: React.FC = () => {
   return (
     <ViewWEB
       data-exclude="true"
-      className="max-w-screen-pdf relative flex flex-row mx-auto items-center justify-center text-center pt-6 sm:pb-2 lg:pb-5 print:hidden"
+      className="max-w-screen-pdf relative flex flex-row mx-auto items-center justify-center text-center pt-6 sm:pb-2 lg:pb-5 print:invisible"
     >
       <TouchableOpacity onPress={downloadPDF} className="mr-2">
         <Icon

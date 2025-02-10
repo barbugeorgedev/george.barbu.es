@@ -3,11 +3,15 @@ const axios = require("axios");
 const { put } = require("@vercel/blob");
 require("dotenv").config();
 
-const SITE_URL = process.env.NEXT_PUBLIC_API_URL;
+const SITE_URL =
+  process.env.NODE_ENV !== "development"
+    ? process.env.NEXT_PUBLIC_API_URL
+    : "http://localhost:3000";
 const REVALIDATE_URL = `${SITE_URL}/api/cache?clear=${process.env.REVALIDATE_SECRET}`;
 const BLOB_TOKEN = process.env.BLOB_READ_WRITE_TOKEN;
+const BLOB_PROJECt_ID = process.env.BLOB_PROJECt_ID || "fjzxtnzjts3m1a6q";
 const STORAGE_NAME = process.env.BLOB_STORAGE_NAME || "pdf";
-const BASE_BLOB_URL = "https://fjzxtnzjts3m1a6q.public.blob.vercel-storage.com"; // Your Vercel Blob Base URL
+const BASE_BLOB_URL = `https://${BLOB_PROJECt_ID}.public.blob.vercel-storage.com`;
 
 const PAGES = ["/"];
 
@@ -55,6 +59,19 @@ const checkServerAvailability = async () => {
   throw new Error("❌ Server did not start in time");
 };
 
+const generateAsideContent = ({
+  position = "top",
+  height = "30px",
+  width = "318px",
+} = {}) => `
+  <style>
+    html { -webkit-print-color-adjust: exact; }
+    main { background: transparent !important; }
+    #header, #footer { padding: 0!important; border: 0!important; background: transparent!important; }
+  </style>
+  <aside style="width: ${width}; background: #313638; height: ${height}; position: fixed; ${position}: 0; z-index: -999; border: 0!important;"></aside>
+`;
+
 // **3. Function to Generate and Upload PDF**
 const generateAndUploadPDF = async (page, route) => {
   try {
@@ -63,10 +80,48 @@ const generateAndUploadPDF = async (page, route) => {
 
     await page.goto(url, { waitUntil: "networkidle0", timeout: 120000 });
 
+    // Ensure all lazy-loaded images are fully rendered
+    await page.evaluate(async () => {
+      const images = Array.from(document.images);
+      await Promise.all(
+        images.map((img) =>
+          img.complete
+            ? Promise.resolve()
+            : new Promise((resolve, reject) => {
+                img.onload = resolve;
+                img.onerror = reject;
+              }),
+        ),
+      );
+    });
+
+    await page.evaluate(() => {
+      document.querySelectorAll('[data-exclude="true"]').forEach((el) => {
+        el.style.visibility = "hidden";
+      });
+    });
+
+    // await page.screenshot({
+    //   path: "./public/exports/debug-before-pdf.png",
+    //   fullPage: true,
+    // });
+
+    const asideHTML = generateAsideContent({
+      height: "1080px",
+      width: "321px",
+    });
+
+    await page.evaluate((asideContent) => {
+      document.body.insertAdjacentHTML("beforeend", asideContent);
+    }, asideHTML);
+
     const pdfBuffer = await page.pdf({
       format: "A4",
       margin: { top: "30px", bottom: "30px" },
       printBackground: true,
+      displayHeaderFooter: true,
+      headerTemplate: generateAsideContent({ position: "top" }),
+      footerTemplate: generateAsideContent({ position: "bottom" }),
     });
 
     console.log(`⬆️ Uploading PDF to Vercel Blob...`);
@@ -80,10 +135,9 @@ const generateAndUploadPDF = async (page, route) => {
       },
     );
 
-    const exportedUrl = `${BASE_BLOB_URL}/${STORAGE_NAME}/${fileName}`;
-    console.log(`✅ PDF successfully uploaded: ${exportedUrl}`);
+    console.log(`✅ PDF successfully uploaded: ${blobUrl}`);
 
-    return exportedUrl;
+    return blobUrl;
   } catch (error) {
     console.error(`❌ Error generating PDF for ${route}:`, error);
   }
@@ -108,7 +162,15 @@ const generateAndUploadPDF = async (page, route) => {
         headless: chromium.headless,
       });
     } else {
-      browser = await puppeteer.launch({ headless: "new" });
+      browser = await puppeteer.launch({
+        headless: "new",
+        args: [
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--disable-print-preview",
+        ],
+        ignoreDefaultArgs: ["--disable-extensions"],
+      });
     }
 
     const page = await browser.newPage();
