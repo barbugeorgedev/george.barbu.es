@@ -154,9 +154,17 @@ const generateAndUploadPDF = async (page, route) => {
       chromium.setGraphicsMode = false;
       const puppeteer = require("puppeteer-core");
       browser = await puppeteer.launch({
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath(),
+        args: [
+          ...chromium.args,
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--disable-gpu",
+          "--single-process",
+          "--disable-dev-shm-usage",
+          "--font-render-hinting=none",
+        ],
+        executablePath:
+          (await chromium.executablePath()) || "/usr/bin/chromium",
         headless: chromium.headless,
       });
     } else {
