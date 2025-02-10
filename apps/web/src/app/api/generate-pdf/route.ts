@@ -1,4 +1,5 @@
 import { exec } from "child_process";
+import { join } from "path";
 
 const ALLOWED_ORIGIN = process.env.SANITY_STUDIO_URL || "http://localhost:3333";
 
@@ -32,7 +33,8 @@ export async function POST(req: Request): Promise<Response> {
   console.log("🖨️ Running PDF generation script...");
 
   return new Promise((resolve) => {
-    exec("node ./scripts/blobPDF.js", (error, stdout, stderr) => {
+    const scriptPath = join(process.cwd(), "apps/web/scripts/blobPDF.js");
+    exec(`node ${scriptPath}`, (error, stdout, stderr) => {
       if (error) {
         console.error(`❌ Error: ${error.message}`);
         resolve(
