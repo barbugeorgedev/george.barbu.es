@@ -38,7 +38,6 @@
     "autoprefixer": "^10.4.20",
     "graphql": "^16.10.0",
     "graphql-request": "^7.1.2",
-    "puppeteer-core": "^24.2.0",
     "react-native-fast-image": "^8.6.3",
     "react-native-svg": "^15.11.1"
   }
