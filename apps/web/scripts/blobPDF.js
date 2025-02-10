@@ -151,26 +151,48 @@ const generateAndUploadPDF = async (page, route) => {
     await clearCache();
     await checkServerAvailability();
 
-    console.log("🌍 Environment:", process.env.NODE_ENV);
+    console.log("📌 Checking Puppeteer in API function...");
+    console.log("🌍 Current environment:", process.env.NODE_ENV);
+    console.log("📂 Process working directory:", process.cwd());
+    console.log("🛠 Puppeteer version:", require("puppeteer-core").version);
+    console.log("🔍 Checking Chromium binary path...");
+    console.log(
+      "📌 Resolved Chromium executable path:",
+      await chromium.executablePath(),
+    );
 
     if (process.env.NODE_ENV !== "development") {
       console.log("🚀 Launching Puppeteer in production mode...");
+
       const chromium = require("@sparticuz/chromium");
       chromium.setGraphicsMode = false;
       const puppeteer = require("puppeteer-core");
 
-      console.log("🔍 Chromium args:", chromium.args);
-      console.log(
-        "📌 Chromium executable path:",
-        await chromium.executablePath(),
-      );
+      // Ensure Chromium binary path is set
+      const executablePath = await chromium.executablePath();
+      if (!executablePath) {
+        throw new Error("❌ Chromium executable path not found!");
+      }
+
+      console.log("📌 Resolved Chromium executable path:", executablePath);
 
       browser = await puppeteer.launch({
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath(),
-        headless: chromium.headless,
+        args: [
+          ...chromium.args,
+          "--disable-gpu",
+          "--disable-software-rasterizer",
+          "--no-zygote",
+          "--single-process",
+          "--disable-dev-shm-usage",
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+        ],
+        executablePath,
+        headless: chromium.headless ?? "new",
+        ignoreDefaultArgs: true,
       });
+
+      console.log("✅ Puppeteer launched successfully!");
     } else {
       console.log("🛠 Launching Puppeteer in development mode...");
       const puppeteer = require("puppeteer");
