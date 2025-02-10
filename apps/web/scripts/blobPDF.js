@@ -92,8 +92,8 @@ const generateAndUploadPDF = async (page, route) => {
             : new Promise((resolve, reject) => {
                 img.onload = resolve;
                 img.onerror = reject;
-              })
-        )
+              }),
+        ),
       );
     });
     console.log("✅ All images loaded.");
@@ -106,7 +106,10 @@ const generateAndUploadPDF = async (page, route) => {
     });
 
     console.log("🎨 Adding aside elements for header/footer...");
-    const asideHTML = generateAsideContent({ height: "1080px", width: "321px" });
+    const asideHTML = generateAsideContent({
+      height: "1080px",
+      width: "321px",
+    });
     await page.evaluate((asideContent) => {
       document.body.insertAdjacentHTML("beforeend", asideContent);
     }, asideHTML);
@@ -124,10 +127,14 @@ const generateAndUploadPDF = async (page, route) => {
 
     console.log(`⬆️ Uploading PDF to Vercel Blob storage (${STORAGE_NAME})...`);
     const fileName = `${route.replace("/", "") || "george.barbu"}.pdf`;
-    const { url: blobUrl } = await put(`${STORAGE_NAME}/${fileName}`, pdfBuffer, {
-      access: "public",
-      token: BLOB_TOKEN,
-    });
+    const { url: blobUrl } = await put(
+      `${STORAGE_NAME}/${fileName}`,
+      pdfBuffer,
+      {
+        access: "public",
+        token: BLOB_TOKEN,
+      },
+    );
 
     console.log(`✅ PDF uploaded successfully: ${blobUrl}`);
     return blobUrl;
@@ -145,15 +152,18 @@ const generateAndUploadPDF = async (page, route) => {
     await checkServerAvailability();
 
     console.log("🌍 Environment:", process.env.NODE_ENV);
-    
+
     if (process.env.NODE_ENV !== "development") {
       console.log("🚀 Launching Puppeteer in production mode...");
       const chromium = require("@sparticuz/chromium");
-      chromium.setGraphicsMode(false);
+      chromium.setGraphicsMode = false;
       const puppeteer = require("puppeteer-core");
 
       console.log("🔍 Chromium args:", chromium.args);
-      console.log("📌 Chromium executable path:", await chromium.executablePath());
+      console.log(
+        "📌 Chromium executable path:",
+        await chromium.executablePath(),
+      );
 
       browser = await puppeteer.launch({
         args: chromium.args,
