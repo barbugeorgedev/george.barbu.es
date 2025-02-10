@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "postinstall": "cpy '../../packages/assets/fonts/**' 'public/fonts' --cwd=.",
+    "postinstall": "npx @puppeteer/browsers install chrome && cpy '../../packages/assets/fonts/**' 'public/fonts' --cwd=.",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
