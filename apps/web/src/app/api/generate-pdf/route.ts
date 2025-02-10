@@ -32,7 +32,7 @@ export async function POST(req: Request): Promise<Response> {
   console.log("🖨️ Running PDF generation script...");
 
   return new Promise((resolve) => {
-    exec("yarn pdf:blob", (error, stdout, stderr) => {
+    exec("npx --yes pdf:blob", (error, stdout, stderr) => {
       if (error) {
         console.error(`❌ Error: ${error.message}`);
         resolve(
