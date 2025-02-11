@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "postinstall": "npx @puppeteer/browsers install chrome && cpy '../../packages/assets/fonts/**' 'public/fonts' --cwd=.",
+    "postinstall": "cpy '../../packages/assets/fonts/**' 'public/fonts' --cwd=.",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@expo/next-adapter": "^6.0.0",
-    "@sparticuz/chromium": "^132.0.0",
+    "@sparticuz/chromium": "^120.0.0",
     "@vercel/blob": "latest",
     "app": "*",
     "assets": "*",
@@ -25,7 +25,6 @@
     "env": "*",
     "libs": "*",
     "next": "14.2.4",
-    "puppeteer": "22.13.1",
     "puppeteer-core": "^21.5.1",
     "react": "^18",
     "react-dom": "^18",

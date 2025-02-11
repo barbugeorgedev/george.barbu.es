@@ -28,7 +28,7 @@
     "tailwindcss": "^3.4.1"
   },
   "dependencies": {
-    "@apollo/client": "^3.12.9",
+    "@apollo/client": "^3.12.11",
     "@expo/vector-icons": "^14.0.4",
     "@sanity/client": "^6.27.2",
     "@sparticuz/chromium": "^132.0.0",
@@ -38,6 +38,7 @@
     "autoprefixer": "^10.4.20",
     "graphql": "^16.10.0",
     "graphql-request": "^7.1.2",
+    "puppeteer": "^24.2.0",
     "react-native-fast-image": "^8.6.3",
     "react-native-svg": "^15.11.1"
   }

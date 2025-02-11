@@ -2,7 +2,7 @@ import { Alert } from "react-native";
 import * as Sharing from "expo-sharing";
 import * as IntentLauncher from "expo-intent-launcher";
 import { pdfUrl } from "app/utils/WebActions";
-import { downloadFile, saveBase64File } from "app/utils/fileHelpers";
+import { downloadFile } from "app/utils/fileHelpers";
 import { isAndroid } from "app/utils/platformHelpers";
 
 export const downloadPDFmobile = async (): Promise<void> => {

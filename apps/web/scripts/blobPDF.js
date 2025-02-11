@@ -18,7 +18,6 @@ if (!BLOB_TOKEN) {
   process.exit(1);
 }
 
-// **1. Clear Vercel Cache Before Generating PDFs**
 const clearCache = async () => {
   try {
     console.log("🧹 Clearing Vercel cache...");
@@ -33,7 +32,6 @@ const clearCache = async () => {
   }
 };
 
-// **2. Function to check if the server is ready**
 const checkServerAvailability = async () => {
   let retries = 5;
   let delay = 2000;
@@ -70,7 +68,6 @@ const generateAsideContent = ({
   <aside style="width: ${width}; background: #313638; height: ${height}; position: fixed; ${position}: 0; z-index: -999; border: 0!important;"></aside>
 `;
 
-// **3. Function to Generate and Upload PDF**
 const generateAndUploadPDF = async (page, route) => {
   try {
     const url = `${SITE_URL}${route}`;
@@ -78,7 +75,6 @@ const generateAndUploadPDF = async (page, route) => {
 
     await page.goto(url, { waitUntil: "networkidle0", timeout: 120000 });
 
-    // Ensure all lazy-loaded images are fully rendered
     await page.evaluate(async () => {
       const images = Array.from(document.images);
       await Promise.all(
@@ -98,11 +94,6 @@ const generateAndUploadPDF = async (page, route) => {
         el.style.visibility = "hidden";
       });
     });
-
-    // await page.screenshot({
-    //   path: "./public/exports/debug-before-pdf.png",
-    //   fullPage: true,
-    // });
 
     const asideHTML = generateAsideContent({
       height: "1080px",
@@ -141,39 +132,36 @@ const generateAndUploadPDF = async (page, route) => {
   }
 };
 
-// **4. Main function**
 (async () => {
   let browser;
 
   try {
-    await clearCache(); // 🧹 Clear Cache before generating PDFs
+    await clearCache();
     await checkServerAvailability();
+
+    const launchOptions = {
+      headless: true,
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-gpu",
+        "--single-process",
+        "--no-zygote",
+        "--disable-print-preview",
+      ],
+      ignoreDefaultArgs: ["--disable-extensions"],
+    };
 
     if (process.env.NODE_ENV !== "development") {
       const chromium = require("@sparticuz/chromium");
       chromium.setGraphicsMode = false;
-      const puppeteer = require("puppeteer-core");
-
-      console.log("Using Chromium from:", await chromium.executablePath());
-
-      browser = await puppeteer.launch({
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath(),
-        headless: chromium.headless,
-      });
-    } else {
-      browser = await puppeteer.launch({
-        headless: "new",
-        args: [
-          "--no-sandbox",
-          "--disable-setuid-sandbox",
-          "--disable-print-preview",
-        ],
-        ignoreDefaultArgs: ["--disable-extensions"],
-      });
+      chromium.headless = true;
+      chromium.args.push("--single-process", "--no-zygote", "--disable-gpu");
+      launchOptions.args = chromium.args;
+      launchOptions.executablePath = await chromium.executablePath();
     }
 
+    browser = await puppeteer.launch(launchOptions);
     const page = await browser.newPage();
 
     for (const route of PAGES) {
@@ -188,7 +176,6 @@ const generateAndUploadPDF = async (page, route) => {
       console.log("🔒 Closing browser...");
       await browser.close();
     }
-
     console.log("👋 Exiting script...");
     process.exit(0);
   }
