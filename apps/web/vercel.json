@@ -8,10 +8,5 @@
     "env": {
       "NODE_VERSION": "18"
     }
-  },
-  "functions": {
-    "api/*": {
-      "runtime": "nodejs20.x"
-    }
   }
 }
