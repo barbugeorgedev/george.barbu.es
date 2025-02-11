@@ -1,26 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-
-interface ExperienceItem {
-  company?: string;
-  role: string;
-  experienceDates: {
-    startDate?: string;
-    endDate?: string;
-    presentDate?: boolean;
-  };
-  duties: string[];
-}
-
-interface ExperienceData {
-  label: string;
-  items: ExperienceItem[];
-}
-
-interface ExperienceProps {
-  className?: string;
-  data: ExperienceData;
-}
+import { ExperienceProps, ExperienceItem } from "types/components";
 
 const Experience: React.FC<ExperienceProps> = ({ className, data }) => {
   if (!data || !data.items || data.items.length === 0) return null;

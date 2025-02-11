@@ -1,22 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-
-interface EducationItem {
-  institution: string;
-  degree: string;
-  type: string;
-  certifications: string[];
-}
-
-export interface EducationData {
-  label: string;
-  items: EducationItem[];
-}
-
-interface EducationProps {
-  className?: string;
-  data: EducationData; // data is an array
-}
+import { EducationProps } from "types/components";
 
 const Education: React.FC<EducationProps> = ({ className, data }) => {
   console.log("Education Component Data:", data);

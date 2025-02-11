@@ -5,7 +5,7 @@ import { StatusBar, View, ActivityIndicator } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 
 import { ApolloProvider } from "@apollo/client";
-import client from "../../../../packages/libs/src/graphql/apolloClient";
+import client from "libs/graphql/apolloClient";
 
 const HomePage: React.FC = () => {
   // State to hold network connection status

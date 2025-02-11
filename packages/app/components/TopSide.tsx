@@ -1,17 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { Image } from "ui/image";
-
-// Define the type for the 'data' prop
-interface TopSideProps {
-  data: {
-    text: {
-      fullname?: string;
-      role?: string;
-      slogan?: string;
-    };
-  };
-}
+import { TopSideProps } from "types/components";
 
 const TopSide: React.FC<TopSideProps> = ({ data }) => {
   return (

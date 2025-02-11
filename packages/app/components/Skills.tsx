@@ -1,19 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-
-// Define the types
-interface Subskill {
-  title: string;
-}
-
-export interface Skill {
-  label: string;
-  items: Subskill[];
-}
-
-interface SkillsProps {
-  data: Skill[]; // An array of Skill objects
-}
+import { SkillsProps } from "types/components";
 
 const Skills: React.FC<SkillsProps> = ({ data }) => (
   <View>

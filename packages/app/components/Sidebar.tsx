@@ -1,23 +1,9 @@
 import { View } from "react-native";
-import Summary, { SummaryData } from "app/components/Summary";
-import Skills, { Skill } from "app/components/Skills";
-import Contact, { ContactItem } from "app/components/Contact"; // Import the ContactItem type
+import Summary from "app/components/Summary";
+import Skills from "app/components/Skills";
+import Contact from "app/components/Contact";
+import { SidebarProps } from "types/components";
 
-// Define the types for the props
-interface SidebarProps {
-  className?: string;
-  summary: {
-    label: string;
-    summary: string; // Rename 'content' to 'text'
-  };
-  contacts: {
-    label: string;
-    items: ContactItem[];
-  };
-  skills: Skill[];
-}
-
-// Updated Sidebar component
 const Sidebar: React.FC<SidebarProps> = ({
   className,
   summary,

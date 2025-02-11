@@ -7,42 +7,13 @@ import LoadingScreen from "app/screens/Loading";
 import ErrorScreen from "app/screens/Error";
 import env from "@dotenv";
 
-import { ResumeData } from "types/graphql";
+import { ExperienceData } from "types/components";
 import { GET_RESUME } from "libs/graphql/queries/resume";
 
 console.log("env-web", env);
 
-// Define a fallback `resumeData` object
-const defaultResumeData: ResumeData = {
-  name: "",
-  social: [],
-  footer: "",
-  sidebar: [
-    {
-      skillsSections: [],
-      summarySection: { label: "Summary", summary: "" }, // Ensure object format
-      contactSection: { label: "Contacts", items: [] },
-    },
-  ],
-  header: [
-    {
-      fullname: "John Doe",
-      role: "Software Engineer",
-      slogan: "Building the future, one line at a time.",
-    },
-  ],
-  content: [
-    {
-      experienceSection: { label: "Experience", items: [] },
-      earlyCareerExperienceSection: { label: "Early Career", items: [] },
-      ngoExperienceSection: { label: "NGO Experience", items: [] },
-      educationSection: { label: "Education", items: [] },
-    },
-  ],
-};
-
 export default function Page() {
-  const { loading, error, data } = useQuery<ResumeData>(GET_RESUME, {
+  const { loading, error, data } = useQuery<ExperienceData>(GET_RESUME, {
     fetchPolicy: "cache-first",
     onCompleted: (data) => console.log("✅ Query completed:", data),
     onError: (error) => console.error("❌ Query error:", error),
@@ -55,10 +26,10 @@ export default function Page() {
   }
 
   // Use the fetched data or fallback to the default
-  const resumeData = data ?? defaultResumeData;
+  const resumeData = data;
 
   return (
-    <ResumeDataProvider value={data ?? resumeData}>
+    <ResumeDataProvider value={data ?? ({} as ExperienceData)}>
       <DefaultTemplate>
         {loading && <LoadingScreen />}
         {error && <ErrorScreen message={error.message} />}

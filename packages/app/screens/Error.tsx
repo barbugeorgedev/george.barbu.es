@@ -1,8 +1,5 @@
 import { View, Text } from "react-native";
-
-interface ErrorProps {
-  message?: string;
-}
+import { ErrorProps } from "types/components";
 
 export default function Error({ message }: ErrorProps) {
   return (

@@ -1,30 +1,8 @@
 import React from "react";
 import { View, Text } from "react-native";
+import { ExperienceProps } from "types/components";
 
-interface NGOExperienceDates {
-  startDate: string;
-  endDate?: string;
-  presentDate: boolean;
-}
-
-interface NGOExperienceItem {
-  company: string;
-  experienceDates: NGOExperienceDates;
-  role: string;
-  duties: string[];
-}
-
-export interface NGOExperienceData {
-  label: string;
-  items: NGOExperienceItem[];
-}
-
-interface NGOExperienceProps {
-  className?: string;
-  data: NGOExperienceData;
-}
-
-const NGOExperience: React.FC<NGOExperienceProps> = ({ className, data }) => (
+const NGOExperience: React.FC<ExperienceProps> = ({ className, data }) => (
   <View className={className}>
     <Text className="uppercase font-['Norwester'] text-xl text-primary-dark mb-4">
       {data.label}

@@ -1,18 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Linking } from "react-native";
-
-export interface ContactItem {
-  service: string;
-  value: string;
-}
-
-export interface ContactProps {
-  data: {
-    label: string;
-    items: ContactItem[];
-  };
-  className?: string;
-}
+import { ContactProps } from "types/components";
 
 const Contact: React.FC<ContactProps> = ({ data, className }) => (
   <View className={className}>

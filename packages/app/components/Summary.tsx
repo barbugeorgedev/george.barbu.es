@@ -1,16 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-
-// Define the types for the data prop
-export interface SummaryData {
-  summary: string;
-  label: string;
-}
-
-interface SummaryProps {
-  data: SummaryData; // data is of type SummaryData
-  className?: string; // className is optional and is a string
-}
+import { SummaryProps } from "types/components";
 
 const Summary: React.FC<SummaryProps> = ({ data, className }) => (
   <View className={className}>

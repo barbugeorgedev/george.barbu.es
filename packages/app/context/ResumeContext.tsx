@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
-import { ResumeData } from "types/graphql";
+import { ExperienceData } from "types/components";
 
-const ResumeDataContext = createContext<ResumeData | undefined>(undefined);
+const ResumeDataContext = createContext<ExperienceData | undefined>(undefined);
 
 // Custom hook to consume the context
 export const useResumeData = () => {
@@ -18,7 +18,7 @@ export const ResumeDataProvider = ({
   value,
 }: {
   children: React.ReactNode;
-  value: ResumeData;
+  value: ExperienceData;
 }) => {
   return (
     <ResumeDataContext.Provider value={value}>

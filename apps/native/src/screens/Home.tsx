@@ -7,45 +7,33 @@ import LoadingScreen from "app/screens/Loading";
 import ErrorScreen from "app/screens/Error";
 import env from "@dotenv";
 
-import { ResumeData } from "types/graphql";
+import { ExperienceData } from "types/components";
 import { GET_RESUME } from "libs/graphql/queries/resume";
 
 console.log("env-web", env);
-// Define a fallback `resumeData` object
-const defaultResumeData: ResumeData = {
-  name: "",
-  social: [],
-  footer: "",
-  sidebar: [
-    {
-      skillsSections: [],
-      summarySection: { label: "Summary", summary: "" }, // Ensure object format
-      contactSection: { label: "Contacts", items: [] },
-    },
-  ],
-  header: [
-    {
-      fullname: "John Doe",
-      role: "Software Engineer",
-      slogan: "Building the future, one line at a time.",
-    },
-  ],
-  content: [
-    {
-      experienceSection: { label: "Experience", items: [] },
-      earlyCareerExperienceSection: { label: "Early Career", items: [] },
-      ngoExperienceSection: { label: "NGO Experience", items: [] },
-      educationSection: { label: "Education", items: [] },
-    },
-  ],
-};
 
 export default function Home(): JSX.Element {
-  const { loading, error, data } = useQuery<ResumeData>(GET_RESUME, {
+  const { loading, error, data } = useQuery<ExperienceData>(GET_RESUME, {
     fetchPolicy: "cache-first",
   });
 
-  const resumeData = data ?? defaultResumeData;
+  const resumeData: ExperienceData = data ?? {
+    label: "",
+    items: [],
+    footer: [],
+    header: [],
+    sidebar: {
+      skillsSections: [],
+      summarySection: { label: "", summary: "" },
+      contactSection: { label: "", items: [] },
+    },
+    content: {
+      experienceSection: { label: "", items: [] },
+      earlyCareerExperienceSection: { label: "", items: [] },
+      ngoExperienceSection: { label: "", items: [] },
+      educationSection: { label: "", items: [] },
+    },
+  };
 
   console.log("GraphQL Data:", data);
 

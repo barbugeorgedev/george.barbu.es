@@ -1,34 +1,8 @@
 import React from "react";
 import { View, Text } from "react-native";
+import { ExperienceProps } from "types/components";
 
-interface ExperienceDates {
-  startDate: string; // Now required
-  endDate?: string;
-  presentDate: boolean;
-}
-
-interface EarlyCareerItem {
-  company?: string; // Allow undefined
-  role: string;
-  experienceDates: {
-    startDate?: string;
-    endDate?: string;
-    presentDate?: boolean;
-  };
-  duties: string[];
-}
-
-export interface EarlyCareerData {
-  label: string;
-  items: EarlyCareerItem[];
-}
-
-interface EarlyCareerProps {
-  className?: string;
-  data: EarlyCareerData;
-}
-
-const EarlyCareer: React.FC<EarlyCareerProps> = ({ className, data }) => (
+const EarlyCareer: React.FC<ExperienceProps> = ({ className, data }) => (
   <View className={className}>
     <View>
       <Text className="uppercase font-['Norwester'] text-xl text-primary-dark mb-4">
