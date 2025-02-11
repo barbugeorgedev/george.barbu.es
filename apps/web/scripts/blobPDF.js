@@ -156,7 +156,7 @@ const generateAndUploadPDF = async (page, route) => {
     if (process.env.NODE_ENV !== "development") {
       console.log("🚀 Launching Puppeteer in production mode...");
       const chromium = require("@sparticuz/chromium");
-      chromium.setGraphicsMode(false);
+      chromium.setGraphicsMode = false;
       const puppeteer = require("puppeteer-core");
 
       console.log("🔍 Chromium args:", chromium.args);
