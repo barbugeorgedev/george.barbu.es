@@ -8,7 +8,7 @@ interface Subskill {
 
 export interface Skill {
   label: string;
-  items: Subskill[];
+  items?: Subskill[]; // Made optional
 }
 
 interface SkillsProps {
@@ -25,18 +25,18 @@ const Skills: React.FC<SkillsProps> = ({ data }) => (
         <Text className="uppercase font-Norwester text-xl text-primary-light mb-4">
           {skill.label}
         </Text>
-        <View className="text-[0.85rem] font-['Lato'] text-opacity-75 leading-6 text-white">
-          <View key={skill.label} className={`flex flex-wrap flex-row`}>
-            {skill.items.map((subskill, index) => (
+        {skill.items?.length ? ( // Only render if items exist
+          <View className="flex flex-wrap flex-row">
+            {skill.items.map((subskill, subIndex) => (
               <Text key={subskill.title} className="mx-1">
                 <Text className="text-[0.70rem] font-['Lato'] text-opacity-75 leading-3 text-white">
                   {subskill.title}
-                  {skill.items.length - 1 !== index ? "," : ""}
+                  {subIndex !== (skill.items?.length ?? 0) - 1 ? "," : ""}
                 </Text>
               </Text>
             ))}
           </View>
-        </View>
+        ) : null}
       </View>
     ))}
   </View>

@@ -8,7 +8,7 @@ require("dotenv").config();
 // Ensure export directory exists
 shell.mkdir("-p", "./public/exports");
 
-const SITE_URL = process.env.EXPO_PUBLIC_SITE_URL || "http://localhost:3001";
+const SITE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 const PAGES = ["/"];
 const OUTPUT_DIR = "./public/exports";
 

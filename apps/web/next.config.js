@@ -27,6 +27,7 @@ module.exports = withExpo({
       "@dotenv": path.resolve(__dirname, "./env.ts"),
       "@templates": path.resolve(__dirname, "templates"),
       "@styles": path.resolve(__dirname, "styles"),
+      "@env": path.resolve(__dirname, "./emptyEnv.ts"), // not nice at all, but for now it's working (this will ignore searching for react native variables in when env package is used)
     };
 
     config.module.rules.push({

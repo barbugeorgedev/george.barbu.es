@@ -5,8 +5,8 @@ import React from "react";
 import { NetworkCheckProps } from "types/page";
 
 const Offline: React.FC<NetworkCheckProps> = ({
-  title = "Nu ești conectat la internet",
-  tryAgain = "Încearcă din nou",
+  title = "You're not connected to Internet",
+  tryAgain = "Try Again",
 }) => {
   const handlePress = () => {
     console.log("Attempt to reconnect");

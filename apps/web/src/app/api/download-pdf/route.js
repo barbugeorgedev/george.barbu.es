@@ -1,10 +1,11 @@
 import { list } from "@vercel/blob";
+import env from "@dotenv";
 
 export const dynamic = "force-dynamic"; // Ensures the route is always server-side
 
 export async function GET() {
   try {
-    const STORAGE_NAME = process.env.BLOB_STORAGE_NAME || "pdf";
+    const STORAGE_NAME = env.NEXT_PUBLIC_BLOB_STORAGE_NAME || "pdf";
 
     // Fetch all blobs with the given prefix
     const { blobs } = await list({ prefix: STORAGE_NAME });
@@ -18,8 +19,6 @@ export async function GET() {
       (a, b) =>
         new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime(),
     )[0];
-
-    console.log("Latest PDF:", latestBlob);
 
     return Response.redirect(latestBlob.url, 302);
   } catch (error) {

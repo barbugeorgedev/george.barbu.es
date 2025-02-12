@@ -75,7 +75,7 @@ export const Home: React.FC = () => {
           />
 
           <Education
-            className="bi-avoid bb-always mt-28 mb-11"
+            className="bi-avoid bb-always mt-11 "
             data={{
               label: resumeData?.content?.[0]?.educationSection?.label ?? "",
               items:

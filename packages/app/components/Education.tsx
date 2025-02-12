@@ -19,8 +19,6 @@ interface EducationProps {
 }
 
 const Education: React.FC<EducationProps> = ({ className, data }) => {
-  console.log("Education Component Data:", data);
-
   return (
     <View className={className}>
       <View>

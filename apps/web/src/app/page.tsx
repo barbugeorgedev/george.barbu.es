@@ -5,12 +5,9 @@ import DefaultTemplate from "@templates/Default";
 import { Home } from "app/screens/Home";
 import LoadingScreen from "app/screens/Loading";
 import ErrorScreen from "app/screens/Error";
-import env from "@dotenv";
 
 import { ResumeData } from "types/graphql";
 import { GET_RESUME } from "libs/graphql/queries/resume";
-
-console.log("env-web", env);
 
 // Define a fallback `resumeData` object
 const defaultResumeData: ResumeData = {
@@ -44,15 +41,7 @@ const defaultResumeData: ResumeData = {
 export default function Page() {
   const { loading, error, data } = useQuery<ResumeData>(GET_RESUME, {
     fetchPolicy: "cache-first",
-    onCompleted: (data) => console.log("✅ Query completed:", data),
-    onError: (error) => console.error("❌ Query error:", error),
   });
-
-  console.log("Loading:", loading);
-  console.log("Error:", error);
-  if (data) {
-    console.log("Data:", data);
-  }
 
   // Use the fetched data or fallback to the default
   const resumeData = data ?? defaultResumeData;
