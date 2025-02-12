@@ -14,10 +14,10 @@ const DefaultTemplate: React.FC<DefaultTemplateProps> = ({ children }) => {
     : [];
 
   return (
-    <SafeAreaView className="flex">
+    <SafeAreaView>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        className="w-full text-gray bg-[#525659] pt-8"
+        className="w-full h-full text-gray bg-[#525659] pt-8"
       >
         <Header />
         {children}

@@ -43,7 +43,7 @@ const Experience: React.FC<ExperienceProps> = ({ className, data }) => {
 
   return (
     <View className={className}>
-      <Text className="uppercase font-['Norwester'] text-xl text-primary-dark mb-4">
+      <Text className="uppercase font-['Norwester'] text-xl text-primary-dark">
         {data.label}
       </Text>
 

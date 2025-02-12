@@ -5,12 +5,10 @@ import { useQuery } from "@apollo/client";
 
 import LoadingScreen from "app/screens/Loading";
 import ErrorScreen from "app/screens/Error";
-import env from "@dotenv";
 
 import { ResumeData } from "types/graphql";
 import { GET_RESUME } from "libs/graphql/queries/resume";
 
-console.log("env-web", env);
 // Define a fallback `resumeData` object
 const defaultResumeData: ResumeData = {
   name: "",
@@ -46,8 +44,6 @@ export default function Home(): JSX.Element {
   });
 
   const resumeData = data ?? defaultResumeData;
-
-  console.log("GraphQL Data:", data);
 
   return (
     <ResumeDataProvider value={resumeData}>

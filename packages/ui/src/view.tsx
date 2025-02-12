@@ -1,11 +1,10 @@
 import {
+  Platform,
   View as ReactNativeView,
   ViewProps as RNViewProps,
-  StyleProp,
 } from "react-native";
 import { cssInterop } from "nativewind";
 import React, { CSSProperties } from "react";
-import { Platform } from "react-native";
 
 // Import types from view.ts
 import { CustomViewProps, RN_PROPS_TO_FILTER } from "types/ui/view";

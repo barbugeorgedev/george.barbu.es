@@ -31,30 +31,29 @@ interface EarlyCareerProps {
 const EarlyCareer: React.FC<EarlyCareerProps> = ({ className, data }) => (
   <View className={className}>
     <View>
-      <Text className="uppercase font-['Norwester'] text-xl text-primary-dark mb-4">
+      <Text className="uppercase font-['Norwester'] text-xl text-primary-dark mt-20 mb-6">
         {data.label}
       </Text>
       {data.items.map((item, itemIndex) => (
-        <View
-          key={itemIndex}
-          className="bi-avoid bb-always mt-11 font-['Lato']"
-        >
-          <Text className="text-secondary font-['LatoBlack'] uppercase text-sm font-semibold">
-            {item.role}, {item.company}
-          </Text>
-          <View className="text-primary-dark text-xs font-semibold mb-4">
-            <Text className="font-['LatoBlack'] text-primary-dark text-xs">
-              {item.experienceDates.startDate?.substring(0, 4) ?? "N/A"}
+        <View key={itemIndex} className="bi-avoid bb-always mt-4 font-['Lato']">
+          <View className="flex flex-row flex-wrap items-baseline space-x-2">
+            <Text className="text-secondary font-['LatoBlack'] uppercase text-sm font-semibold">
+              {item.role},
+            </Text>
+            <Text className="text-secondary font-['Lato'] uppercase text-sm">
+              {item.company}
+            </Text>
+            <Text className="font-['Lato'] text-primary-dark text-sm">
+              ({item.experienceDates.startDate?.substring(0, 4) ?? "N/A"}
               &nbsp;-&nbsp;
               {item.experienceDates.presentDate
                 ? "Present"
                 : (item.experienceDates.endDate?.substring(0, 4) ?? "N/A")}
+              )
             </Text>
-          </View>
-          <View className="text-xs flex flex-col">
-            {item.duties.map((duty, dutyIndex) => (
-              <Text key={dutyIndex}>- {duty}</Text>
-            ))}
+            <Text key={0} className="text-sm">
+              - {item.duties[0]}
+            </Text>
           </View>
         </View>
       ))}

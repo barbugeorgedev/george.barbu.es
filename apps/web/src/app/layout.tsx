@@ -3,9 +3,9 @@
 import { ReactNode } from "react";
 import { ApolloProvider } from "@apollo/client";
 import client from "libs/graphql/apolloClient";
-import "@styles/globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import "@styles/globals.css";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (

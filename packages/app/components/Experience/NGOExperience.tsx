@@ -26,7 +26,7 @@ interface NGOExperienceProps {
 
 const NGOExperience: React.FC<NGOExperienceProps> = ({ className, data }) => (
   <View className={className}>
-    <Text className="uppercase font-['Norwester'] text-xl text-primary-dark mb-4">
+    <Text className="uppercase font-['Norwester'] text-xl text-primary-dark mt-11">
       {data.label}
     </Text>
     {data.items.map((item, index) => (

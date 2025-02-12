@@ -6,10 +6,9 @@ const SITE_URL =
   process.env.NODE_ENV !== "development"
     ? process.env.NEXT_PUBLIC_API_URL
     : "http://localhost:3000";
-const REVALIDATE_URL = `${SITE_URL}/api/cache?clear=${process.env.REVALIDATE_SECRET}`;
-const BLOB_TOKEN = process.env.BLOB_READ_WRITE_TOKEN;
-const BLOB_PROJECT_ID = process.env.BLOB_PROJECT_ID || "fjzxtnzjts3m1a6q";
-const STORAGE_NAME = process.env.BLOB_STORAGE_NAME || "pdf";
+const REVALIDATE_URL = `${SITE_URL}/api/cache?clear=${process.env.NEXT_PUBLIC_REVALIDATE_SECRET}`;
+const BLOB_TOKEN = process.env.NEXT_PUBLIC_BLOB_READ_WRITE_TOKEN;
+const STORAGE_NAME = process.env.NEXT_PUBLIC_BLOB_STORAGE_NAME || "pdf";
 
 const PAGES = ["/"];
 

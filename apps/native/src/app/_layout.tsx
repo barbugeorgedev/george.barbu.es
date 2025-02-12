@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { Text } from "react-native";
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import "../styles/global.css";

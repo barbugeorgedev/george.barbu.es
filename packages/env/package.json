@@ -4,19 +4,24 @@
   "version": "1.0.0",
   "exports": {
     ".": {
-      "import": "./src/index.ts",
-      "require": "./src/index.ts",
-      "types": "./src/index.ts"
-    },
-    "./env": {
-      "import": "./src/env.ts",
-      "require": "./src/env.ts",
-      "types": "./src/env.ts"
+      "import": "./index.ts",
+      "require": "./index.ts",
+      "types": "./index.ts"
     },
     "./schema": {
       "import": "./src/schema.ts",
       "require": "./src/schema.ts",
       "types": "./src/schema.ts"
+    },
+    "./env": {
+      "import": "./src/getEnv.ts",
+      "require": "./src/getEnv.ts",
+      "types": "./src/getEnv.ts"
+    },
+    "./validate": {
+      "import": "./src/validate.ts",
+      "require": "./src/validate.ts",
+      "types": "./src/validate.ts"
     }
   }
 }
