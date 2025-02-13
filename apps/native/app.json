@@ -24,7 +24,6 @@
     "android": {
       "package": "george.barbu.es",
       "versionCode": 1,
-      "windowSoftInputMode": "adjustResize",
       "permissions": ["WRITE_EXTERNAL_STORAGE", "READ_EXTERNAL_STORAGE"],
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/logo.png",

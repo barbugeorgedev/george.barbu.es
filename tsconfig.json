@@ -3,6 +3,7 @@
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
     "module": "esnext",
+    "lib": ["ES2015", "DOM"],
     "moduleResolution": "bundler",
     "paths": {
       "env": ["./packages/env/src/*"],
