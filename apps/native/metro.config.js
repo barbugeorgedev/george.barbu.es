@@ -1,8 +1,9 @@
 const { getDefaultConfig } = require("expo/metro-config");
 const { withNativeWind } = require("nativewind/metro");
 const path = require("path");
+const exclusionList = require("metro-config/src/defaults/exclusionList");
 
-// Find the workspace root, this can be replaced with find-yarn-workspace-root
+// Find the workspace root
 const workspaceRoot = path.resolve(__dirname, "../..");
 const projectRoot = __dirname;
 
@@ -23,12 +24,16 @@ config.resolver.disableHierarchicalLookup = true;
 
 // 4. Configure Metro to resolve files within 'src' directories inside each package
 config.resolver.extraNodeModules = {
-  // Assuming each package in the monorepo has a 'src' folder and needs resolution support
   libs: path.resolve(workspaceRoot, "packages/libs/src"),
   ui: path.resolve(workspaceRoot, "packages/ui/src"),
   env: path.resolve(workspaceRoot, "packages/env/src"),
   types: path.resolve(workspaceRoot, "packages/types/src"),
 };
+
+// 5. Block **all** react-icons imports in native builds
+config.resolver.blockList = exclusionList([
+  /.*\/react-icons\/.*/, // Blocks the entire react-icons package
+]);
 
 // Apply nativewind plugin
 module.exports = withNativeWind(config, {

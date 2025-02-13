@@ -22,6 +22,7 @@ module.exports = {
       lg: "1024px",
       xl: "1280px",
       "2xl": "1536px",
+      print: { raw: "print" },
     },
     colors: {
       ...colors,
@@ -43,10 +44,6 @@ module.exports = {
         lato: ["Lato", "sans-serif"],
         latoBlack: ["LatoBlack", "sans-serif"],
         latoThin: ["LatoThin", "sans-serif"],
-      },
-      screens: {
-        print: { raw: "print" },
-        lg: { raw: "print, (min-width: 1024px)" },
       },
     },
     orphans: [1, 2, 3],

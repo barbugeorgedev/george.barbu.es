@@ -40,6 +40,8 @@ pnpm-debug.log*
 # IDE and editor directories
 .vscode/    # Include the root .vscode folder
 **/.vscode/ # Ignore .vscode folders in subdirectories
+.history
+.idea
 
 # OS-specific files
 .DS_Store
@@ -66,7 +68,7 @@ Thumbs.db
 *.log
 *.bak
 
-.history
+
 .turbo
 
 .env

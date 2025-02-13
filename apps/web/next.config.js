@@ -15,6 +15,8 @@ module.exports = withExpo({
   transpilePackages: [
     "react-native",
     "react-native-web",
+    "expo-modules-core", // Add this to transpile expo-modules-core
+    "expo-sharing", // Add this if needed based on the error trace
     "ui",
     "nativewind",
     "react-native-css-interop",
@@ -27,7 +29,7 @@ module.exports = withExpo({
       "@dotenv": path.resolve(__dirname, "./env.ts"),
       "@templates": path.resolve(__dirname, "templates"),
       "@styles": path.resolve(__dirname, "styles"),
-      "@env": path.resolve(__dirname, "./emptyEnv.ts"), // not nice at all, but for now it's working (this will ignore searching for react native variables in when env package is used)
+      "@env": path.resolve(__dirname, "./emptyEnv.ts"), // For ignoring react-native environment variables
     };
 
     config.module.rules.push({
