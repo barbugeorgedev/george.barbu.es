@@ -38,8 +38,9 @@ yarn-error.log*
 pnpm-debug.log*
 
 # IDE and editor directories
-.vscode/    # Include the root .vscode folder
+.vscode
 **/.vscode/ # Ignore .vscode folders in subdirectories
+.history
 
 # OS-specific files
 .DS_Store
@@ -49,14 +50,12 @@ Thumbs.db
 *.tsbuildinfo
 
 # Environment files
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# Expo (if using)
-.expo
-.expo-shared
 
 # Temporary files
 *.swp
@@ -66,7 +65,4 @@ Thumbs.db
 *.log
 *.bak
 
-.history
 .turbo
-
-.env

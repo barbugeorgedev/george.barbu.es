@@ -24,6 +24,7 @@ module.exports = function (api) {
             "@screens": "./src/screens",
             "@templates": "./src/templates",
             "@dotenv": "./env",
+            "react-native-vector-icons": "@expo/vector-icons",
           },
           extensions: [".js", ".jsx", ".ts", ".tsx", ".native.tsx"],
         },

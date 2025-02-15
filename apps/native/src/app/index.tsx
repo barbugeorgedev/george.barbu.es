@@ -25,7 +25,7 @@ const HomePage: React.FC = () => {
   if (isConnected === null) {
     return (
       <View className="flex-1 justify-center items-center">
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator color="#0000ff" />
       </View>
     );
   }
