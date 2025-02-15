@@ -66,3 +66,7 @@ Thumbs.db
 
 
 .env
+
+
+android
+!android/app/build.gradle

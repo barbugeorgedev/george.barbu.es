@@ -4,11 +4,17 @@ import { Platform, Image as RNImage } from "react-native";
 import { SharedImageProps } from "types/ui/image";
 
 let ImageComponent: any;
-
 const isWeb = Platform.OS === "web";
 
 if (isWeb) {
-  ImageComponent = require("next/image").default;
+  try {
+    ImageComponent = require("next/image").default;
+  } catch (error) {
+    console.warn(
+      "next/image could not be loaded, falling back to native <img>",
+    );
+    ImageComponent = "img"; // Fallback to a standard HTML image element
+  }
 } else {
   const { cssInterop } = require("nativewind");
   cssInterop(RNImage, { className: "style" });

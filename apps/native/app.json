@@ -8,13 +8,6 @@
     "icon": "./src/assets/images/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
-    "splash": {
-      "image": "./src/assets/images/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#525659",
-      "hideExponentText": true,
-      "animation": "fade"
-    },
     "platforms": ["ios", "android", "web"],
     "ios": {
       "buildNumber": "1.0.0",
@@ -24,7 +17,6 @@
     "android": {
       "package": "george.barbu.es",
       "versionCode": 1,
-      "windowSoftInputMode": "adjustResize",
       "permissions": ["WRITE_EXTERNAL_STORAGE", "READ_EXTERNAL_STORAGE"],
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/logo.png",
