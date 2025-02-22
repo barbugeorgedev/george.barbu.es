@@ -1,58 +1,45 @@
 "use client";
 import { ResumeDataProvider } from "app/context/ResumeContext";
 import { useQuery } from "@apollo/client";
-import DefaultTemplate from "@templates/Default";
 import { Home } from "app/screens/Home";
 import LoadingScreen from "app/screens/Loading";
 import ErrorScreen from "app/screens/Error";
-
+import dynamic from "next/dynamic";
+import { TemplateProps } from "types/components";
 import { ResumeData } from "types/graphql";
 import { GET_RESUME } from "libs/graphql/queries/resume";
-
-// Define a fallback `resumeData` object
-const defaultResumeData: ResumeData = {
-  name: "",
-  social: [],
-  footer: "",
-  sidebar: [
-    {
-      skillsSections: [],
-      summarySection: { label: "Summary", summary: "" }, // Ensure object format
-      contactSection: { label: "Contacts", items: [] },
-    },
-  ],
-  header: [
-    {
-      fullname: "John Doe",
-      role: "Software Engineer",
-      slogan: "Building the future, one line at a time.",
-    },
-  ],
-  content: [
-    {
-      experienceSection: { label: "Experience", items: [] },
-      earlyCareerExperienceSection: { label: "Early Career", items: [] },
-      ngoExperienceSection: { label: "NGO Experience", items: [] },
-      educationSection: { label: "Education", items: [] },
-    },
-  ],
-};
+import { defaultResumeData } from "app/constants";
 
 export default function Page() {
   const { loading, error, data } = useQuery<ResumeData>(GET_RESUME, {
     fetchPolicy: "cache-first",
   });
 
-  // Use the fetched data or fallback to the default
+  // Use fetched data or fallback to default
   const resumeData = data ?? defaultResumeData;
 
+  const selectedTemplate =
+    resumeData?.settings[0]?.settings?.template || "Default";
+
+  const TemplateComponent = dynamic(
+    () =>
+      import(`@templates/${selectedTemplate}`).then(
+        (template) => template.default,
+      ),
+    { ssr: false },
+  ) as React.ComponentType<TemplateProps>;
+
   return (
-    <ResumeDataProvider value={data ?? resumeData}>
-      <DefaultTemplate>
-        {loading && <LoadingScreen />}
-        {error && <ErrorScreen message={error.message} />}
-        {!loading && !error && <Home />}
-      </DefaultTemplate>
+    <ResumeDataProvider value={resumeData}>
+      <TemplateComponent>
+        {loading ? (
+          <LoadingScreen />
+        ) : error ? (
+          <ErrorScreen message={error.message} />
+        ) : (
+          <Home />
+        )}
+      </TemplateComponent>
     </ResumeDataProvider>
   );
 }

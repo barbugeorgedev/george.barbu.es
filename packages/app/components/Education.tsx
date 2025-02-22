@@ -1,28 +1,25 @@
 import React from "react";
 import { View, Text } from "react-native";
+import { useResumeData } from "app/context/ResumeContext";
+import DefaultComponentProps from "types/components";
+import { useSettings } from "app/hooks/useSettings";
 
-interface EducationItem {
-  institution: string;
-  degree: string;
-  type: string;
-  certifications: string[];
-}
+const Education: React.FC<DefaultComponentProps> = ({ className }) => {
+  const settings = useSettings();
+  const resumeData = useResumeData();
+  const data = resumeData?.content?.[0]?.educationSection;
 
-export interface EducationData {
-  label: string;
-  items: EducationItem[];
-}
+  if (!data || !data.items || data.items.length === 0) return null;
 
-interface EducationProps {
-  className?: string;
-  data: EducationData; // data is an array
-}
-
-const Education: React.FC<EducationProps> = ({ className, data }) => {
   return (
     <View className={className}>
       <View>
-        <Text className="uppercase font-['Norwester'] text-xl text-primary-dark mb-4">
+        <Text
+          className="uppercase font-['Norwester'] text-xl mb-4"
+          style={{
+            color: settings?.mainSectionTextColor,
+          }}
+        >
           {data.label}
         </Text>
         {data.items.length === 0 ? (
@@ -31,16 +28,32 @@ const Education: React.FC<EducationProps> = ({ className, data }) => {
           data.items.map((item, itemIndex) => (
             <View
               key={itemIndex}
-              className="bi-avoid bb-always mt-11 font-['Lato']"
+              className="bi-avoid bb-always mt-4 font-['Lato']"
             >
-              <Text className="text-secondary font-['LatoBlack'] uppercase text-sm font-semibold">
+              <Text
+                className="font-['LatoBlack'] uppercase text-sm font-semibold"
+                style={{
+                  color: settings?.mainSectionSecondaryTextColor,
+                }}
+              >
                 {item.institution}
               </Text>
-              <View className="text-primary-dark text-xs font-semibold mb-4 flex flex-row">
-                <Text className="border-r-2 border-solid border-primary-dark mr-1 pr-1 font-['LatoBlack'] text-primary-dark text-xs">
+              <View className="text-xs font-semibold mb-4 flex flex-row">
+                <Text
+                  className="border-r-2 border-solid mr-1 pr-1 font-['LatoBlack'] text-xs"
+                  style={{
+                    color: settings?.mainSectionPrimaryTextColor,
+                    borderColor: settings?.mainSectionLineColor,
+                  }}
+                >
                   {item.degree}
                 </Text>
-                <Text className="font-['LatoBlack'] text-primary-dark text-xs">
+                <Text
+                  className="font-['LatoBlack'] text-xs"
+                  style={{
+                    color: settings?.mainSectionPrimaryTextColor,
+                  }}
+                >
                   {item.type}
                 </Text>
               </View>

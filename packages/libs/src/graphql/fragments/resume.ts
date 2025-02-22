@@ -117,3 +117,50 @@ export const SOCIAL = gql`
     }
   }
 `;
+
+export const SETTINGS = gql`
+  fragment Settings on Resume {
+    homepage
+    settings {
+      template
+      themeSettings {
+        ...ThemeSettings
+      }
+    }
+  }
+
+  fragment ThemeSettings on ThemeSettings {
+    headerIconsColor
+    mainBackground
+    headerBackground
+    headerTextColor
+    sidebarBackground
+    mainSectionBackground
+    sidebarSectionTextColor
+    sidebarTextColor
+    mainTextColor
+    mainSectionDotColor
+    mainSectionLineColor
+    mainSectionTextColor
+    mainSectionPrimaryTextColor
+    mainSectionSecondaryTextColor
+    footerTextColor
+    footerIconsColor
+    footerLinkColor
+  }
+`;
+
+export const SEO = gql`
+  fragment SEO on Resume {
+    seoSection {
+      seoTitle
+      seoKeywords
+      seoImage {
+        asset {
+          url
+        }
+      }
+      seoDescription
+    }
+  }
+`;

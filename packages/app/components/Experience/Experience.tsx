@@ -1,28 +1,14 @@
 import React from "react";
 import { View, Text } from "react-native";
+import DefaultComponentProps, { ExperienceItem } from "types/components";
+import { useResumeData } from "app/context/ResumeContext";
+import { useSettings } from "app/hooks/useSettings";
 
-interface ExperienceItem {
-  company?: string;
-  role: string;
-  experienceDates: {
-    startDate?: string;
-    endDate?: string;
-    presentDate?: boolean;
-  };
-  duties: string[];
-}
+const Experience: React.FC<DefaultComponentProps> = ({ className }) => {
+  const settings = useSettings();
+  const resumeData = useResumeData();
+  const data = resumeData?.content?.[0]?.experienceSection;
 
-interface ExperienceData {
-  label: string;
-  items: ExperienceItem[];
-}
-
-interface ExperienceProps {
-  className?: string;
-  data: ExperienceData;
-}
-
-const Experience: React.FC<ExperienceProps> = ({ className, data }) => {
   if (!data || !data.items || data.items.length === 0) return null;
 
   // Normalize `presentDate`
@@ -43,7 +29,12 @@ const Experience: React.FC<ExperienceProps> = ({ className, data }) => {
 
   return (
     <View className={className}>
-      <Text className="uppercase font-['Norwester'] text-xl text-primary-dark">
+      <Text
+        className="uppercase font-['Norwester'] text-xl "
+        style={{
+          color: settings?.mainSectionTextColor,
+        }}
+      >
         {data.label}
       </Text>
 
@@ -54,11 +45,21 @@ const Experience: React.FC<ExperienceProps> = ({ className, data }) => {
               key={index}
               className="bi-avoid bb-always font-['Lato'] mt-11"
             >
-              <Text className="text-secondary font-['LatoBlack'] uppercase text-sm font-semibold">
+              <Text
+                className="font-['LatoBlack'] uppercase text-sm font-semibold"
+                style={{
+                  color: settings?.mainSectionSecondaryTextColor,
+                }}
+              >
                 {company}
               </Text>
-              <View className="text-primary-dark text-xs font-semibold mb-4">
-                <Text className="font-['LatoBlack'] text-primary-dark text-xs">
+              <View className="text-xs font-semibold mb-4">
+                <Text
+                  className="font-['LatoBlack'] text-xs"
+                  style={{
+                    color: settings?.mainSectionPrimaryTextColor,
+                  }}
+                >
                   {groups[company][
                     groups[company].length - 1
                   ]?.experienceDates?.startDate?.substring(0, 4) || "N/A"}
@@ -71,7 +72,12 @@ const Experience: React.FC<ExperienceProps> = ({ className, data }) => {
                       ) || "N/A"}
                 </Text>
               </View>
-              <View className="relative border-l border-solid border-primary-dark">
+              <View
+                className="relative border-l border-solid"
+                style={{
+                  borderColor: settings?.mainSectionLineColor,
+                }}
+              >
                 {groups[company].map((item, index) => (
                   <View
                     key={index}
@@ -80,12 +86,28 @@ const Experience: React.FC<ExperienceProps> = ({ className, data }) => {
                       (index !== 0 ? "mt-11" : "mt-4")
                     }
                   >
-                    <View className="absolute w-3 h-3 border-primary-dark bg-primary-dark rounded-full mt-1.5 -left-6 ml-0.5 border"></View>
-                    <Text className="text-secondary font-['LatoBlack'] uppercase text-sm font-semibold">
+                    <View
+                      className="absolute w-3 h-3 rounded-full mt-1.5 -left-6 ml-0.5 border"
+                      style={{
+                        borderColor: settings?.mainSectionLineColor,
+                        backgroundColor: settings?.mainSectionDotColor,
+                      }}
+                    ></View>
+                    <Text
+                      className="font-['LatoBlack'] uppercase text-sm font-semibold"
+                      style={{
+                        color: settings?.mainSectionSecondaryTextColor,
+                      }}
+                    >
                       {item.role}
                     </Text>
-                    <View className="text-primary-dark text-xs font-semibold mb-4">
-                      <Text className="font-['LatoBlack'] text-primary-dark text-xs">
+                    <View className="text-xs font-semibold mb-4">
+                      <Text
+                        className="font-['LatoBlack'] text-xs"
+                        style={{
+                          color: settings?.mainSectionPrimaryTextColor,
+                        }}
+                      >
                         {item.experienceDates?.startDate?.substring(0, 4) ||
                           "N/A"}
                         &nbsp; - &nbsp;

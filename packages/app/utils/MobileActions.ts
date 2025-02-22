@@ -6,11 +6,13 @@ import { downloadFile } from "app/utils/fileHelpers";
 import { isAndroid } from "app/utils/platformHelpers";
 
 export const downloadPDFmobile = async (): Promise<void> => {
+  console.log("downloadPDFmobile");
   const uri = await downloadFile(pdfUrl, "george-barbu.pdf");
   if (uri) console.log("File ready at:", uri);
 };
 
 export const sharePDFmobile = async () => {
+  console.log("sharePDFmobile");
   try {
     const uri = await downloadFile(pdfUrl, "shared.pdf");
     if (!uri) return;

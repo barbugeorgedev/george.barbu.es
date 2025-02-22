@@ -1,58 +1,66 @@
 import React from "react";
 import { View, Text } from "react-native";
+import DefaultComponentProps from "types/components";
+import { useResumeData } from "app/context/ResumeContext";
+import { useSettings } from "app/hooks/useSettings";
 
-interface NGOExperienceDates {
-  startDate: string;
-  endDate?: string;
-  presentDate: boolean;
-}
+const NGOExperience: React.FC<DefaultComponentProps> = ({ className }) => {
+  const settings = useSettings();
+  const resumeData = useResumeData();
+  const data = resumeData?.content?.[0]?.ngoExperienceSection;
 
-interface NGOExperienceItem {
-  company: string;
-  experienceDates: NGOExperienceDates;
-  role: string;
-  duties: string[];
-}
+  if (!data || !data.items || data.items.length === 0) return null;
 
-export interface NGOExperienceData {
-  label: string;
-  items: NGOExperienceItem[];
-}
-
-interface NGOExperienceProps {
-  className?: string;
-  data: NGOExperienceData;
-}
-
-const NGOExperience: React.FC<NGOExperienceProps> = ({ className, data }) => (
-  <View className={className}>
-    <Text className="uppercase font-['Norwester'] text-xl text-primary-dark mt-11">
-      {data.label}
-    </Text>
-    {data.items.map((item, index) => (
-      <View key={index} className="bi-avoid bb-always mt-11 font-['Lato']">
-        <Text className="text-secondary font-['LatoBlack'] uppercase text-sm font-semibold">
-          {item.company}
-        </Text>
-        <View className="text-primary-dark text-xs font-semibold mb-4">
-          <Text className="font-['LatoBlack'] text-primary-dark text-xs">
-            {item.experienceDates.startDate.substring(0, 4)} -
-            {item.experienceDates.presentDate
-              ? " Present"
-              : ` ${item.experienceDates.endDate?.substring(0, 4)}`}
+  return (
+    <View className={className}>
+      <Text
+        className="uppercase font-['Norwester'] text-xl mt-11"
+        style={{
+          color: settings?.mainSectionTextColor,
+        }}
+      >
+        {data.label}
+      </Text>
+      {data.items.map((item, index) => (
+        <View key={index} className="bi-avoid bb-always mt-4 font-['Lato']">
+          <Text
+            className="font-['LatoBlack'] uppercase text-sm font-semibold"
+            style={{
+              color: settings?.mainSectionSecondaryTextColor,
+            }}
+          >
+            {item.company}
           </Text>
+          <View className="text-xs font-semibold mb-4">
+            <Text
+              className="font-['LatoBlack'] text-xs"
+              style={{
+                color: settings?.mainSectionPrimaryTextColor,
+              }}
+            >
+              {item?.experienceDates?.startDate?.substring(0, 4) ?? "N/A"}-
+              {item.experienceDates.presentDate
+                ? " Present"
+                : ` ${item.experienceDates.endDate?.substring(0, 4)}`}
+            </Text>
+          </View>
+          <Text
+            className="font-['LatoBlack'] uppercase text-sm font-semibold"
+            style={{
+              color: settings?.mainSectionSecondaryTextColor,
+            }}
+          >
+            {item.role}
+          </Text>
+          <View className="text-xs flex flex-col">
+            {item.duties.map((resp, respIndex) => (
+              <Text key={respIndex}>- {resp}</Text>
+            ))}
+          </View>
         </View>
-        <Text className="text-secondary font-['LatoBlack'] uppercase text-sm font-semibold">
-          {item.role}
-        </Text>
-        <View className="text-xs flex flex-col">
-          {item.duties.map((resp, respIndex) => (
-            <Text key={respIndex}>- {resp}</Text>
-          ))}
-        </View>
-      </View>
-    ))}
-  </View>
-);
+      ))}
+    </View>
+  );
+};
 
 export default NGOExperience;

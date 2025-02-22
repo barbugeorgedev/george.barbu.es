@@ -5,6 +5,7 @@ import { ApolloProvider } from "@apollo/client";
 import client from "libs/graphql/apolloClient";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import GoogleAnalytics from "@components/GoogleAnalytics";
 import "@styles/globals.css";
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -18,6 +19,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <ApolloProvider client={client}>{children}</ApolloProvider>
         <Analytics />
         <SpeedInsights />
+        <GoogleAnalytics />
       </body>
     </html>
   );

@@ -18,11 +18,6 @@ interface ExperienceData {
   items: ExperienceItem[];
 }
 
-interface ExperienceProps {
-  className?: string;
-  data: ExperienceData;
-}
-
 export interface ContactItem {
   service: string;
   value: string;
@@ -34,6 +29,34 @@ export interface ContactProps {
     items: ContactItem[];
   };
   className?: string;
+}
+
+export interface ThemeSettings {
+  headerIconsColor?: string;
+  mainBackground?: string;
+  headerBackground?: string;
+  headerTextColor?: string;
+  sidebarBackground?: string;
+  mainSectionBackground?: string;
+  sidebarSectionTextColor?: string;
+  sidebarTextColor?: string;
+  mainTextColor?: string;
+  mainSectionDotColor?: string;
+  mainSectionLineColor?: string;
+  mainSectionTextColor?: string;
+  mainSectionPrimaryTextColor?: string;
+  mainSectionSecondaryTextColor?: string;
+  footerTextColor?: string;
+  footerIconsColor?: string;
+  footerLinkColor?: string;
+}
+
+export interface Settings {
+  homepage: boolean;
+  settings: {
+    template: string;
+    themeSettings: ThemeSettings;
+  };
 }
 
 export interface ResumeData {
@@ -52,4 +75,5 @@ export interface ResumeData {
   name: string;
   social: { name: string; url: string }[];
   footer: string;
+  settings: Settings[];
 }

@@ -1,11 +1,15 @@
 import React from "react";
-import { Platform, Alert, TouchableOpacity } from "react-native";
+import { Platform, TouchableOpacity } from "react-native";
 import Icon from "ui/icon";
 import { View as ViewWEB } from "ui/view";
 import { downloadPDFweb, printPDF } from "app/utils/WebActions";
 import { downloadPDFmobile, sharePDFmobile } from "app/utils/MobileActions";
+import DefaultComponentProps from "types/components";
+import { useSettings } from "app/hooks/useSettings";
 
-const Header: React.FC = () => {
+const Header: React.FC<DefaultComponentProps> = () => {
+  const settings = useSettings();
+
   const isWEB = Platform.OS === "web";
   const downloadPDF = isWEB ? downloadPDFweb : downloadPDFmobile;
 
@@ -18,7 +22,7 @@ const Header: React.FC = () => {
         <Icon
           type="fa"
           name="download"
-          color="#313638"
+          color={settings?.headerIconsColor}
           className="!text-[28px] pb-1 sm:mb-0"
         />
       </TouchableOpacity>
@@ -27,7 +31,7 @@ const Header: React.FC = () => {
           <Icon
             type="ai"
             name="AiFillPrinter"
-            color="#313638"
+            color={settings?.headerIconsColor}
             size={30}
             className="!text-[28px] pb-1 sm:mb-0"
           />
@@ -36,7 +40,7 @@ const Header: React.FC = () => {
         <TouchableOpacity onPress={sharePDFmobile} className="ml-2">
           <Icon
             name="share-alt"
-            color="#313638"
+            color={settings?.headerIconsColor}
             size={30}
             className="!text-[28px] pb-1 sm:mb-0"
           />

@@ -14,8 +14,10 @@
     "incremental": true,
     "paths": {
       "@dotenv": ["./env"],
+      "@types": ["./src/types"],
       "@templates/*": ["./src/templates/*"],
       "@styles/*": ["./src/styles/*"],
+      "@components/*": ["./src/components/*"],
       "types/*": ["../../packages/types/src/*"],
       "libs/*": ["../../packages/libs/src/*"]
     },

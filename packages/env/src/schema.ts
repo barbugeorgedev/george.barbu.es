@@ -16,6 +16,7 @@ const webSchema = z.object({
   NEXT_PUBLIC_BLOB_READ_WRITE_TOKEN: z.string(),
   NEXT_PUBLIC_BLOB_STORAGE_NAME: z.string(),
   NEXT_PUBLIC_REVALIDATE_SECRET: z.string(),
+  NEXT_PUBLIC_GA_TRACKING_ID: z.string(),
 });
 
 // Define the additional fields for native

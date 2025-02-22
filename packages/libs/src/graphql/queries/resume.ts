@@ -7,6 +7,8 @@ import {
   RESUME_EXPERIENCE_NGO,
   RESUME_EDUCATION,
   SOCIAL,
+  SETTINGS,
+  SEO,
 } from "libs/graphql/fragments";
 
 export const GET_RESUME = gql`
@@ -26,6 +28,12 @@ export const GET_RESUME = gql`
     footer: allResume {
       ...Social
     }
+    settings: allResume {
+      ...Settings
+    }
+    seo: allResume {
+      ...SEO
+    }
   }
   ${RESUME_HEADER}
   ${RESUME_SIDEBAR}
@@ -34,4 +42,6 @@ export const GET_RESUME = gql`
   ${RESUME_EXPERIENCE_NGO}
   ${RESUME_EDUCATION}
   ${SOCIAL}
+  ${SETTINGS}
+  ${SEO}
 `;

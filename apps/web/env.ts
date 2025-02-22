@@ -12,6 +12,7 @@ const envVariables: Record<string, unknown> = {
   NEXT_PUBLIC_SANITY_PROJECT_ID: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   NEXT_PUBLIC_SANITY_DATASET: process.env.NEXT_PUBLIC_SANITY_DATASET,
   NEXT_PUBLIC_BLOB_PROJECT_ID: process.env.NEXT_PUBLIC_BLOB_PROJECT_ID,
+  NEXT_PUBLIC_GA_TRACKING_ID: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
 };
 const env = validateEnv(envVariables);
 

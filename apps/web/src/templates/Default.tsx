@@ -1,22 +1,23 @@
 "use client";
 import Header from "app/components/Header";
 import Footer from "app/components/Footer";
-import { useResumeData } from "app/context/ResumeContext";
+import { TemplateProps } from "types/components";
+import { useSettings } from "app/hooks/useSettings";
 
-import { DefaultTemplateProps } from "types/components";
+export default function DefaultTemplate({ children }: TemplateProps) {
+  const settings = useSettings();
 
-export default function DefaultTemplate({ children }: DefaultTemplateProps) {
-  const resumeData = useResumeData();
-
-  // Check if `footer` has the correct structure and extract `social`
-  const socialLinks = Array.isArray(resumeData?.footer)
-    ? resumeData?.footer[0]?.social || []
-    : [];
   return (
-    <main className="w-full text-gray bg-[#525659] first-letter:min-h-screen">
+    <main
+      className="w-full first-letter:min-h-screen defaultTemplate"
+      style={{
+        backgroundColor: settings?.mainBackground,
+        color: settings?.mainTextColor,
+      }}
+    >
       <Header />
       {children}
-      <Footer social={socialLinks} />
+      <Footer />
     </main>
   );
 }
