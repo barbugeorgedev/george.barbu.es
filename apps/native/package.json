@@ -27,7 +27,6 @@
     "@react-native/assets-registry": "^0.77.1",
     "@react-native/gradle-plugin": "^0.74.0",
     "@react-navigation/native": "^6.0.2",
-    "@types/react": "18.2.79",
     "app": "*",
     "assets": "*",
     "env": "*",
@@ -57,6 +56,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@react-native-community/cli": "^15.1.3",
     "@react-native-community/netinfo": "^11.4.1",
     "@types/react": "~18.3.12",
     "@types/react-native-dotenv": "^0.2.2",

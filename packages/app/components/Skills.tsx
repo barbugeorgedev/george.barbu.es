@@ -23,7 +23,9 @@ const Skills: React.FC = ({}) => {
           >
             {skill.label}
           </Text>
-          <View className="flex flex-row">
+          <View
+            className={`flex flex-wrap ${skill.view === "tags" ? "flex-row" : "flex-col"}`}
+          >
             {skill.items?.map(
               (subskill: { title: string }, subIndex: number) => (
                 <Text key={subskill.title} className="mx-1">

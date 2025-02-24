@@ -122,6 +122,18 @@ const Experience: React.FC<DefaultComponentProps> = ({ className }) => {
                         <Text key={index}>- {duty}</Text>
                       ))}
                     </Text>
+                    <Text className="text-xs flex flex-row mt-2 opacity-70">
+                      {item.skills && item.skills.length > 0
+                        ? item.skills.map((skill, index) => (
+                            <Text
+                              className="mr-1 border opacity-90 rounded-md p-1"
+                              key={index}
+                            >
+                              {skill.title}
+                            </Text>
+                          ))
+                        : null}
+                    </Text>
                   </View>
                 ))}
               </View>

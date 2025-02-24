@@ -11,6 +11,7 @@ interface ExperienceItem {
     presentDate?: boolean;
   };
   duties: string[];
+  skills: { title: string }[];
 }
 
 interface ExperienceData {

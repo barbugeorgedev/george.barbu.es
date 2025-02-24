@@ -5,36 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ebdda24-e4ca-4595-8eb7-c8dbee77c7b7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/apps/native/eas.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/native/src/screens/Home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apps/native/src/screens/Home.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/native/src/templates/Default.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apps/native/src/templates/Default.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/web/env.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/env.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/web/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/next.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/web/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/src/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/web/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/src/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/web/src/templates/Default.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/src/templates/Default.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/web/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/components/Contact.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/components/Contact.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/components/Education.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/components/Education.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/components/Experience/EarlyCareer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/components/Experience/EarlyCareer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/components/Experience/Experience.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/components/Experience/Experience.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/components/Experience/NGOExperience.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/components/Experience/NGOExperience.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/components/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/components/Footer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/components/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/components/Sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/components/Sidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/components/Skills.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/components/Skills.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/components/Summary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/components/Summary.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/components/TopSide.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/components/TopSide.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/components/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/components/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/screens/Home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/screens/Home.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/utils/MobileActions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/utils/MobileActions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/env/src/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/env/src/schema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/libs/src/graphql/fragments/resume.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/libs/src/graphql/fragments/resume.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/libs/src/graphql/queries/resume.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/libs/src/graphql/queries/resume.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/types/src/components/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/types/src/components/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/types/src/components/templates.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/types/src/components/templates.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/types/src/graphql/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/types/src/graphql/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/native/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/apps/native/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/native/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/apps/native/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,38 +21,38 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "barbugeorgedev"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;barbugeorgedev&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "git@github.com:barbugeorgedev/george.barbu.es.git",
-    "accountId": "325ff1ea-c9e0-49f9-84bd-eb195fa54c02"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:barbugeorgedev/george.barbu.es.git&quot;,
+    &quot;accountId&quot;: &quot;325ff1ea-c9e0-49f9-84bd-eb195fa54c02&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 6
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectId" id="2tOhEQP9VCnlHAGJeGShTsBSrYt" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

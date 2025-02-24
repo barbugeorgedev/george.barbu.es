@@ -18,6 +18,7 @@ export const RESUME_SIDEBAR = gql`
 
     skillsSections {
       label
+      view
       items {
         title
       }
