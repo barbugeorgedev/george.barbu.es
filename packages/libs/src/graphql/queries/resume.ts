@@ -9,6 +9,7 @@ import {
   SOCIAL,
   SETTINGS,
   SEO,
+  PAGE,
 } from "libs/graphql/fragments";
 
 export const GET_RESUME = gql`
@@ -34,6 +35,9 @@ export const GET_RESUME = gql`
     seo: allResume(where: $filter) {
       ...SEO
     }
+    page: allResume(where: $filter) {
+      ...PAGE
+    }
   }
   ${RESUME_HEADER}
   ${RESUME_SIDEBAR}
@@ -44,4 +48,5 @@ export const GET_RESUME = gql`
   ${SOCIAL}
   ${SETTINGS}
   ${SEO}
+  ${PAGE}
 `;

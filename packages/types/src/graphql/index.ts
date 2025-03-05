@@ -60,7 +60,15 @@ export interface Settings {
   };
 }
 
+export interface PageData {
+  slug: {
+    current: string;
+    source: string;
+  };
+}
+
 export interface ResumeData {
+  page: PageData;
   content: {
     experienceSection?: ExperienceData;
     earlyCareerExperienceSection?: ExperienceData;

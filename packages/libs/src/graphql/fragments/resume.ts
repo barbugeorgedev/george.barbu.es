@@ -165,3 +165,13 @@ export const SEO = gql`
     }
   }
 `;
+
+export const PAGE = gql`
+  fragment PAGE on Resume {
+    homepage
+    slug {
+      current
+      source
+    }
+  }
+`;

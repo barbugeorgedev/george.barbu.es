@@ -4,14 +4,17 @@ import Icon from "ui/icon";
 import { View as ViewWEB } from "ui/view";
 import { downloadPDFweb, printPDF } from "app/utils/WebActions";
 import { downloadPDFmobile, sharePDFmobile } from "app/utils/MobileActions";
-import DefaultComponentProps from "types/components";
 import { useSettings } from "app/hooks/useSettings";
+import { usePage } from "app/hooks/usePage";
 
-const Header: React.FC<DefaultComponentProps> = () => {
+const Header: React.FC = () => {
   const settings = useSettings();
+  const pageData = usePage();
+  const slug = pageData?.[0].slug.current ?? "/";
 
   const isWEB = Platform.OS === "web";
-  const downloadPDF = isWEB ? downloadPDFweb : downloadPDFmobile;
+  const downloadPDF = () =>
+    isWEB ? downloadPDFweb(slug) : downloadPDFmobile(slug);
 
   return (
     <ViewWEB
@@ -27,7 +30,7 @@ const Header: React.FC<DefaultComponentProps> = () => {
         />
       </TouchableOpacity>
       {isWEB ? (
-        <TouchableOpacity onPress={printPDF} className="ml-2">
+        <TouchableOpacity onPress={() => printPDF(slug)} className="ml-2">
           <Icon
             type="ai"
             name="AiFillPrinter"
@@ -37,7 +40,7 @@ const Header: React.FC<DefaultComponentProps> = () => {
           />
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity onPress={sharePDFmobile} className="ml-2">
+        <TouchableOpacity onPress={() => sharePDFmobile(slug)} className="ml-2">
           <Icon
             name="share-alt"
             color={settings?.headerIconsColor}

@@ -1,6 +1,14 @@
 const axios = require("axios");
 const { put } = require("@vercel/blob");
+const { createClient } = require("@sanity/client");
 require("dotenv").config();
+
+const sanity = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
+  useCdn: false,
+  apiVersion: "2024-03-01",
+});
 
 const SITE_URL =
   process.env.NODE_ENV !== "development"
@@ -10,7 +18,34 @@ const REVALIDATE_URL = `${SITE_URL}/api/cache?clear=${process.env.NEXT_PUBLIC_RE
 const BLOB_TOKEN = process.env.NEXT_PUBLIC_BLOB_READ_WRITE_TOKEN;
 const STORAGE_NAME = process.env.NEXT_PUBLIC_BLOB_STORAGE_NAME || "pdf";
 
-const PAGES = ["/"];
+const fetchSanityRoutes = async () => {
+  try {
+    console.log("🔌 Fetching routes from Sanity...");
+
+    const query = `*[_type == "resume" && defined(slug.current)]{
+      "route": slug.current
+    }`;
+
+    const pages = await sanity.fetch(query);
+
+    if (!pages || pages.length === 0) {
+      console.warn("⚠️ No routes found in Sanity.");
+      return [];
+    }
+
+    const routes = pages.map((page) => `/${page.route}`);
+    console.log(`✅ Found ${routes.length} routes from Sanity!`);
+    return routes;
+  } catch (error) {
+    console.error("❌ Error fetching routes from Sanity:", error.message);
+    return [];
+  }
+};
+let PAGES = [];
+
+(async () => {
+  PAGES = await fetchSanityRoutes();
+})();
 
 if (!BLOB_TOKEN) {
   console.error("❌ Missing BLOB_READ_WRITE_TOKEN. Set it in your .env file.");

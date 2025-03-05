@@ -1,9 +1,13 @@
 export const pdfName = "george-barbu.pdf";
-export const pdfUrl = "https://george.barbu.es/api/download-pdf";
+const SITE_URL =
+  process.env.NODE_ENV !== "development"
+    ? process.env.NEXT_PUBLIC_API_URL
+    : "http://localhost:3000";
+export const getPdfUrl = (slug: string) => `${SITE_URL}/api/pdf/${slug}`;
 
-export const fetchPDFBlob = async (): Promise<Blob | null> => {
+export const fetchPDFBlob = async (slug: string): Promise<Blob | null> => {
   try {
-    const response = await fetch(pdfUrl, { method: "GET" });
+    const response = await fetch(getPdfUrl(slug), { method: "GET" });
     if (!response.ok) throw new Error("Failed to fetch the latest PDF.");
     return await response.blob();
   } catch (error) {
@@ -12,24 +16,24 @@ export const fetchPDFBlob = async (): Promise<Blob | null> => {
   }
 };
 
-export const downloadPDFweb = async (): Promise<void> => {
-  const blob = await fetchPDFBlob();
+export const downloadPDFweb = async (slug: string): Promise<void> => {
+  const blob = await fetchPDFBlob(slug);
   if (!blob) return;
 
   const blobUrl = window.URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = blobUrl;
-  link.download = pdfName;
+  link.download = `george-barbu-${slug}.pdf`;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
   window.URL.revokeObjectURL(blobUrl);
 };
 
-export const printPDF = async (): Promise<void> => {
+export const printPDF = async (slug: string): Promise<void> => {
   try {
-    const response = await fetch(pdfUrl);
-    const blob = await response.blob();
+    const blob = await fetchPDFBlob(slug);
+    if (!blob) return;
     const blobUrl = URL.createObjectURL(blob);
     const iframe = document.createElement("iframe");
 

@@ -19,7 +19,7 @@ module.exports = withExpo({
     "nativewind",
     "react-native-css-interop",
   ],
-  webpack: (config, { isServer }) => {
+  webpack: (config) => {
     config.resolve.alias = {
       ...(config.resolve.alias || {}),
       "react-native$": "react-native-web",

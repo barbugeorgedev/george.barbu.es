@@ -1,20 +1,19 @@
 import { Alert } from "react-native";
 import * as Sharing from "expo-sharing";
 import * as IntentLauncher from "expo-intent-launcher";
-import { pdfUrl } from "app/utils/WebActions";
 import { downloadFile } from "app/utils/fileHelpers";
 import { isAndroid } from "app/utils/platformHelpers";
 
-export const downloadPDFmobile = async (): Promise<void> => {
+export const downloadPDFmobile = async (slug: string): Promise<void> => {
   console.log("downloadPDFmobile");
-  const uri = await downloadFile(pdfUrl, "george-barbu.pdf");
+  const uri = await downloadFile(slug, "george-barbu-cv.pdf");
   if (uri) console.log("File ready at:", uri);
 };
 
-export const sharePDFmobile = async () => {
+export const sharePDFmobile = async (slug: string): Promise<void> => {
   console.log("sharePDFmobile");
   try {
-    const uri = await downloadFile(pdfUrl, "shared.pdf");
+    const uri = await downloadFile(slug, "george-barbu-cv.pdf");
     if (!uri) return;
 
     if (isAndroid) {

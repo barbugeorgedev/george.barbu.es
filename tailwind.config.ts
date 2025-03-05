@@ -100,10 +100,6 @@ module.exports = {
     breakAfter: ["responsive"],
     breakInside: ["responsive"],
   },
-  safelist: [
-    {
-      pattern: /bg-\[#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})\]/,
-    },
-  ],
+  safelist: [{}],
   plugins: ["tailwindcss-break"],
 };
