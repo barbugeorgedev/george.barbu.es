@@ -16,7 +16,7 @@ const NGOExperience: React.FC<DefaultComponentProps> = ({ className }) => {
       <Text
         className="uppercase font-['Norwester'] text-xl mt-11"
         style={{
-          color: settings?.mainSectionTextColor,
+          color: settings?.mainSectionTextColor?.hex,
         }}
       >
         {data.label}
@@ -26,7 +26,7 @@ const NGOExperience: React.FC<DefaultComponentProps> = ({ className }) => {
           <Text
             className="font-['LatoBlack'] uppercase text-sm font-semibold"
             style={{
-              color: settings?.mainSectionSecondaryTextColor,
+              color: settings?.mainSectionSecondaryTextColor?.hex,
             }}
           >
             {item.company}
@@ -35,7 +35,7 @@ const NGOExperience: React.FC<DefaultComponentProps> = ({ className }) => {
             <Text
               className="font-['LatoBlack'] text-xs"
               style={{
-                color: settings?.mainSectionPrimaryTextColor,
+                color: settings?.mainSectionPrimaryTextColor?.hex,
               }}
             >
               {item?.experienceDates?.startDate?.substring(0, 4) ?? "N/A"}-
@@ -47,7 +47,7 @@ const NGOExperience: React.FC<DefaultComponentProps> = ({ className }) => {
           <Text
             className="font-['LatoBlack'] uppercase text-sm font-semibold"
             style={{
-              color: settings?.mainSectionSecondaryTextColor,
+              color: settings?.mainSectionSecondaryTextColor?.hex,
             }}
           >
             {item.role}

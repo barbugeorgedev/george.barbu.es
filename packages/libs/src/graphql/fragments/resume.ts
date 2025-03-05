@@ -131,23 +131,57 @@ export const SETTINGS = gql`
   }
 
   fragment ThemeSettings on ThemeSettings {
-    headerIconsColor
-    mainBackground
-    headerBackground
-    headerTextColor
-    sidebarBackground
-    mainSectionBackground
-    sidebarSectionTextColor
-    sidebarTextColor
-    mainTextColor
-    mainSectionDotColor
-    mainSectionLineColor
-    mainSectionTextColor
-    mainSectionPrimaryTextColor
-    mainSectionSecondaryTextColor
-    footerTextColor
-    footerIconsColor
-    footerLinkColor
+    headerIconsColor {
+      hex
+    }
+    mainBackground {
+      hex
+    }
+    headerBackground {
+      hex
+    }
+    headerTextColor {
+      hex
+    }
+    sidebarBackground {
+      hex
+    }
+    mainSectionBackground {
+      hex
+    }
+    sidebarSectionTextColor {
+      hex
+    }
+    sidebarTextColor {
+      hex
+    }
+    mainTextColor {
+      hex
+    }
+    mainSectionDotColor {
+      hex
+    }
+    mainSectionLineColor {
+      hex
+    }
+    mainSectionTextColor {
+      hex
+    }
+    mainSectionPrimaryTextColor {
+      hex
+    }
+    mainSectionSecondaryTextColor {
+      hex
+    }
+    footerTextColor {
+      hex
+    }
+    footerIconsColor {
+      hex
+    }
+    footerLinkColor {
+      hex
+    }
   }
 `;
 

@@ -20,7 +20,7 @@ export const Home: React.FC = () => {
       <View
         className="px-8 lg:w-2/5"
         style={{
-          backgroundColor: settings?.sidebarBackground,
+          backgroundColor: settings?.sidebarBackground?.hex,
         }}
       >
         <Sidebar className="pb-10 pt-10 print:pt-44 sm:pt-56" />
@@ -29,7 +29,7 @@ export const Home: React.FC = () => {
       <View
         className="printColor px-8 lg:w-3/5"
         style={{
-          backgroundColor: settings?.mainSectionBackground,
+          backgroundColor: settings?.mainSectionBackground?.hex,
         }}
       >
         <View className="py-10 print:pt-48 lg:pt-60 lg:mt-5">

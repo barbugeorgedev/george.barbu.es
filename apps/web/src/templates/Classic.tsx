@@ -11,8 +11,8 @@ export default function ClassicTemplate({ children }: TemplateProps) {
     <main
       className="w-full first-letter:min-h-screen classicTemplate"
       style={{
-        backgroundColor: settings?.mainBackground,
-        color: settings?.mainTextColor,
+        backgroundColor: settings?.mainBackground?.hex,
+        color: settings?.mainTextColor?.hex,
       }}
     >
       <Header />

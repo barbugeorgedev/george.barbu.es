@@ -14,7 +14,7 @@ const Summary: React.FC<DefaultComponentProps> = ({ className }) => {
       <Text
         className="uppercase font-['Norwester'] font-light text-xl mb-4"
         style={{
-          color: settings?.sidebarSectionTextColor,
+          color: settings?.sidebarSectionTextColor?.hex,
         }}
       >
         {String(data?.label ?? "")}
@@ -22,7 +22,7 @@ const Summary: React.FC<DefaultComponentProps> = ({ className }) => {
       <Text
         className="text-[0.70rem] font-['Lato'] leading-4"
         style={{
-          color: settings?.sidebarTextColor,
+          color: settings?.sidebarTextColor?.hex,
         }}
       >
         {String(data?.summary ?? "")}

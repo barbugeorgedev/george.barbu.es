@@ -33,23 +33,57 @@ export interface ContactProps {
 }
 
 export interface ThemeSettings {
-  headerIconsColor?: string;
-  mainBackground?: string;
-  headerBackground?: string;
-  headerTextColor?: string;
-  sidebarBackground?: string;
-  mainSectionBackground?: string;
-  sidebarSectionTextColor?: string;
-  sidebarTextColor?: string;
-  mainTextColor?: string;
-  mainSectionDotColor?: string;
-  mainSectionLineColor?: string;
-  mainSectionTextColor?: string;
-  mainSectionPrimaryTextColor?: string;
-  mainSectionSecondaryTextColor?: string;
-  footerTextColor?: string;
-  footerIconsColor?: string;
-  footerLinkColor?: string;
+  headerIconsColor?: {
+    hex: string;
+  };
+  mainBackground?: {
+    hex: string;
+  };
+  headerBackground?: {
+    hex: string;
+  };
+  headerTextColor?: {
+    hex: string;
+  };
+  sidebarBackground?: {
+    hex: string;
+  };
+  mainSectionBackground?: {
+    hex: string;
+  };
+  sidebarSectionTextColor?: {
+    hex: string;
+  };
+  sidebarTextColor?: {
+    hex: string;
+  };
+  mainTextColor?: {
+    hex: string;
+  };
+  mainSectionDotColor?: {
+    hex: string;
+  };
+  mainSectionLineColor?: {
+    hex: string;
+  };
+  mainSectionTextColor?: {
+    hex: string;
+  };
+  mainSectionPrimaryTextColor?: {
+    hex: string;
+  };
+  mainSectionSecondaryTextColor?: {
+    hex: string;
+  };
+  footerTextColor?: {
+    hex: string;
+  };
+  footerIconsColor?: {
+    hex: string;
+  };
+  footerLinkColor?: {
+    hex: string;
+  };
 }
 
 export interface Settings {

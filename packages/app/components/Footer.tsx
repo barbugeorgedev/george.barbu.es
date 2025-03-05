@@ -20,7 +20,7 @@ const Footer: React.FC = ({}) => {
         <Text
           className="text-sm mr-1 "
           style={{
-            color: settings?.footerTextColor,
+            color: settings?.footerTextColor?.hex,
           }}
         >
           © {new Date().getFullYear()} | Developed with
@@ -36,7 +36,7 @@ const Footer: React.FC = ({}) => {
         <Text
           className=" text-sm mr-1"
           style={{
-            color: settings?.footerTextColor,
+            color: settings?.footerTextColor?.hex,
           }}
         >
           by
@@ -46,7 +46,7 @@ const Footer: React.FC = ({}) => {
           <Text
             className="font-bold text-sm"
             style={{
-              color: settings?.footerLinkColor,
+              color: settings?.footerLinkColor?.hex,
             }}
           >
             George Barbu
@@ -62,7 +62,7 @@ const Footer: React.FC = ({}) => {
             <Text className="ml-4 last:ml-o">
               <Icon
                 name={item.service}
-                color={settings?.footerIconsColor}
+                color={settings?.footerIconsColor?.hex}
                 className="!text-[28px]"
               />
             </Text>

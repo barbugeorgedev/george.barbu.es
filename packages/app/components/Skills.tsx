@@ -18,7 +18,7 @@ const Skills: React.FC = ({}) => {
           <Text
             className="uppercase font-['Norwester'] text-xl mb-4"
             style={{
-              color: settings?.sidebarSectionTextColor,
+              color: settings?.sidebarSectionTextColor?.hex,
             }}
           >
             {skill.label}
@@ -32,7 +32,7 @@ const Skills: React.FC = ({}) => {
                   <Text
                     className="text-[0.70rem] font-['Lato'] leading-3"
                     style={{
-                      color: settings?.sidebarTextColor,
+                      color: settings?.sidebarTextColor?.hex,
                     }}
                   >
                     {subskill.title}

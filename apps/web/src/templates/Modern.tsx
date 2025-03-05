@@ -11,8 +11,8 @@ export default function ModernTemplate({ children }: TemplateProps) {
     <main
       className="w-full first-letter:min-h-screen modernTemplate"
       style={{
-        backgroundColor: settings?.mainBackground,
-        color: settings?.mainTextColor,
+        backgroundColor: settings?.mainBackground?.hex,
+        color: settings?.mainTextColor?.hex,
       }}
     >
       <Header />

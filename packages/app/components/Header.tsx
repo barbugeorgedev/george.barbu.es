@@ -10,7 +10,7 @@ import { usePage } from "app/hooks/usePage";
 const Header: React.FC = () => {
   const settings = useSettings();
   const pageData = usePage();
-  const slug = pageData?.[0].slug.current ?? "/";
+  const slug = pageData?.[0]?.slug?.current ?? "/";
 
   const isWEB = Platform.OS === "web";
   const downloadPDF = () =>
@@ -25,7 +25,7 @@ const Header: React.FC = () => {
         <Icon
           type="fa"
           name="download"
-          color={settings?.headerIconsColor}
+          color={settings?.headerIconsColor?.hex}
           className="!text-[28px] pb-1 sm:mb-0"
         />
       </TouchableOpacity>
@@ -34,7 +34,7 @@ const Header: React.FC = () => {
           <Icon
             type="ai"
             name="AiFillPrinter"
-            color={settings?.headerIconsColor}
+            color={settings?.headerIconsColor?.hex}
             size={30}
             className="!text-[28px] pb-1 sm:mb-0"
           />
@@ -43,7 +43,7 @@ const Header: React.FC = () => {
         <TouchableOpacity onPress={() => sharePDFmobile(slug)} className="ml-2">
           <Icon
             name="share-alt"
-            color={settings?.headerIconsColor}
+            color={settings?.headerIconsColor?.hex}
             size={30}
             className="!text-[28px] pb-1 sm:mb-0"
           />

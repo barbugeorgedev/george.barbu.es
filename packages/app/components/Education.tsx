@@ -17,7 +17,7 @@ const Education: React.FC<DefaultComponentProps> = ({ className }) => {
         <Text
           className="uppercase font-['Norwester'] text-xl mb-4"
           style={{
-            color: settings?.mainSectionTextColor,
+            color: settings?.mainSectionTextColor?.hex,
           }}
         >
           {data.label}
@@ -33,7 +33,7 @@ const Education: React.FC<DefaultComponentProps> = ({ className }) => {
               <Text
                 className="font-['LatoBlack'] uppercase text-sm font-semibold"
                 style={{
-                  color: settings?.mainSectionSecondaryTextColor,
+                  color: settings?.mainSectionSecondaryTextColor?.hex,
                 }}
               >
                 {item.institution}
@@ -42,8 +42,8 @@ const Education: React.FC<DefaultComponentProps> = ({ className }) => {
                 <Text
                   className="border-r-2 border-solid mr-1 pr-1 font-['LatoBlack'] text-xs"
                   style={{
-                    color: settings?.mainSectionPrimaryTextColor,
-                    borderColor: settings?.mainSectionLineColor,
+                    color: settings?.mainSectionPrimaryTextColor?.hex,
+                    borderColor: settings?.mainSectionLineColor?.hex,
                   }}
                 >
                   {item.degree}
@@ -51,7 +51,7 @@ const Education: React.FC<DefaultComponentProps> = ({ className }) => {
                 <Text
                   className="font-['LatoBlack'] text-xs"
                   style={{
-                    color: settings?.mainSectionPrimaryTextColor,
+                    color: settings?.mainSectionPrimaryTextColor?.hex,
                   }}
                 >
                   {item.type}

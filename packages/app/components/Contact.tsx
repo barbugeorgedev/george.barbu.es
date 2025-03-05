@@ -14,7 +14,7 @@ const Contact: React.FC<DefaultComponentProps> = ({ className }) => {
       <Text
         className="uppercase font-['Norwester'] text-xl mb-4"
         style={{
-          color: settings?.sidebarSectionTextColor,
+          color: settings?.sidebarSectionTextColor?.hex,
         }}
       >
         {String(data?.label ?? "")}
@@ -27,7 +27,7 @@ const Contact: React.FC<DefaultComponentProps> = ({ className }) => {
                 <Text
                   className="text-[0.70rem] font-['Lato'] leading-6"
                   style={{
-                    color: settings?.sidebarTextColor,
+                    color: settings?.sidebarTextColor?.hex,
                   }}
                 >
                   {contact.value}
@@ -41,7 +41,7 @@ const Contact: React.FC<DefaultComponentProps> = ({ className }) => {
                   <Text
                     className="text-[0.70rem] font-['Lato'] leading-6"
                     style={{
-                      color: settings?.sidebarTextColor,
+                      color: settings?.sidebarTextColor?.hex,
                     }}
                   >
                     {contact.value}
@@ -56,7 +56,7 @@ const Contact: React.FC<DefaultComponentProps> = ({ className }) => {
                   <Text
                     className="text-[0.70rem] font-['Lato'] leading-6"
                     style={{
-                      color: settings?.sidebarTextColor,
+                      color: settings?.sidebarTextColor?.hex,
                     }}
                   >
                     {contact.value}
@@ -71,7 +71,7 @@ const Contact: React.FC<DefaultComponentProps> = ({ className }) => {
                   <Text
                     className="text-[0.70rem] font-['Lato'] leading-4"
                     style={{
-                      color: settings?.sidebarTextColor,
+                      color: settings?.sidebarTextColor?.hex,
                     }}
                   >
                     {contact.value}

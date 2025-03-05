@@ -32,7 +32,7 @@ const Experience: React.FC<DefaultComponentProps> = ({ className }) => {
       <Text
         className="uppercase font-['Norwester'] text-xl "
         style={{
-          color: settings?.mainSectionTextColor,
+          color: settings?.mainSectionTextColor?.hex,
         }}
       >
         {data.label}
@@ -48,7 +48,7 @@ const Experience: React.FC<DefaultComponentProps> = ({ className }) => {
               <Text
                 className="font-['LatoBlack'] uppercase text-sm font-semibold"
                 style={{
-                  color: settings?.mainSectionSecondaryTextColor,
+                  color: settings?.mainSectionSecondaryTextColor?.hex,
                 }}
               >
                 {company}
@@ -57,7 +57,7 @@ const Experience: React.FC<DefaultComponentProps> = ({ className }) => {
                 <Text
                   className="font-['LatoBlack'] text-xs"
                   style={{
-                    color: settings?.mainSectionPrimaryTextColor,
+                    color: settings?.mainSectionPrimaryTextColor?.hex,
                   }}
                 >
                   {groups[company][
@@ -75,7 +75,7 @@ const Experience: React.FC<DefaultComponentProps> = ({ className }) => {
               <View
                 className="relative border-l border-solid"
                 style={{
-                  borderColor: settings?.mainSectionLineColor,
+                  borderColor: settings?.mainSectionLineColor?.hex,
                 }}
               >
                 {groups[company].map((item, index) => (
@@ -89,14 +89,14 @@ const Experience: React.FC<DefaultComponentProps> = ({ className }) => {
                     <View
                       className="absolute w-3 h-3 rounded-full mt-1.5 -left-6 ml-0.5 border"
                       style={{
-                        borderColor: settings?.mainSectionLineColor,
-                        backgroundColor: settings?.mainSectionDotColor,
+                        borderColor: settings?.mainSectionLineColor?.hex,
+                        backgroundColor: settings?.mainSectionDotColor?.hex,
                       }}
                     ></View>
                     <Text
                       className="font-['LatoBlack'] uppercase text-sm font-semibold"
                       style={{
-                        color: settings?.mainSectionSecondaryTextColor,
+                        color: settings?.mainSectionSecondaryTextColor?.hex,
                       }}
                     >
                       {item.role}

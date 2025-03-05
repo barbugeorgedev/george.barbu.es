@@ -13,7 +13,7 @@ const TopSide: React.FC = () => {
     <View
       className="h-44 mt-48  flex flex-col content-center justify-center relative pb-0 z-50 sm:h-32 sm:top-0 sm:w-full sm:justify-center sm:mt-14 sm:absolute  print:pb-0 print:absolute print:justify-center print:h-32 print:mt-0 "
       style={{
-        backgroundColor: settings?.headerBackground,
+        backgroundColor: settings?.headerBackground?.hex,
       }}
     >
       <View className="flex relative w-full">
@@ -36,7 +36,7 @@ const TopSide: React.FC = () => {
                 <Text
                   className="font-normal text-3xl mb-3 font-['Norwester'] tracking-wider text-center sm:text-left"
                   style={{
-                    color: settings?.headerTextColor,
+                    color: settings?.headerTextColor?.hex,
                   }}
                 >
                   {String(data?.fullname ?? "")}
@@ -47,7 +47,7 @@ const TopSide: React.FC = () => {
                 <Text
                   className="text-[1.2rem] font-semibold font-['MontserratSemiBold'] tracking-widest text-center mb-1 sm:text-left"
                   style={{
-                    color: settings.headerTextColor,
+                    color: settings.headerTextColor?.hex,
                   }}
                 >
                   {String(data?.role ?? "")}
@@ -57,7 +57,7 @@ const TopSide: React.FC = () => {
                 <Text
                   className="text-sm leading-2 font-['MontserratSemiBold'] tracking-wide text-center sm:font-['MontserratLight'] sm:text-left"
                   style={{
-                    color: settings.headerTextColor,
+                    color: settings.headerTextColor?.hex,
                   }}
                 >
                   {String(data?.slogan ?? "")}

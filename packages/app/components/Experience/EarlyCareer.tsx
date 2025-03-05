@@ -17,7 +17,7 @@ const EarlyCareer: React.FC<DefaultComponentProps> = ({ className }) => {
         <Text
           className="uppercase font-['Norwester'] text-xl mt-20 mb-6"
           style={{
-            color: settings?.mainSectionTextColor,
+            color: settings?.mainSectionTextColor?.hex,
           }}
         >
           {data.label}
@@ -31,7 +31,7 @@ const EarlyCareer: React.FC<DefaultComponentProps> = ({ className }) => {
               <Text
                 className="font-['LatoBlack'] uppercase text-sm font-semibold"
                 style={{
-                  color: settings?.mainSectionSecondaryTextColor,
+                  color: settings?.mainSectionSecondaryTextColor?.hex,
                 }}
               >
                 {item.role},
@@ -39,7 +39,7 @@ const EarlyCareer: React.FC<DefaultComponentProps> = ({ className }) => {
               <Text
                 className="font-['Lato'] uppercase text-sm"
                 style={{
-                  color: settings?.mainSectionSecondaryTextColor,
+                  color: settings?.mainSectionSecondaryTextColor?.hex,
                 }}
               >
                 {item.company}
@@ -47,7 +47,7 @@ const EarlyCareer: React.FC<DefaultComponentProps> = ({ className }) => {
               <Text
                 className="font-['Lato'] text-sm"
                 style={{
-                  color: settings?.mainSectionPrimaryTextColor,
+                  color: settings?.mainSectionPrimaryTextColor?.hex,
                 }}
               >
                 ({item.experienceDates.startDate?.substring(0, 4) ?? "N/A"}
