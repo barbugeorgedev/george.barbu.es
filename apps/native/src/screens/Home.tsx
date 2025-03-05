@@ -11,7 +11,13 @@ import { GET_RESUME } from "libs/graphql/queries/resume";
 import { defaultResumeData } from "app/constants";
 
 export default function Home(): JSX.Element {
+  // Fixed the missing closing bracket for the filter object
+  const variables = {
+    filter: { homepage: { eq: true } },
+  };
+
   const { loading, error, data } = useQuery<ResumeData>(GET_RESUME, {
+    variables,
     fetchPolicy: "cache-first",
   });
 

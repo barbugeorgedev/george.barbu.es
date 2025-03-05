@@ -11,19 +11,25 @@ import { ResumeData } from "types/graphql";
 import { GET_RESUME } from "libs/graphql/queries/resume";
 import { defaultResumeData } from "app/constants";
 
-const Page = ({ slug }: { slug: string }) => {
+const Page = () => {
+  const params = useParams();
+  let slug = params?.slug || "/";
+
   // Ensure slug is always a string
-  let finalSlug = slug;
   if (Array.isArray(slug)) {
-    finalSlug = slug.join("/");
+    slug = slug.join("/");
   }
 
   const getResumeFilter = (slug: string) => {
-    return slug === "/" ? { homepage: { eq: true } } : { slug: { eq: slug } };
+    if (slug === "/") {
+      return { homepage: { eq: true } };
+    } else {
+      return { slug: { current: { eq: slug } } };
+    }
   };
 
   const variables = {
-    filter: getResumeFilter(finalSlug),
+    filter: getResumeFilter(slug),
   };
 
   const { loading, error, data } = useQuery<ResumeData>(GET_RESUME, {
