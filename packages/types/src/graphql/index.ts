@@ -95,14 +95,16 @@ export interface Settings {
 }
 
 export interface PageData {
+  homepage: boolean;
   slug: {
     current: string;
-    source: string;
+    source: string | null;
   };
+  __typename: string;
 }
 
 export interface ResumeData {
-  page: PageData;
+  page: PageData[];
   content: {
     experienceSection?: ExperienceData;
     earlyCareerExperienceSection?: ExperienceData;

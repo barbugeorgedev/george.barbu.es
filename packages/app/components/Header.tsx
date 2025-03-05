@@ -10,7 +10,7 @@ import { usePage } from "app/hooks/usePage";
 const Header: React.FC = () => {
   const settings = useSettings();
   const pageData = usePage();
-  const slug = pageData?.[0]?.slug?.current ?? "/";
+  const slug = pageData?.slug?.current ?? "/";
 
   const isWEB = Platform.OS === "web";
   const downloadPDF = () =>

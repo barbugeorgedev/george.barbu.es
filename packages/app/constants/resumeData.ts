@@ -53,10 +53,14 @@ export const defaultResumeData: ResumeData = {
       },
     },
   ],
-  page: {
-    slug: {
-      current: "/",
-      source: "",
+  page: [
+    {
+      homepage: true,
+      slug: {
+        current: "/",
+        source: "",
+      },
+      __typename: "Resume",
     },
-  },
+  ],
 };

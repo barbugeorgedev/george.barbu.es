@@ -105,7 +105,7 @@ const Experience: React.FC<DefaultComponentProps> = ({ className }) => {
                       <Text
                         className="font-['LatoBlack'] text-xs"
                         style={{
-                          color: settings?.mainSectionPrimaryTextColor,
+                          color: settings?.mainSectionPrimaryTextColor?.hex,
                         }}
                       >
                         {item.experienceDates?.startDate?.substring(0, 4) ||

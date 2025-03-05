@@ -2,11 +2,6 @@
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-  mode: "jit",
-  future: {
-    removeDeprecatedGapUtilities: true,
-    purgeLayersByDefault: true,
-  },
   presets: [require("nativewind/preset")], // Enable Tailwind for React Native
   content: [
     "./apps/web/**/*.{js,jsx,ts,tsx}", // Web app (Gatsby, Next.js)
@@ -48,58 +43,23 @@ module.exports = {
         print: { raw: "print" },
         lg: { raw: "print, (min-width: 1024px)" },
       },
+      // Move print-related configurations here
+      typography: {
+        orphans: 3,
+        widows: 3,
+      },
     },
-    orphans: [1, 2, 3],
-    widows: [1, 2, 3],
-    boxDecorationBreak: ["slice", "clone"],
-    breakBefore: [
-      "auto",
-      "avoid",
-      "avoid-page",
-      "page",
-      "always",
-      "left",
-      "right",
-      "recto",
-      "verso",
-      "avoid-column",
-      "column",
-      "avoid-region",
-      "region",
-    ],
-    breakAfter: [
-      "auto",
-      "avoid",
-      "avoid-page",
-      "page",
-      "always",
-      "left",
-      "right",
-      "recto",
-      "verso",
-      "avoid-column",
-      "column",
-      "avoid-region",
-      "region",
-    ],
-    breakInside: [
-      "auto",
-      "avoid",
-      "avoid-page",
-      "avoid-column",
-      "avoid-region",
-    ],
   },
   variants: {
-    // all the following default to ['responsive']
-    margin: ["responsive", "hover", "first"],
-    orphans: ["responsive"],
-    widows: ["responsive"],
-    boxDecorationBreak: ["responsive"],
-    breakBefore: ["responsive"],
-    breakAfter: ["responsive"],
-    breakInside: ["responsive"],
+    extend: {
+      margin: ["responsive", "hover", "first"],
+      orphans: ["responsive"],
+      widows: ["responsive"],
+      boxDecorationBreak: ["responsive"],
+      breakBefore: ["responsive"],
+      breakAfter: ["responsive"],
+      breakInside: ["responsive"],
+    },
   },
-  safelist: [{}],
-  plugins: ["tailwindcss-break"],
+  plugins: [require("tailwindcss-break")],
 };

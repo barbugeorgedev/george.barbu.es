@@ -1,26 +1,23 @@
 import { Alert } from "react-native";
 import * as Sharing from "expo-sharing";
 import * as IntentLauncher from "expo-intent-launcher";
-import { downloadFile } from "app/utils/fileHelpers";
 import { isAndroid } from "app/utils/platformHelpers";
 
 export const downloadPDFmobile = async (slug: string): Promise<void> => {
   console.log("downloadPDFmobile");
-  const uri = await downloadFile(slug, "george-barbu-cv.pdf");
-  if (uri) console.log("File ready at:", uri);
+  if (slug) console.log("File ready at:", slug);
 };
 
 export const sharePDFmobile = async (slug: string): Promise<void> => {
   console.log("sharePDFmobile");
   try {
-    const uri = await downloadFile(slug, "george-barbu-cv.pdf");
-    if (!uri) return;
+    if (!slug) return;
 
     if (isAndroid) {
       try {
         await IntentLauncher.startActivityAsync("android.intent.action.SEND", {
           type: "application/pdf",
-          extra: { "android.intent.extra.STREAM": uri },
+          extra: { "android.intent.extra.STREAM": slug },
         });
         console.log("PDF shared successfully on Android!");
       } catch (error) {
@@ -28,7 +25,7 @@ export const sharePDFmobile = async (slug: string): Promise<void> => {
         Alert.alert("Error", "Failed to share PDF.");
       }
     } else if (await Sharing.isAvailableAsync()) {
-      await Sharing.shareAsync(uri, {
+      await Sharing.shareAsync(slug, {
         mimeType: "application/pdf",
         dialogTitle: "Share PDF",
         UTI: "com.adobe.pdf",
