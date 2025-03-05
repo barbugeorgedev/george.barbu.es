@@ -42,8 +42,7 @@ export const downloadPDFweb = async (slug: string): Promise<void> => {
   const link = document.createElement("a");
   link.href = blobUrl;
 
-  // Use `slug` in filename, ensuring it matches dynamically
-  link.download = `${slug}.pdf`;
+  link.download = `george-barbu-${slug}.pdf`;
 
   document.body.appendChild(link);
   link.click();
