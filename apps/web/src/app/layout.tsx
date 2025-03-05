@@ -1,22 +1,17 @@
-"use client";
-
 import { ReactNode } from "react";
-import { ApolloProvider } from "@apollo/client";
-import client from "libs/graphql/apolloClient";
+import ApolloProviderWrapper from "@components/ApolloProviderWrapper";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import GoogleAnalytics from "@components/GoogleAnalytics";
+import { generateMetadata } from "@components/SEO";
 import "@styles/globals.css";
 
+export { generateMetadata };
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <head>
-        <title>George Barbu CV</title>
-        <link rel="icon" href="/favicon.ico" />
-      </head>
       <body>
-        <ApolloProvider client={client}>{children}</ApolloProvider>
+        <ApolloProviderWrapper>{children}</ApolloProviderWrapper>
         <Analytics />
         <SpeedInsights />
         <GoogleAnalytics />

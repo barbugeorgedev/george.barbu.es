@@ -12,26 +12,26 @@ import {
 } from "libs/graphql/fragments";
 
 export const GET_RESUME = gql`
-  query GetResume {
-    header: allResume {
+  query GetResume($filter: ResumeFilter) {
+    header: allResume(where: $filter) {
       ...ResumeHeader
     }
-    sidebar: allResume {
+    sidebar: allResume(where: $filter) {
       ...ResumeSidebar
     }
-    content: allResume {
+    content: allResume(where: $filter) {
       ...Experience
       ...ExperienceEarly
       ...ExperienceNGO
       ...EducationHistory
     }
-    footer: allResume {
+    footer: allResume(where: $filter) {
       ...Social
     }
-    settings: allResume {
+    settings: allResume(where: $filter) {
       ...Settings
     }
-    seo: allResume {
+    seo: allResume(where: $filter) {
       ...SEO
     }
   }

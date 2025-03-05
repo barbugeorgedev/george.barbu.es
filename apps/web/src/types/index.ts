@@ -1,9 +1,9 @@
 export interface SEOProps {
-  title?: string;
-  description?: string;
-  keywords?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string[];
+  seoImage?: string;
   url?: string;
-  image?: string;
 }
 
 export interface EventParams {
