@@ -3,6 +3,16 @@ import { list } from "@vercel/blob";
 
 export const dynamic = "force-dynamic";
 
+export function OPTIONS(request: NextRequest) {
+  const headers = new Headers({
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+  });
+
+  return new NextResponse(null, { status: 204, headers });
+}
+
 export async function GET(request: NextRequest) {
   try {
     const STORAGE_NAME = process.env.NEXT_PUBLIC_BLOB_STORAGE_NAME || "pdf";
@@ -51,7 +61,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({ url: latestBlob.url }, { status: 200 });
+    const headers = new Headers({ "Access-Control-Allow-Origin": "*" });
+    return NextResponse.json({ url: latestBlob.url }, { status: 200, headers });
   } catch (error) {
     console.error("Error fetching latest PDF:", error);
     return NextResponse.json(
@@ -62,22 +73,4 @@ export async function GET(request: NextRequest) {
       { status: 500 },
     );
   }
-}
-
-const allowedOrigins = ["https://portfolio.barbu.es", "http://localhost:3000"];
-
-export function OPTIONS(request: NextRequest) {
-  const origin = request.headers.get("origin");
-
-  if (!origin || !allowedOrigins.includes(origin)) {
-    return new NextResponse(null, { status: 403 }); // Block unauthorized origins
-  }
-
-  const headers = new Headers({
-    "Access-Control-Allow-Origin": origin,
-    "Access-Control-Allow-Methods": "GET, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-  });
-
-  return new NextResponse(null, { status: 204, headers });
 }
