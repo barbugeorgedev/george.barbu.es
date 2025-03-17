@@ -64,22 +64,20 @@ export async function GET(request: NextRequest) {
   }
 }
 
-const allowedOrigins = ["https://portfolio.barbu.es", "http://localhost"];
+const allowedOrigins = ["https://portfolio.barbu.es", "http://localhost:3000"];
 
 export function OPTIONS(request: NextRequest) {
   const origin = request.headers.get("origin");
-  const allowOrigin = allowedOrigins.includes(origin || "")
-    ? origin
-    : undefined;
+
+  if (!origin || !allowedOrigins.includes(origin)) {
+    return new NextResponse(null, { status: 403 }); // Block unauthorized origins
+  }
 
   const headers = new Headers({
+    "Access-Control-Allow-Origin": origin,
     "Access-Control-Allow-Methods": "GET, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
   });
-
-  if (allowOrigin) {
-    headers.set("Access-Control-Allow-Origin", allowOrigin);
-  }
 
   return new NextResponse(null, { status: 204, headers });
 }
