@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-const allowedOrigins = ["https://portfolio.barbu.es", "http://localhost:3000"];
+const allowedOrigins = ["https://portfolio.barbu.es", "http://localhost"];
 
 export function OPTIONS(request: NextRequest) {
   const origin = request.headers.get("origin");
