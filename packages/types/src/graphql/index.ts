@@ -103,13 +103,36 @@ export interface PageData {
   __typename: string;
 }
 
+interface EducationData {
+  label: string;
+  items: {
+    certifications: string[];
+    institution: string | undefined;
+    degree: string;
+    type: string;
+  }[];
+  disabled?: boolean;
+}
+
+interface EarlyCareerExperienceData {
+  label: string;
+  items: ExperienceItem[];
+  disabled?: boolean;
+}
+
+interface NGOExperienceData {
+  label: string;
+  items: ExperienceItem[];
+  disabled?: boolean;
+}
+
 export interface ResumeData {
   page: PageData[];
   content: {
     experienceSection?: ExperienceData;
-    earlyCareerExperienceSection?: ExperienceData;
-    ngoExperienceSection?: ExperienceData;
-    educationSection?: ExperienceData;
+    earlyCareerExperienceSection?: EarlyCareerExperienceData;
+    ngoExperienceSection?: NGOExperienceData;
+    educationSection?: EducationData;
   }[];
   header: { fullname?: string; role?: string; slogan?: string }[];
   sidebar: {

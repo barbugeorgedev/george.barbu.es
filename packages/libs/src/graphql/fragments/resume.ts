@@ -59,6 +59,7 @@ export const RESUME_EXPERIENCE_EARLY = gql`
   fragment ExperienceEarly on Resume {
     earlyCareerExperienceSection {
       label
+      disabled
       items {
         company
         experienceDates {
@@ -81,6 +82,7 @@ export const RESUME_EXPERIENCE_NGO = gql`
   fragment ExperienceNGO on Resume {
     ngoExperienceSection {
       label
+      disabled
       items {
         company
         experienceDates {
@@ -100,6 +102,7 @@ export const RESUME_EDUCATION = gql`
   fragment EducationHistory on Resume {
     educationSection {
       label
+      disabled
       items {
         institution
         degree

@@ -9,7 +9,7 @@ const NGOExperience: React.FC<DefaultComponentProps> = ({ className }) => {
   const resumeData = useResumeData();
   const data = resumeData?.content?.[0]?.ngoExperienceSection;
 
-  if (!data || !data.items || data.items.length === 0) return null;
+  if (!data || data.disabled || !data.items || data.items.length === 0) return null;
 
   return (
     <View className={className}>
