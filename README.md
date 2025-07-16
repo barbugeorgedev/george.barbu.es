@@ -1,59 +1,75 @@
-# Universal App Starter
+# george.barbu.es
 
-<img width="1725" alt="Universal App Starter Screenshot" src="https://github.com/adebayoileri/rnw-starter-private/assets/46798106/a7343cd0-81f6-4e99-9dc3-deac09c95fac">
+A universal monorepo for web and native apps, built and maintained by George Barbu.
 
-## Get Started
-**Must have Node and Yarn(v1.22.19) installed to setup locally**
+## Getting Started
 
+**Requirements:**
+- Node.js
+- Yarn v1.22.19
+
+Install dependencies:
 ```sh
 yarn
 ```
 
 ## Development
 
+To start all apps in development mode:
 ```sh
-yarn run dev
+yarn dev
+```
+
+To start the web app (Next.js):
+```sh
+yarn web:dev
+```
+
+To start the native app (Expo web):
+```sh
+yarn native:web
 ```
 
 ## Build
 
+To build all apps:
 ```sh
-yarn run build
+yarn build
 ```
 
-### Folder Structure
-This monorepo consists of the two workspaces `apps` & `packages`
-```bash
-universal-app-starter
-└── apps
-    ├── native 
-    └── web
-└── packages
-    ├── ui 
-    └── app
+To build the web app:
+```sh
+yarn web:build
 ```
-### Apps and Packages
 
-- `apps/native`: a [react-native](https://reactnative.dev/) app built with [expo](https://docs.expo.dev/)
-- `apps/web`: a [Next.js](https://nextjs.org/) app built with [react-native-web](https://necolas.github.io/react-native-web/)
-- `packages/ui`: a shared package that contains shared UI components between `web` and `native` applications
-- `packages/app`: a shared package that contains shared logic between `web` and `native` applications
+## Monorepo Structure
 
-### Technologies
+```
+george.barbu.es/
+  apps/
+    native/   # Expo/React Native app
+    web/      # Next.js web app
+  packages/
+    app/      # Shared logic
+    assets/   # Shared assets (fonts, images)
+    env/      # Environment utilities
+    libs/     # Shared libraries (e.g., GraphQL)
+    types/    # Shared TypeScript types
+    ui/       # Shared UI components
+```
 
-- [Expo](https://docs.expo.dev/) for native development
-- [Next.js](https://nextjs.org/) for web development
-- [React Native](https://reactnative.dev/) for native development
-- [React Native Web](https://necolas.github.io/react-native-web/) for web development
-- [NativeWind](https://www.nativewind.dev/) styling solution for native
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [Prettier](https://prettier.io) for code formatting
-- [Turborepo](https://turborepo.dev/) build system for managing monorepo
+## Technologies Used
 
-### Misc
-Interested in setting up a similar project from scratch? Check out the article [here](https://dev.to/adebayoileri/building-a-universal-react-app-with-expo-nextjs-nativewind-3829)
+- [Expo](https://docs.expo.dev/)
+- [Next.js](https://nextjs.org/)
+- [React Native](https://reactnative.dev/)
+- [React Native Web](https://necolas.github.io/react-native-web/)
+- [NativeWind](https://www.nativewind.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Prettier](https://prettier.io)
+- [Turborepo](https://turborepo.dev/)
 
+## Author
 
-### Author
-
-#### [George Barbu](https://george.barbu.es)
+[George Barbu](https://george.barbu.es)

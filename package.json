@@ -5,7 +5,15 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "clean": "turbo run clean && rm -rf node_modules",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "web:postinstall": "yarn workspace web postinstall",
+    "web:dev": "yarn workspace web dev",
+    "web:build": "yarn workspace web build",
+    "web:start": "yarn workspace web start",
+    "web:lint": "yarn workspace web lint",
+    "web:pdf:dev": "yarn workspace web pdf:dev",
+    "web:pdf:blob": "yarn workspace web pdf:blob",
+    "native:web": "yarn workspace native web"
   },
   "workspaces": [
     "apps/*",
