@@ -29,6 +29,16 @@ const Skills: React.FC = ({}) => {
             {skill.items?.map(
               (subskill: { title: string }, subIndex: number) => (
                 <Text key={subskill.title} className="mx-1">
+                  {skill.view === "styled-list" && (
+                    <Text
+                      className="text-[0.70rem] font-['Lato'] leading-3 mr-1"
+                      style={{
+                        color: settings?.sidebarTextColor?.hex,
+                      }}
+                    >
+                      •{" "}
+                    </Text>
+                  )}
                   <Text
                     className="text-[0.70rem] font-['Lato'] leading-3"
                     style={{
@@ -36,7 +46,7 @@ const Skills: React.FC = ({}) => {
                     }}
                   >
                     {subskill.title}
-                    {subIndex !== (skill.items?.length ?? 0) - 1 ? "," : ""}
+                    {skill.view === "tags" && subIndex !== (skill.items?.length ?? 0) - 1 ? "," : ""}
                   </Text>
                 </Text>
               ),
