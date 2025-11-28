@@ -27,6 +27,8 @@ export const RESUME_SIDEBAR = gql`
       label
       items {
         service
+        label
+        showLabel
         value
       }
     }

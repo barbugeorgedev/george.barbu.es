@@ -21,6 +21,8 @@ interface ExperienceData {
 
 export interface ContactItem {
   service: string;
+  label: string;
+  showLabel: boolean;
   value: string;
 }
 

@@ -30,6 +30,15 @@ const Contact: React.FC<DefaultComponentProps> = ({ className }) => {
                     color: settings?.sidebarTextColor?.hex,
                   }}
                 >
+                  {contact.showLabel && contact.label && (
+                    <Text
+                      style={{
+                        color: settings?.sidebarSectionTextColor?.hex,
+                      }}
+                    >
+                      {contact.label}
+                    </Text>
+                  )}
                   {contact.value}
                 </Text>
               )}
@@ -44,6 +53,15 @@ const Contact: React.FC<DefaultComponentProps> = ({ className }) => {
                       color: settings?.sidebarTextColor?.hex,
                     }}
                   >
+                    {contact.showLabel && contact.label && (
+                      <Text
+                        style={{
+                          color: settings?.sidebarSectionTextColor?.hex,
+                        }}
+                      >
+                        {contact.label}
+                      </Text>
+                    )}
                     {contact.value}
                   </Text>
                 </TouchableOpacity>
@@ -59,6 +77,15 @@ const Contact: React.FC<DefaultComponentProps> = ({ className }) => {
                       color: settings?.sidebarTextColor?.hex,
                     }}
                   >
+                    {contact.showLabel && contact.label && (
+                      <Text
+                        style={{
+                          color: settings?.sidebarSectionTextColor?.hex,
+                        }}
+                      >
+                        {contact.label}
+                      </Text>
+                    )}
                     {contact.value}
                   </Text>
                 </TouchableOpacity>
@@ -74,6 +101,15 @@ const Contact: React.FC<DefaultComponentProps> = ({ className }) => {
                       color: settings?.sidebarTextColor?.hex,
                     }}
                   >
+                    {contact.showLabel && contact.label && (
+                      <Text
+                        style={{
+                          color: settings?.sidebarSectionTextColor?.hex,
+                        }}
+                      >
+                        {contact.label}
+                      </Text>
+                    )}
                     {contact.value}
                   </Text>
                 </TouchableOpacity>
