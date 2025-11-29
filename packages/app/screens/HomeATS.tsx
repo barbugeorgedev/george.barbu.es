@@ -239,7 +239,7 @@ export const HomeATS: React.FC = () => {
                       if (!item.showLabel) return "";
                       
                       // Use custom label first if it exists
-                      if (item.label) return `${item.label}: `;
+                      if (item.label) return `${item.label}`;
                       
                       // Fall back to service-based labels
                       if (item.service === "phone" || item.service === "homephone") return "Phone: ";
