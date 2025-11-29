@@ -3,6 +3,7 @@ import { useParams } from "next/navigation";
 import { ResumeDataProvider } from "app/context/ResumeContext";
 import { useQuery } from "@apollo/client";
 import { Home } from "app/screens/Home";
+import { HomeATS } from "app/screens/HomeATS";
 import LoadingScreen from "app/screens/Loading";
 import ErrorScreen from "app/screens/Error";
 import dynamic from "next/dynamic";
@@ -11,14 +12,25 @@ import { ResumeData } from "types/graphql";
 import { GET_RESUME } from "libs/graphql/queries/resume";
 import { defaultResumeData } from "app/constants";
 
+
 const Page = () => {
   const params = useParams();
+  
   let slug = params?.slug || "/";
 
   // Ensure slug is always a string
   if (Array.isArray(slug)) {
     slug = slug.join("/");
   }
+
+  // Check if this is an ATS version route
+  // Routes: /ats (homepage) or /{slug}-ats
+  const isATS = slug === "ats" || slug.endsWith("-ats");
+  
+  // Extract the base slug for data fetching (remove -ats suffix)
+  const baseSlug = isATS 
+    ? (slug === "ats" ? "/" : slug.replace(/-ats$/, ""))
+    : slug;
 
   const getResumeFilter = (slug: string) => {
     if (slug === "/") {
@@ -29,7 +41,7 @@ const Page = () => {
   };
 
   const variables = {
-    filter: getResumeFilter(slug),
+    filter: getResumeFilter(baseSlug),
   };
 
   const { loading, error, data } = useQuery<ResumeData>(GET_RESUME, {
@@ -53,11 +65,13 @@ const Page = () => {
 
   return (
     <ResumeDataProvider value={resumeData}>
-      <TemplateComponent>
+      <TemplateComponent isATS={isATS}>
         {loading ? (
           <LoadingScreen />
         ) : error ? (
           <ErrorScreen message={error.message} />
+        ) : isATS ? (
+          <HomeATS />
         ) : (
           <Home />
         )}
