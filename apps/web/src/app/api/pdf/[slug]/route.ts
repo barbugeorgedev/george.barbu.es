@@ -31,11 +31,13 @@ export async function GET(request: NextRequest) {
     // Fetch all blobs
     const { blobs } = await list({ prefix: `${STORAGE_NAME}` });
     // Filter blobs to include only those matching the specific role/slug
-    const filteredBlobs = blobs.filter(
-      (blob) =>
-        blob.pathname.includes(`/${role}-`) ||
-        blob.pathname.includes(`/${role}.`),
-    );
+    // Be precise: match exact filename to avoid matching both regular and ATS versions
+    const filteredBlobs = blobs.filter((blob) => {
+      const pathname = blob.pathname;
+      // Match exact filename ending: must end with /{role}.pdf
+      // This ensures "george.barbu" doesn't match "george.barbu-ats.pdf"
+      return pathname.endsWith(`/${role}.pdf`);
+    });
 
     if (!filteredBlobs || filteredBlobs.length === 0) {
       console.warn(`No PDFs found for role: ${role}`);

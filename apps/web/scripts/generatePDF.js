@@ -63,38 +63,52 @@ const generateAsideContent = ({
   <aside style="width: ${width}; background: #313638; height: ${height}; position: fixed; ${position}: 0; z-index: -999; border: 0!important;"></aside>
 `;
 
+// Prepare page for ATS version (create plain, simple design)
 // Generate PDF from a given route
-const generatePDF = async (page, route) => {
+const generatePDF = async (page, route, isATS = false) => {
   try {
-    const url = `${SITE_URL}${route}`;
-    const outputPath = path.join(
-      OUTPUT_DIR,
-      `${route.replace("/", "") || "george.barbu"}.pdf`,
-    );
+    // For ATS version, use the new route structure: /ats or /{slug}-ats
+    let url;
+    if (isATS) {
+      if (route === "/") {
+        url = `${SITE_URL}/ats`;
+      } else {
+        url = `${SITE_URL}${route}-ats`;
+      }
+    } else {
+      url = `${SITE_URL}${route}`;
+    }
+    
+    const baseFileName = route.replace("/", "") || "george.barbu";
+    const fileName = isATS ? `${baseFileName}-ats.pdf` : `${baseFileName}.pdf`;
+    const outputPath = path.join(OUTPUT_DIR, fileName);
 
-    console.log(`📄 Generating PDF for: ${url}`);
+    console.log(`📄 Generating ${isATS ? "ATS " : ""}PDF for: ${url}`);
     await page.goto(url, { waitUntil: "networkidle0", timeout: 120000 });
 
-    // Ensure all lazy-loaded images are fully rendered
-    await page.evaluate(async () => {
-      const images = Array.from(document.images);
-      await Promise.all(
-        images.map((img) =>
-          img.complete
-            ? Promise.resolve()
-            : new Promise((resolve, reject) => {
-                img.onload = resolve;
-                img.onerror = reject;
-              }),
-        ),
-      );
-    });
-
-    await page.evaluate(() => {
-      document.querySelectorAll('[data-exclude="true"]').forEach((el) => {
-        el.style.visibility = "hidden";
+    // For ATS version, the page already renders the plain design, so we just wait for it to load
+    if (!isATS) {
+      // Ensure all lazy-loaded images are fully rendered (only for regular version)
+      await page.evaluate(async () => {
+        const images = Array.from(document.images);
+        await Promise.all(
+          images.map((img) =>
+            img.complete
+              ? Promise.resolve()
+              : new Promise((resolve, reject) => {
+                  img.onload = resolve;
+                  img.onerror = reject;
+                }),
+          ),
+        );
       });
-    });
+
+      await page.evaluate(() => {
+        document.querySelectorAll('[data-exclude="true"]').forEach((el) => {
+          el.style.visibility = "hidden";
+        });
+      });
+    }
 
     // Debug: Capture a screenshot to ensure layout is correct
     // console.log("📸 Capturing screenshot for debugging...");
@@ -103,29 +117,32 @@ const generatePDF = async (page, route) => {
     //   fullPage: true,
     // });
 
-    const asideHTML = generateAsideContent({
-      height: "1080px",
-      width: "321px",
-    });
+    // Only add decorative aside elements for non-ATS versions
+    if (!isATS) {
+      const asideHTML = generateAsideContent({
+        height: "1080px",
+        width: "321px",
+      });
 
-    await page.evaluate((asideContent) => {
-      document.body.insertAdjacentHTML("beforeend", asideContent);
-    }, asideHTML);
+      await page.evaluate((asideContent) => {
+        document.body.insertAdjacentHTML("beforeend", asideContent);
+      }, asideHTML);
+    }
 
-    // Generate PDF with custom header, footer, and aside
+    // Generate PDF with custom header, footer, and aside (only for non-ATS)
     await page.pdf({
       path: outputPath,
       format: "A4",
       margin: { top: "30px", bottom: "30px" },
-      printBackground: true,
-      displayHeaderFooter: true,
-      headerTemplate: generateAsideContent({ position: "top" }),
-      footerTemplate: generateAsideContent({ position: "bottom" }),
+      printBackground: !isATS, // Disable background for ATS version
+      displayHeaderFooter: !isATS, // Disable header/footer for ATS version
+      headerTemplate: isATS ? "" : generateAsideContent({ position: "top" }),
+      footerTemplate: isATS ? "" : generateAsideContent({ position: "bottom" }),
     });
 
     console.log(`📂 PDF saved: ${outputPath}`);
   } catch (error) {
-    console.error(`❌ Error generating PDF for ${route}:`, error);
+    console.error(`❌ Error generating ${isATS ? "ATS " : ""}PDF for ${route}:`, error);
   }
 };
 
@@ -158,7 +175,10 @@ const generatePDF = async (page, route) => {
     const page = await browser.newPage();
 
     for (const route of PAGES) {
-      await generatePDF(page, route);
+      // Generate original PDF
+      await generatePDF(page, route, false);
+      // Generate ATS version
+      await generatePDF(page, route, true);
     }
 
     console.log("🎉 All PDFs generated successfully!");

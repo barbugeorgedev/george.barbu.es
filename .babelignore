@@ -1,0 +1,4 @@
+apps/web/scripts/**
+apps/*/scripts/**
+**/scripts/**/*.js
+

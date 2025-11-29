@@ -1,17 +1,25 @@
-export const getPdfUrl = (slug: string) => {
+export const getPdfUrl = (slug: string, isATS: boolean = false) => {
   const SITE_URL =
     process.env.NODE_ENV !== "development"
       ? process.env.NEXT_PUBLIC_API_URL
       : "http://localhost:3000";
 
+  // Normalize slug: remove leading slash, use "george.barbu" for homepage
+  const normalizedSlug = slug === "/" ? "george.barbu" : slug.replace(/^\//, "");
+  
+  // For ATS version, append -ats to the slug for the API
+  // Explicitly check isATS to ensure we don't accidentally get ATS version
+  const apiSlug = isATS === true ? `${normalizedSlug}-ats` : normalizedSlug;
+
   // Construct URL with role query parameter
-  return `${SITE_URL}/api/pdf/${slug}?role=${slug}`;
+  // The API route uses the slug in the path and role in query
+  return `${SITE_URL}/api/pdf/${apiSlug}?role=${apiSlug}`;
 };
 
-export const fetchPDFBlob = async (slug: string): Promise<Blob | null> => {
+export const fetchPDFBlob = async (slug: string, isATS: boolean = false): Promise<Blob | null> => {
   try {
     // First, get the latest PDF URL from API
-    const response = await fetch(getPdfUrl(slug));
+    const response = await fetch(getPdfUrl(slug, isATS));
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Fetch PDF URL Error:", errorText);
@@ -34,15 +42,17 @@ export const fetchPDFBlob = async (slug: string): Promise<Blob | null> => {
   }
 };
 
-export const downloadPDFweb = async (slug: string): Promise<void> => {
-  const blob = await fetchPDFBlob(slug);
+export const downloadPDFweb = async (slug: string, isATS: boolean = false): Promise<void> => {
+  const blob = await fetchPDFBlob(slug, isATS);
   if (!blob) return;
 
   const blobUrl = window.URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = blobUrl;
 
-  link.download = `george-barbu-${slug}.pdf`;
+  const baseSlug = slug === "/" ? "george.barbu" : slug;
+  const fileName = isATS ? `${baseSlug}-ats.pdf` : `${baseSlug}.pdf`;
+  link.download = fileName;
 
   document.body.appendChild(link);
   link.click();
@@ -50,9 +60,9 @@ export const downloadPDFweb = async (slug: string): Promise<void> => {
   window.URL.revokeObjectURL(blobUrl);
 };
 
-export const printPDF = async (slug: string): Promise<void> => {
+export const printPDF = async (slug: string, isATS: boolean = false): Promise<void> => {
   try {
-    const blob = await fetchPDFBlob(slug);
+    const blob = await fetchPDFBlob(slug, isATS);
     if (!blob) return;
 
     const blobUrl = URL.createObjectURL(blob);

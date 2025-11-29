@@ -109,58 +109,100 @@ const generateAsideContent = ({
 `;
 
 // **4. Generate and Upload PDF**
-const generateAndUploadPDF = async (page, route) => {
+const generateAndUploadPDF = async (page, route, isATS = false) => {
   try {
-    const url = `${SITE_URL}${route}`;
-    console.log(`📄 Navigating to ${url} to generate PDF...`);
+    // For ATS version, use the new route structure: /ats or /{slug}-ats
+    let url;
+    if (isATS) {
+      if (route === "/") {
+        url = `${SITE_URL}/ats`;
+      } else {
+        url = `${SITE_URL}${route}-ats`;
+      }
+    } else {
+      url = `${SITE_URL}${route}`;
+    }
+    
+    console.log(`📄 Navigating to ${url} to generate ${isATS ? "ATS " : ""}PDF...`);
 
     await page.goto(url, { waitUntil: "networkidle0", timeout: 120000 });
 
-    console.log("🖼️ Waiting for all images to load...");
-    await page.evaluate(async () => {
-      const images = Array.from(document.images);
-      await Promise.all(
-        images.map((img) =>
-          img.complete
-            ? Promise.resolve()
-            : new Promise((resolve, reject) => {
-                img.onload = resolve;
-                img.onerror = reject;
-              }),
-        ),
-      );
-    });
-    console.log("✅ All images loaded.");
-
-    console.log("🔍 Hiding elements marked for exclusion...");
-    await page.evaluate(() => {
-      document.querySelectorAll('[data-exclude="true"]').forEach((el) => {
-        el.style.visibility = "hidden";
+    if (!isATS) {
+      console.log("🖼️ Waiting for all images to load...");
+      await page.evaluate(async () => {
+        const images = Array.from(document.images);
+        await Promise.all(
+          images.map((img) =>
+            img.complete
+              ? Promise.resolve()
+              : new Promise((resolve, reject) => {
+                  img.onload = resolve;
+                  img.onerror = reject;
+                }),
+          ),
+        );
       });
-    });
+      console.log("✅ All images loaded.");
 
-    console.log("🎨 Adding aside elements for header/footer...");
-    const asideHTML = generateAsideContent({
-      height: "1080px",
-      width: "321px",
-    });
-    await page.evaluate((asideContent) => {
-      document.body.insertAdjacentHTML("beforeend", asideContent);
-    }, asideHTML);
+      console.log("🔍 Hiding elements marked for exclusion...");
+      await page.evaluate(() => {
+        document.querySelectorAll('[data-exclude="true"]').forEach((el) => {
+          el.style.visibility = "hidden";
+        });
+      });
 
-    console.log("🖨️ Generating PDF...");
+      console.log("🎨 Adding aside elements for header/footer...");
+      const asideHTML = generateAsideContent({
+        height: "1080px",
+        width: "321px",
+      });
+      await page.evaluate((asideContent) => {
+        document.body.insertAdjacentHTML("beforeend", asideContent);
+      }, asideHTML);
+    } else {
+      // For ATS version, add styles to match margins with background
+      await page.evaluate(() => {
+        const style = document.createElement('style');
+        style.textContent = `
+          @page {
+            background-color: #313638;
+            margin: 30px;
+          }
+          @page:first {
+            background-color: #313638;
+            margin-top: 30px;
+          }
+          @page:last {
+            background-color: #313638;
+            margin-bottom: 30px;
+          }
+          body {
+            background-color: #313638 !important;
+            margin: 0;
+            padding: 0;
+          }
+          html {
+            background-color: #313638 !important;
+          }
+        `;
+        document.head.appendChild(style);
+      });
+    }
+
+    console.log(`🖨️ Generating ${isATS ? "ATS " : ""}PDF...`);
     const pdfBuffer = await page.pdf({
       format: "A4",
       margin: { top: "30px", bottom: "30px" },
       printBackground: true,
-      displayHeaderFooter: true,
-      headerTemplate: generateAsideContent({ position: "top" }),
-      footerTemplate: generateAsideContent({ position: "bottom" }),
+      displayHeaderFooter: !isATS,
+      headerTemplate: isATS ? "" : generateAsideContent({ position: "top" }),
+      footerTemplate: isATS ? "" : generateAsideContent({ position: "bottom" }),
     });
-    console.log("✅ PDF generated successfully!");
+    console.log(`✅ ${isATS ? "ATS " : ""}PDF generated successfully!`);
 
-    console.log(`⬆️ Uploading PDF to Vercel Blob storage (${STORAGE_NAME})...`);
-    const fileName = `${route.replace("/", "") || "george.barbu"}.pdf`;
+    const baseFileName = route.replace("/", "") || "george.barbu";
+    const fileName = isATS ? `${baseFileName}-ats.pdf` : `${baseFileName}.pdf`;
+    console.log(`⬆️ Uploading ${isATS ? "ATS " : ""}PDF to Vercel Blob storage (${STORAGE_NAME})...`);
     const { url: blobUrl } = await put(
       `${STORAGE_NAME}/${fileName}`,
       pdfBuffer,
@@ -170,10 +212,10 @@ const generateAndUploadPDF = async (page, route) => {
       },
     );
 
-    console.log(`✅ PDF uploaded successfully: ${blobUrl}`);
+    console.log(`✅ ${isATS ? "ATS " : ""}PDF uploaded successfully: ${blobUrl}`);
     return blobUrl;
   } catch (error) {
-    console.error(`❌ Error generating PDF for ${route}:`, error);
+    console.error(`❌ Error generating ${isATS ? "ATS " : ""}PDF for ${route}:`, error);
   }
 };
 
@@ -200,10 +242,17 @@ const generateAndUploadPDF = async (page, route) => {
       );
 
       browser = await puppeteer.launch({
-        args: chromium.args,
+        args: [
+          ...chromium.args,
+          '--disable-dev-shm-usage',
+          '--disable-gpu',
+          '--single-process',
+          '--no-zygote',
+        ],
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(),
         headless: chromium.headless,
+        timeout: 0,
       });
     } else {
       console.log("🛠 Launching Puppeteer in development mode...");
@@ -225,7 +274,10 @@ const generateAndUploadPDF = async (page, route) => {
 
     for (const route of PAGES) {
       console.log(`📄 Processing page: ${route}`);
-      await generateAndUploadPDF(page, route);
+      // Generate and upload original PDF
+      await generateAndUploadPDF(page, route, false);
+      // Generate and upload ATS version
+      await generateAndUploadPDF(page, route, true);
     }
 
     console.log("🎉 All PDFs uploaded successfully!");
