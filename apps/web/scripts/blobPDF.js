@@ -232,8 +232,12 @@ const generateAndUploadPDF = async (page, route, isATS = false) => {
     if (process.env.NODE_ENV !== "development") {
       console.log("🚀 Launching Puppeteer in production mode...");
       const chromium = require("@sparticuz/chromium");
-      chromium.setGraphicsMode = false;
       const puppeteer = require("puppeteer-core");
+
+      // Disable graphics mode for serverless
+      if (chromium.setGraphicsMode) {
+        chromium.setGraphicsMode(false);
+      }
 
       console.log("🔍 Chromium args:", chromium.args);
       console.log(
@@ -241,19 +245,17 @@ const generateAndUploadPDF = async (page, route, isATS = false) => {
         await chromium.executablePath(),
       );
 
-      browser = await puppeteer.launch({
-        args: [
-          ...chromium.args,
-          '--disable-dev-shm-usage',
-          '--disable-gpu',
-          '--single-process',
-          '--no-zygote',
-        ],
-        defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath(),
-        headless: chromium.headless,
-        timeout: 0,
-      });
+      try {
+        browser = await puppeteer.launch({
+          args: chromium.args,
+          defaultViewport: chromium.defaultViewport,
+          executablePath: await chromium.executablePath(),
+          headless: chromium.headless,
+        });
+      } catch (launchError) {
+        console.error("❌ Error launching browser:", launchError);
+        throw launchError;
+      }
     } else {
       console.log("🛠 Launching Puppeteer in development mode...");
       const puppeteer = require("puppeteer");
@@ -283,10 +285,15 @@ const generateAndUploadPDF = async (page, route, isATS = false) => {
     console.log("🎉 All PDFs uploaded successfully!");
   } catch (error) {
     console.error("❌ Fatal Error:", error);
+    throw error;
   } finally {
     if (browser) {
-      console.log("🔒 Closing browser...");
-      await browser.close();
+      try {
+        console.log("🔒 Closing browser...");
+        await browser.close();
+      } catch (closeError) {
+        console.error("⚠️ Error closing browser:", closeError);
+      }
     }
 
     console.log("👋 Exiting script...");
