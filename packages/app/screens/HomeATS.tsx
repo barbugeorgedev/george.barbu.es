@@ -86,7 +86,7 @@ export const HomeATS: React.FC = () => {
                 <Text className="text-[15px] font-bold mb-2 mt-8 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
                   {content.experienceSection.label || "PROFESSIONAL EXPERIENCE"}
                 </Text>
-                {content.experienceSection.items.map((item, idx) => {
+                {content.experienceSection.items.map((item: any, idx: number) => {
                   const dateRange = formatDateRange(
                     item.experienceDates?.startDate,
                     item.experienceDates?.endDate,
@@ -113,7 +113,7 @@ export const HomeATS: React.FC = () => {
                       {/* Bullet Points (Duties) */}
                       {item.duties && item.duties.length > 0 && (
                         <View className="mt-1.5">
-                          {item.duties.map((duty, dIdx) => (
+                          {item.duties.map((duty: string, dIdx: number) => (
                             <View key={dIdx} className="flex flex-row mb-1.5 [writing-mode:horizontal-tb]">
                               <Text className="text-xs text-white mr-2 inline-block">•</Text>
                               <Text className="text-xs text-white leading-[19px] flex-1 text-justify block whitespace-normal">
@@ -136,7 +136,7 @@ export const HomeATS: React.FC = () => {
                   <Text className="text-[15px] font-bold mb-3.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
                     {content.earlyCareerExperienceSection.label || "EARLY CAREER EXPERIENCE"}
                   </Text>
-                  {content.earlyCareerExperienceSection.items.map((item, idx) => {
+                  {content.earlyCareerExperienceSection.items.map((item: any, idx: number) => {
                     const dateRange = formatDateRange(
                       item.experienceDates?.startDate,
                       item.experienceDates?.endDate,
@@ -160,7 +160,7 @@ export const HomeATS: React.FC = () => {
                         </Text>
                         {item.duties && item.duties.length > 0 && (
                           <View className="mt-1.5">
-                            {item.duties.map((duty, dIdx) => (
+                            {item.duties.map((duty: string, dIdx: number) => (
                               <View key={dIdx} className="flex flex-row mb-1.5 [writing-mode:horizontal-tb]">
                                 <Text className="text-xs text-white mr-2 inline-block">•</Text>
                                 <Text className="text-xs text-white leading-[19px] flex-1 text-justify block whitespace-normal">
@@ -183,7 +183,7 @@ export const HomeATS: React.FC = () => {
                   <Text className="text-[15px] font-bold mb-3.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
                     {content.ngoExperienceSection.label || "NGO EXPERIENCE"}
                   </Text>
-                  {content.ngoExperienceSection.items.map((item, idx) => {
+                  {content.ngoExperienceSection.items.map((item: any, idx: number) => {
                     const dateRange = formatDateRange(
                       item.experienceDates?.startDate,
                       item.experienceDates?.endDate,
@@ -207,7 +207,7 @@ export const HomeATS: React.FC = () => {
                         </Text>
                         {item.duties && item.duties.length > 0 && (
                           <View className="mt-1.5">
-                            {item.duties.map((duty, dIdx) => (
+                            {item.duties.map((duty: string, dIdx: number) => (
                               <View key={dIdx} className="flex flex-row mb-1.5 [writing-mode:horizontal-tb]">
                                 <Text className="text-xs text-white mr-2 inline-block">•</Text>
                                 <Text className="text-xs text-white leading-[19px] flex-1 text-justify block whitespace-normal">
@@ -233,7 +233,7 @@ export const HomeATS: React.FC = () => {
                     {sidebar.contactSection.label || "CONTACT DETAILS"}
                   </Text>
                 <View>
-                  {sidebar.contactSection.items.map((item, idx) => {
+                  {sidebar.contactSection.items.map((item: any, idx: number) => {
                     // Only show labels if showLabel is true
                     const getLabel = () => {
                       if (!item.showLabel) return "";
@@ -294,7 +294,7 @@ export const HomeATS: React.FC = () => {
                   SKILLS
                 </Text>
                 <View>
-                  {technicalSkills.items.map((item, idx) => (
+                  {technicalSkills.items.map((item: { title?: string; name?: string }, idx: number) => (
                     <View key={idx} className="flex flex-row mb-1.5 [writing-mode:horizontal-tb]">
                       <Text className="text-[11.5px] text-white mr-2 inline-block">•</Text>
                       <Text className="text-[11.5px] text-white leading-[19px] flex-1 block whitespace-normal">
@@ -313,7 +313,7 @@ export const HomeATS: React.FC = () => {
                   SOFT SKILLS
                 </Text>
                 <View>
-                  {softSkills.items.map((item, idx) => (
+                  {softSkills.items.map((item: { title?: string; name?: string }, idx: number) => (
                     <View key={idx} className="flex flex-row mb-1.5 [writing-mode:horizontal-tb]">
                       <Text className="text-[11.5px] text-white mr-2 inline-block">•</Text>
                       <Text className="text-[11.5px] text-white leading-[19px] flex-1 block whitespace-normal">
@@ -333,8 +333,8 @@ export const HomeATS: React.FC = () => {
                     CERTIFICATIONS
                   </Text>
                   <View>
-                    {content.educationSection.items.map((item, idx) =>
-                      item.certifications?.map((cert, cIdx) => (
+                    {content.educationSection.items.map((item: any, idx: number) =>
+                      item.certifications?.map((cert: string, cIdx: number) => (
                         <View key={`${idx}-${cIdx}`} className="flex flex-row mb-1.5 [writing-mode:horizontal-tb]">
                             <Text className="text-[11.5px] text-white mr-2 inline-block">•</Text>
                             <Text className="text-[11.5px] text-white leading-[19px] flex-1 block whitespace-normal">
@@ -354,7 +354,7 @@ export const HomeATS: React.FC = () => {
                   <Text className="text-[15px] font-bold mb-3.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
                     {content.educationSection.label || "EDUCATION"}
                   </Text>
-                  {content.educationSection.items.map((item, idx) => (
+                  {content.educationSection.items.map((item: any, idx: number) => (
                     <View key={idx} className="mb-3.5">
                       <Text className="text-[12.5px] font-bold text-white mb-1.5 leading-[18px] block whitespace-normal">
                         {item.degree || ""}
