@@ -12,10 +12,8 @@ export const HomeATS: React.FC = () => {
   const sidebar = resumeData?.sidebar?.[0];
   const content = resumeData?.content?.[0];
 
-  // Get all skills and separate technical from soft skills if possible
+  // Get all skills sections
   const allSkills = sidebar?.skillsSections || [];
-  const technicalSkills = allSkills.find(s => s.label?.toLowerCase().includes("technical") || (!s.label?.toLowerCase().includes("soft") && s.label));
-  const softSkills = allSkills.find(s => s.label?.toLowerCase().includes("soft"));
 
   // Format date to "YYYY" format (e.g., "2022")
   const formatDate = (dateString?: string) => {
@@ -287,43 +285,52 @@ export const HomeATS: React.FC = () => {
               </View>
             )}
 
-            {/* Skills Section */}
-            {technicalSkills && technicalSkills.items && technicalSkills.items.length > 0 && (
-              <View className="mb-7">
-                <Text className="text-[15px] font-bold mb-3.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
-                  SKILLS
-                </Text>
-                <View>
-                  {technicalSkills.items.map((item: { title?: string; name?: string }, idx: number) => (
-                    <View key={idx} className="flex flex-row mb-1.5 [writing-mode:horizontal-tb]">
-                      <Text className="text-[11.5px] text-white mr-2 inline-block">•</Text>
-                      <Text className="text-[11.5px] text-white leading-[19px] flex-1 block whitespace-normal">
-                        {item.title || item.name}
-                      </Text>
-                    </View>
-                  ))}
+            {/* Skills Sections */}
+            {allSkills.map((skillSection: any, sectionIdx: number) => {
+              if (!skillSection?.items || skillSection.items.length === 0) return null;
+              const isTagsView = skillSection.view === "tags";
+              const isStyledListView = skillSection.view === "styled-list";
+              
+              return (
+                <View key={sectionIdx} className="mb-7">
+                  <Text className="text-[15px] font-bold mb-3.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
+                    {skillSection.label?.toUpperCase() || "SKILLS"}
+                  </Text>
+                  <View className={`flex flex-wrap ${isTagsView ? "flex-row" : "flex-col"}`}>
+                    {skillSection.items.map((item: { title?: string; name?: string }, idx: number) => {
+                      const itemText = item.title || item.name;
+                      const isLastItem = idx === skillSection.items.length - 1;
+                      
+                      if (isTagsView) {
+                        // Tags view: comma-separated, no bullets
+                        return (
+                          <Text key={idx} className="text-[11.5px] text-white leading-[19px] inline-block whitespace-normal">
+                            {itemText + (!isLastItem ? `,\u00A0` : '')}
+                          </Text>
+                        );
+                      } else if (isStyledListView) {
+                        // Styled list view: with bullets
+                        return (
+                          <View key={idx} className="flex flex-row mb-1.5 [writing-mode:horizontal-tb]">
+                            <Text className="text-[11.5px] text-white mr-2 inline-block">•</Text>
+                            <Text className="text-[11.5px] text-white leading-[19px] flex-1 block whitespace-normal">
+                              {itemText}
+                            </Text>
+                          </View>
+                        );
+                      } else {
+                        // Default list view: no bullets, column layout
+                        return (
+                          <Text key={idx} className="text-[11.5px] text-white leading-[19px] mb-1.5 block whitespace-normal">
+                            {itemText}
+                          </Text>
+                        );
+                      }
+                    })}
+                  </View>
                 </View>
-              </View>
-            )}
-
-            {/* Soft Skills Section */}
-            {softSkills && softSkills.items && softSkills.items.length > 0 && (
-              <View className="mb-7">
-                <Text className="text-[15px] font-bold mb-3.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
-                  SOFT SKILLS
-                </Text>
-                <View>
-                  {softSkills.items.map((item: { title?: string; name?: string }, idx: number) => (
-                    <View key={idx} className="flex flex-row mb-1.5 [writing-mode:horizontal-tb]">
-                      <Text className="text-[11.5px] text-white mr-2 inline-block">•</Text>
-                      <Text className="text-[11.5px] text-white leading-[19px] flex-1 block whitespace-normal">
-                        {item.title || item.name}
-                      </Text>
-                    </View>
-                  ))}
-                </View>
-              </View>
-            )}
+              );
+            })}
 
             {/* Certifications Section */}
             {content?.educationSection?.items &&
