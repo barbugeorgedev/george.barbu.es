@@ -57,9 +57,6 @@ const EarlyCareer: React.FC<DefaultComponentProps> = ({ className }) => {
                   : (item.experienceDates.endDate?.substring(0, 4) ?? "N/A")}
                 )
               </Text>
-              <Text key={0} className="text-sm">
-                - {item.duties[0]}
-              </Text>
             </View>
           </View>
         ))}
