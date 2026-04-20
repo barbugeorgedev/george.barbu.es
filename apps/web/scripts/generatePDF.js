@@ -52,7 +52,7 @@ const checkServerAvailability = async () => {
 // Generate header and footer styles
 const generateAsideContent = ({
   position = "top",
-  height = "30px",
+  height = "14px",
   width = "318px",
 } = {}) => `
   <style>

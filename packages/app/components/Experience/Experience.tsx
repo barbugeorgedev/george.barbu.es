@@ -18,20 +18,20 @@ const Experience: React.FC<DefaultComponentProps> = ({ className }) => {
     presentDate: item.experienceDates.presentDate ? "Yes" : "No",
   }));
 
-  // Group by company
+  // Group by company (entries without company get a unique key so they still render)
   const groups = normalizedData.reduce<Record<string, ExperienceItem[]>>(
-    (acc, item) => {
-      if (!item.company) return acc;
-      (acc[item.company] = acc[item.company] || []).push(item);
+    (acc, item, idx) => {
+      const key = item.company?.trim() || `__orphan_${idx}`;
+      (acc[key] = acc[key] || []).push(item);
       return acc;
     },
     {},
   );
 
   return (
-    <View className={className}>
+    <View className={className ?? ""}>
       <Text
-        className="uppercase font-['Norwester'] text-xl mb-4"
+        className="resume-section-title uppercase font-['Norwester'] text-xl mb-4"
         style={{
           color: settings?.mainSectionTextColor?.hex,
         }}
@@ -39,17 +39,14 @@ const Experience: React.FC<DefaultComponentProps> = ({ className }) => {
         {data.label}
       </Text>
 
-      {Object.keys(groups).map((company, index) => {
-        const companyExperiences = groups[company] || [];
-        return (
-          <CompanyExperienceBlock
-            key={index}
-            company={company}
-            items={companyExperiences}
-            settings={settings}
-          />
-        );
-      })}
+      {Object.entries(groups).map(([key, companyExperiences], index) => (
+        <CompanyExperienceBlock
+          key={index}
+          company={key.startsWith("__orphan_") ? "" : key}
+          items={companyExperiences}
+          settings={settings}
+        />
+      ))}
     </View>
   );
 };

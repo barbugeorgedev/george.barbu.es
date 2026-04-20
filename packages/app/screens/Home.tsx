@@ -23,7 +23,7 @@ export const Home: React.FC = () => {
           backgroundColor: settings?.sidebarBackground?.hex,
         }}
       >
-        <Sidebar className="pb-10 pt-10 print:pt-44 sm:pt-56" />
+        <Sidebar className="resume-pdf-sidebar pb-10 pt-10 print:pt-44 sm:pt-56" />
       </View>
 
       <View
@@ -32,13 +32,13 @@ export const Home: React.FC = () => {
           backgroundColor: settings?.mainSectionBackground?.hex,
         }}
       >
-        <View className="py-10 print:pt-48 lg:pt-60 lg:mt-5">
-          <Experience className="bi-avoid bb-always" />
+        <View className="resume-pdf-maincol py-10 print:pt-48 lg:pt-60 lg:mt-5">
+          <Experience />
 
-          <EarlyCareer className="bi-avoid bb-always" />
-          <NGOExperience className="bi-avoid bb-always" />
+          <EarlyCareer />
+          <NGOExperience />
 
-          <Education className="bi-avoid bb-always mt-11 " />
+          <Education className="mt-11" />
         </View>
       </View>
     </View>

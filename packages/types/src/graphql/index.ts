@@ -136,7 +136,7 @@ export interface ResumeData {
     ngoExperienceSection?: NGOExperienceData;
     educationSection?: EducationData;
   }[];
-  header: { fullname?: string; role?: string; slogan?: string }[];
+  header: { fullname?: string; role?: string; slogan?: string; cvpurpose?: string }[];
   sidebar: {
     skillsSections?: any[];
     summarySection?: { label: string; summary: string };

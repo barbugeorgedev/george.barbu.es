@@ -11,7 +11,7 @@ const TopSide: React.FC = () => {
 
   return (
     <View
-      className="h-44 mt-48  flex flex-col content-center justify-center relative pb-0 z-50 sm:h-32 sm:top-0 sm:w-full sm:justify-center sm:mt-14 sm:absolute  print:pb-0 print:absolute print:justify-center print:h-32 print:mt-0 "
+      className="resume-pdf-topside h-44 mt-48  flex flex-col content-center justify-center relative pb-0 z-50 sm:h-32 sm:top-0 sm:w-full sm:justify-center sm:mt-14 sm:absolute  print:pb-0 print:absolute print:justify-center print:h-32 print:mt-0 "
       style={{
         backgroundColor: settings?.headerBackground?.hex,
       }}

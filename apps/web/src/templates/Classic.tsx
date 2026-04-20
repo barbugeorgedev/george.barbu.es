@@ -4,15 +4,15 @@ import Footer from "app/components/Footer";
 import { TemplateProps } from "types/components";
 import { useSettings } from "app/hooks/useSettings";
 
-export default function ClassicTemplate({ children, isATS = false }: TemplateProps) {
+export default function ClassicTemplate({ children, isATS = false, isATSv2 = false }: TemplateProps) {
   const settings = useSettings();
 
   return (
     <main
       className="w-full first-letter:min-h-screen classicTemplate"
       style={{
-        backgroundColor: isATS ? "#313638" : settings?.mainBackground?.hex,
-        color: settings?.mainTextColor?.hex,
+        backgroundColor: isATSv2 ? "#ffffff" : isATS ? "#313638" : settings?.mainBackground?.hex,
+        color: isATSv2 ? "#171717" : settings?.mainTextColor?.hex,
       }}
     >
       <Header />

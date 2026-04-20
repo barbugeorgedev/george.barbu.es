@@ -57,6 +57,33 @@ html {
   height: 100%;
 }
 
+/* ATS (web): force vertical stack so summary sits above the two-column row (RN-web + Tailwind safe) */
+.ats-pdf-root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.ats-pdf-inner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.ats-pdf-summary {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.ats-pdf-columns {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 body {
   display: flex;
   /* Allows you to scroll below the viewport; default value is visible */
@@ -66,4 +93,64 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -ms-overflow-style: scrollbar;
+}
+
+/* Puppeteer sets html.pdf-export before printing — resume (non-ATS) print tweaks */
+@media print {
+  html.pdf-export #__next > main {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  html.pdf-export .resume-pdf-topside {
+    margin-top: 0 !important;
+    height: auto !important;
+    min-height: 7rem !important;
+    padding-bottom: 0 !important;
+  }
+
+  html.pdf-export .resume-pdf-sidebar {
+    padding-top: 0.75rem !important;
+  }
+
+  html.pdf-export .resume-pdf-maincol {
+    padding-top: 1rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  html.pdf-export .resume-pdf-topside [class*="print:-translate-y-12"] {
+    transform: translateY(-0.5rem) !important;
+  }
+
+  /* Keep jobs / education / NGO entries from splitting across pages when possible */
+  html.pdf-export .resume-avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  html.pdf-export .resume-section-title {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  html.pdf-export .ats-pdf-inner {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+
+  html.pdf-export .ats-pdf-header {
+    margin-bottom: 1rem !important;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+
+  html.pdf-export .atsv2-pdf-inner {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+
+  html.pdf-export .atsv2-pdf-header {
+    margin-bottom: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
 }

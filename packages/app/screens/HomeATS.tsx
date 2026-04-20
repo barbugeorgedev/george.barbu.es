@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, Linking, TouchableOpacity } from "react-native";
 import { useResumeData } from "app/context/ResumeContext";
+import { formatDurationLabel } from "app/utils/experienceDuration";
+import { AtsHiddenEmployerContext } from "app/components/AtsHiddenEmployerContext";
 
 /**
  * ATS-optimized resume layout
@@ -34,6 +36,28 @@ export const HomeATS: React.FC = () => {
     return `${start} – ${end}`;
   };
 
+  const groupItemsByCompany = <T extends { company?: string }>(items: T[]) => {
+    const groups: Record<string, T[]> = {};
+    items.forEach((item, idx) => {
+      const key = item.company?.trim() || `__orphan_${idx}`;
+      (groups[key] = groups[key] || []).push(item);
+    });
+    return Object.entries(groups) as [string, T[]][];
+  };
+
+  const atsDutySingleBullet = (duties?: string[]) => {
+    const text = duties?.filter(Boolean).join(" ");
+    if (!text) return null;
+    return (
+      <View className="mt-1.5 flex flex-row [writing-mode:horizontal-tb]">
+        <Text className="text-xs text-white mr-2 inline-block">•</Text>
+        <Text className="text-xs text-white leading-[19px] flex-1 text-justify block whitespace-normal">
+          {text}
+        </Text>
+      </View>
+    );
+  };
+
   // Get URL from contact item value
   const getUrl = (value?: string, service?: string) => {
     if (!value) return "";
@@ -45,12 +69,20 @@ export const HomeATS: React.FC = () => {
     return value;
   };
 
+  /** Purple rule under section headings (matches title accent #c084fc) */
+  const SectionUnderline = () => (
+    <View className="h-[2px] w-full bg-[#c084fc] rounded-full mb-3 mt-0" />
+  );
+
+  const headerTagline =
+    header?.slogan?.trim() || header?.cvpurpose?.trim() || "";
+
   return (
-    <View className="printColor w-full print:bg-[#313638] bg-[#313638] font-sans block [writing-mode:horizontal-tb] [text-orientation:mixed]">
-      <View className="printColor print:bg-[#313638] max-w-screen-pdf w-full mx-auto box-border bg-[#313638] print:py-10 print:px-8 print:pt-10 block">
+    <View className="ats-pdf-root printColor flex flex-col w-full print:bg-[#313638] bg-[#313638] font-sans [writing-mode:horizontal-tb] [text-orientation:mixed]">
+      <View className="ats-pdf-inner printColor print:bg-[#313638] flex flex-col w-full max-w-screen-pdf mx-auto box-border bg-[#313638] print:py-10 print:px-8 py-0 px-0">
         {/* Header Section */}
         {header?.fullname && (
-          <View className="mb-8 pb-5 pt-5 border-b border-b-[rgba(255,255,255,0.15)]">
+          <View className="ats-pdf-header mb-8 pb-5 pt-5 border-b border-b-[rgba(255,255,255,0.15)] w-full shrink-0">
             <Text className="text-4xl font-bold text-white mb-2 tracking-[-0.5px] block whitespace-normal">
               {header.fullname.toUpperCase()}
             </Text>
@@ -59,118 +91,283 @@ export const HomeATS: React.FC = () => {
                 {header.role}
               </Text>
             )}
+            {headerTagline ? (
+              <Text className="text-[13px] text-[#a3a3a3] font-normal mt-2 leading-[20px] block whitespace-normal italic">
+                {headerTagline}
+              </Text>
+            ) : null}
           </View>
         )}
 
-        {/* Two Column Layout */}
-        <View className="flex flex-row gap-10 [writing-mode:horizontal-tb] [text-orientation:mixed]">
-          {/* Left Column - Main Content */}
-          <View className="flex-1 min-w-0">
-            {/* Summary Section */}
-            {sidebar?.summarySection?.summary && (
-              <View className="mb-3">
-                <Text className="text-[15px] font-bold mb-2 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
-                  {sidebar.summarySection.label || "SUMMARY"}
-                </Text>
-                <Text className="text-[13px] text-white leading-[19px] text-justify block whitespace-normal">
-                  {sidebar.summarySection.summary}
-                </Text>
-              </View>
-            )}
+        {/* Full-width summary above the two-column block (PDF + screen) */}
+        {sidebar?.summarySection?.summary && (
+          <View className="ats-pdf-summary w-full max-w-full shrink-0 mb-6 self-stretch">
+            <Text className="text-[15px] font-bold mb-1.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
+              {sidebar.summarySection.label || "SUMMARY"}
+            </Text>
+            <SectionUnderline />
+            <Text className="text-[13px] text-white leading-[19px] text-justify block whitespace-normal">
+              {sidebar.summarySection.summary}
+            </Text>
+          </View>
+        )}
 
-            {/* Work Experience Section */}
+        {/* Experience (left) + sidebar (right) start at PROFESSIONAL EXPERIENCE */}
+        <View className="ats-pdf-columns flex flex-row gap-10 items-start [writing-mode:horizontal-tb] [text-orientation:mixed]">
+          <View className="flex-1 min-w-0">
+            {/* Work Experience Section — grouped by employer (e.g. Entain); sr-only repeats employer per role for ATS */}
             {content?.experienceSection?.items && content.experienceSection.items.length > 0 && (
               <View className="mb-7">
-                <Text className="text-[15px] font-bold mb-2 mt-8 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
+                <Text className="text-[15px] font-bold mb-1.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
                   {content.experienceSection.label || "PROFESSIONAL EXPERIENCE"}
                 </Text>
-                {content.experienceSection.items.map((item: any, idx: number) => {
-                  const dateRange = formatDateRange(
-                    item.experienceDates?.startDate,
-                    item.experienceDates?.endDate,
-                    item.experienceDates?.presentDate
+                <SectionUnderline />
+                {groupItemsByCompany(content.experienceSection.items).map(([companyKey, groupItems]) => {
+                  const displayCompany = companyKey.startsWith("__orphan_") ? "" : companyKey;
+
+                  const renderRoleBullets = (item: any) =>
+                    item.duties && item.duties.length > 0 ? (
+                      <View className="mt-1.5">
+                        {item.duties.map((duty: string, dIdx: number) => (
+                          <View key={dIdx} className="flex flex-row mb-1.5 [writing-mode:horizontal-tb]">
+                            <Text className="text-xs text-white mr-2 inline-block">•</Text>
+                            <Text className="text-xs text-white leading-[19px] flex-1 text-justify block whitespace-normal">
+                              {duty}
+                            </Text>
+                          </View>
+                        ))}
+                      </View>
+                    ) : null;
+
+                  if (groupItems.length === 1) {
+                    const item = groupItems[0]!;
+                    const dateRange = formatDateRange(
+                      item.experienceDates?.startDate,
+                      item.experienceDates?.endDate,
+                      item.experienceDates?.presentDate
+                    );
+                    const durationLabel = formatDurationLabel(
+                      item.experienceDates?.startDate,
+                      item.experienceDates?.endDate,
+                      item.experienceDates?.presentDate
+                    );
+                    const companyLineRight = `${dateRange || ""}${durationLabel}`;
+                    return (
+                      <View key={companyKey} className="mb-6 resume-avoid-break bi-avoid">
+                        <View className="flex flex-row justify-between items-start mb-1 [writing-mode:horizontal-tb] [text-orientation:mixed]">
+                          <Text className="text-sm font-bold text-white flex-1 block whitespace-normal break-normal">
+                            {item.role || ""}
+                          </Text>
+                        </View>
+                        <View className="flex flex-row items-center flex-wrap gap-x-2 mb-2">
+                          {!!displayCompany && (
+                            <Text className="text-[13px] text-white font-bold whitespace-normal">
+                              {displayCompany}
+                            </Text>
+                          )}
+                          {!!displayCompany && !!companyLineRight.trim() && (
+                            <View className="w-px h-[14px] bg-[rgba(255,255,255,0.35)] shrink-0" />
+                          )}
+                          {!!companyLineRight.trim() && (
+                            <Text className="text-[13px] text-white font-bold whitespace-normal">
+                              {dateRange}
+                              {durationLabel}
+                            </Text>
+                          )}
+                        </View>
+                        {renderRoleBullets(item)}
+                      </View>
+                    );
+                  }
+
+                  const oldest = groupItems[groupItems.length - 1]!;
+                  const newest = groupItems[0]!;
+                  const startYear = formatDate(oldest.experienceDates?.startDate) || "N/A";
+                  const endYear = newest.experienceDates?.presentDate
+                    ? "Present"
+                    : formatDate(newest.experienceDates?.endDate) || "N/A";
+                  const companyDuration = formatDurationLabel(
+                    oldest.experienceDates?.startDate,
+                    newest.experienceDates?.presentDate ? undefined : newest.experienceDates?.endDate,
+                    newest.experienceDates?.presentDate
                   );
 
                   return (
-                    <View key={idx} className="mb-6">
-                      {/* Job Title and Date */}
-                      <View className="flex flex-row justify-between items-start mb-1 [writing-mode:horizontal-tb] [text-orientation:mixed]">
-                        <Text className="text-sm font-bold text-white flex-1 block whitespace-normal break-normal">
-                          {item.role || ""}
+                    <View key={companyKey} className="mb-8">
+                      {!!displayCompany && (
+                        <Text className="text-sm font-bold text-white mb-1 block whitespace-normal">
+                          {displayCompany}
                         </Text>
-                        {dateRange && (
-                          <Text className="text-[11px] text-[#a0a0a0] ml-4 whitespace-nowrap inline-block">
-                            {dateRange}
-                          </Text>
-                        )}
-                      </View>
-                      {/* Company */}
-                      <Text className="text-[13px] text-white font-semibold mb-2 block whitespace-normal">
-                        {item.company || ""}
-                      </Text>
-                      {/* Bullet Points (Duties) */}
-                      {item.duties && item.duties.length > 0 && (
-                        <View className="mt-1.5">
-                          {item.duties.map((duty: string, dIdx: number) => (
-                            <View key={dIdx} className="flex flex-row mb-1.5 [writing-mode:horizontal-tb]">
-                              <Text className="text-xs text-white mr-2 inline-block">•</Text>
-                              <Text className="text-xs text-white leading-[19px] flex-1 text-justify block whitespace-normal">
-                                {duty}
-                              </Text>
-                            </View>
-                          ))}
-                        </View>
                       )}
+                      <Text className="text-[13px] text-white font-semibold mb-3 block whitespace-normal">
+                        {startYear} – {endYear}
+                        {companyDuration}
+                      </Text>
+                      <View className="relative border-l border-[rgba(255,255,255,0.35)] border-solid">
+                        {groupItems.map((item: any, idx: number) => {
+                          const durationLabel = formatDurationLabel(
+                            item.experienceDates?.startDate,
+                            item.experienceDates?.endDate,
+                            item.experienceDates?.presentDate
+                          );
+                          const yStart = formatDate(item.experienceDates?.startDate) || "N/A";
+                          const yEnd = item.experienceDates?.presentDate
+                            ? "Present"
+                            : formatDate(item.experienceDates?.endDate) || "N/A";
+                          const roleRange = `${yStart} – ${yEnd}`;
+                          return (
+                            <View
+                              key={idx}
+                              className={`relative ml-4 resume-avoid-break bi-avoid ${idx !== 0 ? "mt-6" : "mt-2"}`}
+                            >
+                              <View className="absolute w-2 h-2 rounded-full top-1.5 -left-[21px] bg-white border border-[rgba(255,255,255,0.5)]" />
+                              {!!displayCompany && (
+                                <AtsHiddenEmployerContext
+                                  employer={displayCompany}
+                                  jobTitle={item.role || ""}
+                                  dateRange={roleRange}
+                                  durationSuffix={durationLabel}
+                                />
+                              )}
+                              <Text className="text-sm font-bold text-white block whitespace-normal">
+                                {item.role || ""}
+                              </Text>
+                              <Text className="text-[12px] text-[#a0a0a0] mb-2 block whitespace-normal">
+                                {yStart} – {yEnd}
+                                {durationLabel}
+                              </Text>
+                              {renderRoleBullets(item)}
+                            </View>
+                          );
+                        })}
+                      </View>
                     </View>
                   );
                 })}
               </View>
             )}
 
-            {/* Early Career Section */}
+            {/* Early Career Section — grouped by company; one • per role */}
             {content?.earlyCareerExperienceSection?.items &&
               content.earlyCareerExperienceSection.items.length > 0 && (
                 <View className="mb-7">
-                  <Text className="text-[15px] font-bold mb-3.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
+                  <Text className="text-[15px] font-bold mb-1.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
                     {content.earlyCareerExperienceSection.label || "EARLY CAREER EXPERIENCE"}
                   </Text>
-                  {content.earlyCareerExperienceSection.items.map((item: any, idx: number) => {
-                    const dateRange = formatDateRange(
-                      item.experienceDates?.startDate,
-                      item.experienceDates?.endDate,
-                      item.experienceDates?.presentDate
-                    );
+                  <SectionUnderline />
+                  {groupItemsByCompany(content.earlyCareerExperienceSection.items).map(
+                    ([companyKey, groupItems]) => {
+                      const displayCompany = companyKey.startsWith("__orphan_") ? "" : companyKey;
 
-                    return (
-                        <View key={idx} className="mb-8">
-                          <View className="flex flex-row justify-between items-start mb-1 [writing-mode:horizontal-tb]">
-                            <Text className="text-sm font-bold text-white flex-1 block whitespace-normal">
-                              {item.role || ""}
-                            </Text>
-                          {dateRange && (
-                            <Text className="text-[11px] text-[#a0a0a0] ml-4 whitespace-nowrap inline-block">
-                              {dateRange}
+                      if (groupItems.length === 1) {
+                        const item = groupItems[0]!;
+                        const dateRange = formatDateRange(
+                          item.experienceDates?.startDate,
+                          item.experienceDates?.endDate,
+                          item.experienceDates?.presentDate
+                        );
+                        const durationLabel = formatDurationLabel(
+                          item.experienceDates?.startDate,
+                          item.experienceDates?.endDate,
+                          item.experienceDates?.presentDate
+                        );
+                        const companyLineRight = `${dateRange || ""}${durationLabel}`;
+                        return (
+                          <View key={companyKey} className="mb-8 resume-avoid-break bi-avoid">
+                            <View className="flex flex-row justify-between items-start mb-1 [writing-mode:horizontal-tb]">
+                              <Text className="text-sm font-bold text-white flex-1 block whitespace-normal">
+                                {item.role || ""}
+                              </Text>
+                            </View>
+                            <View className="flex flex-row items-center flex-wrap gap-x-2 mb-2">
+                              {!!displayCompany && (
+                                <Text className="text-[13px] text-white font-semibold whitespace-normal">
+                                  {displayCompany}
+                                </Text>
+                              )}
+                              {!!displayCompany && !!companyLineRight.trim() && (
+                                <View className="w-px h-[14px] bg-[rgba(255,255,255,0.35)] shrink-0" />
+                              )}
+                              {!!companyLineRight.trim() && (
+                                <Text className="text-[13px] text-white font-semibold whitespace-normal">
+                                  {dateRange}
+                                  {durationLabel}
+                                </Text>
+                              )}
+                            </View>
+                            {atsDutySingleBullet(item.duties)}
+                          </View>
+                        );
+                      }
+
+                      const oldest = groupItems[groupItems.length - 1]!;
+                      const newest = groupItems[0]!;
+                      const startYear = formatDate(oldest.experienceDates?.startDate) || "N/A";
+                      const endYear = newest.experienceDates?.presentDate
+                        ? "Present"
+                        : formatDate(newest.experienceDates?.endDate) || "N/A";
+                      const companyDuration = formatDurationLabel(
+                        oldest.experienceDates?.startDate,
+                        newest.experienceDates?.presentDate
+                          ? undefined
+                          : newest.experienceDates?.endDate,
+                        newest.experienceDates?.presentDate
+                      );
+
+                      return (
+                        <View key={companyKey} className="mb-8">
+                          {!!displayCompany && (
+                            <Text className="text-sm font-bold text-white mb-1 block whitespace-normal">
+                              {displayCompany}
                             </Text>
                           )}
-                        </View>
-                        <Text className="text-[13px] text-white font-semibold mb-2 block whitespace-normal">
-                          {item.company || ""}
-                        </Text>
-                        {item.duties && item.duties.length > 0 && (
-                          <View className="mt-1.5">
-                            {item.duties.map((duty: string, dIdx: number) => (
-                              <View key={dIdx} className="flex flex-row mb-1.5 [writing-mode:horizontal-tb]">
-                                <Text className="text-xs text-white mr-2 inline-block">•</Text>
-                                <Text className="text-xs text-white leading-[19px] flex-1 text-justify block whitespace-normal">
-                                  {duty}
-                                </Text>
-                              </View>
-                            ))}
+                          <Text className="text-[13px] text-white font-semibold mb-3 block whitespace-normal">
+                            {startYear} – {endYear}
+                            {companyDuration}
+                          </Text>
+                          <View className="relative border-l border-[rgba(255,255,255,0.35)] border-solid">
+                            {groupItems.map((item, idx) => {
+                              const roleDuration = formatDurationLabel(
+                                item.experienceDates?.startDate,
+                                item.experienceDates?.endDate,
+                                item.experienceDates?.presentDate
+                              );
+                              const yStart =
+                                formatDate(item.experienceDates?.startDate) || "N/A";
+                              const yEnd = item.experienceDates?.presentDate
+                                ? "Present"
+                                : formatDate(item.experienceDates?.endDate) || "N/A";
+                              const roleRange = `${yStart} – ${yEnd}`;
+                              return (
+                                <View
+                                  key={idx}
+                                  className={`relative ml-4 resume-avoid-break bi-avoid ${idx !== 0 ? "mt-6" : "mt-2"}`}
+                                >
+                                  <View className="absolute w-2 h-2 rounded-full top-1.5 -left-[21px] bg-white border border-[rgba(255,255,255,0.5)]" />
+                                  {!!displayCompany && (
+                                    <AtsHiddenEmployerContext
+                                      employer={displayCompany}
+                                      jobTitle={item.role || ""}
+                                      dateRange={roleRange}
+                                      durationSuffix={roleDuration}
+                                    />
+                                  )}
+                                  <Text className="text-sm font-bold text-white block whitespace-normal">
+                                    {item.role || ""}
+                                  </Text>
+                                  <Text className="text-[12px] text-[#a0a0a0] mb-2 block whitespace-normal">
+                                    {yStart} – {yEnd}
+                                    {roleDuration}
+                                  </Text>
+                                  {atsDutySingleBullet(item.duties)}
+                                </View>
+                              );
+                            })}
                           </View>
-                        )}
-                      </View>
-                    );
-                  })}
+                        </View>
+                      );
+                    }
+                  )}
                 </View>
               )}
 
@@ -178,9 +375,10 @@ export const HomeATS: React.FC = () => {
             {content?.ngoExperienceSection?.items &&
               content.ngoExperienceSection.items.length > 0 && (
                 <View className="mb-7">
-                  <Text className="text-[15px] font-bold mb-3.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
+                  <Text className="text-[15px] font-bold mb-1.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
                     {content.ngoExperienceSection.label || "NGO EXPERIENCE"}
                   </Text>
+                  <SectionUnderline />
                   {content.ngoExperienceSection.items.map((item: any, idx: number) => {
                     const dateRange = formatDateRange(
                       item.experienceDates?.startDate,
@@ -189,7 +387,7 @@ export const HomeATS: React.FC = () => {
                     );
 
                     return (
-                      <View key={idx} className="mb-8">
+                      <View key={idx} className="mb-8 resume-avoid-break bi-avoid">
                         <View className="flex flex-row justify-between items-start mb-1 [writing-mode:horizontal-tb]">
                           <Text className="text-sm font-bold text-white flex-1 block whitespace-normal">
                             {item.role || ""}
@@ -222,14 +420,14 @@ export const HomeATS: React.FC = () => {
               )}
           </View>
 
-          {/* Right Column - Sidebar Content */}
-          <View className="w-[290px] shrink-0 block [writing-mode:horizontal-tb]">
+          <View className="ats-pdf-sidebar w-[290px] shrink-0 self-start block [writing-mode:horizontal-tb]">
             {/* Contact Details */}
             {sidebar?.contactSection?.items && sidebar.contactSection.items.length > 0 && (
               <View className="mb-7">
-                  <Text className="text-[15px] font-bold mb-2 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
+                  <Text className="text-[15px] font-bold mb-1.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
                     {sidebar.contactSection.label || "CONTACT DETAILS"}
                   </Text>
+                  <SectionUnderline />
                 <View>
                   {sidebar.contactSection.items.map((item: any, idx: number) => {
                     // Only show labels if showLabel is true
@@ -293,9 +491,10 @@ export const HomeATS: React.FC = () => {
               
               return (
                 <View key={sectionIdx} className="mb-7">
-                  <Text className="text-[15px] font-bold mb-3.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
+                  <Text className="text-[15px] font-bold mb-1.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
                     {skillSection.label?.toUpperCase() || "SKILLS"}
                   </Text>
+                  <SectionUnderline />
                   <View className={`flex flex-wrap ${isTagsView ? "flex-row" : "flex-col"}`}>
                     {skillSection.items.map((item: { title?: string; name?: string }, idx: number) => {
                       const itemText = item.title || item.name;
@@ -336,9 +535,10 @@ export const HomeATS: React.FC = () => {
             {content?.educationSection?.items &&
               content.educationSection.items.some(item => item.certifications && item.certifications.length > 0) && (
                 <View className="mb-7">
-                  <Text className="text-[15px] font-bold mb-3.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
+                  <Text className="text-[15px] font-bold mb-1.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
                     CERTIFICATIONS
                   </Text>
+                  <SectionUnderline />
                   <View>
                     {content.educationSection.items.map((item: any, idx: number) =>
                       item.certifications?.map((cert: string, cIdx: number) => (
@@ -358,9 +558,10 @@ export const HomeATS: React.FC = () => {
             {content?.educationSection?.items &&
               content.educationSection.items.length > 0 && (
                 <View className="mb-7">
-                  <Text className="text-[15px] font-bold mb-3.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
+                  <Text className="text-[15px] font-bold mb-1.5 uppercase tracking-[1px] text-[#c084fc] block whitespace-normal">
                     {content.educationSection.label || "EDUCATION"}
                   </Text>
+                  <SectionUnderline />
                   {content.educationSection.items.map((item: any, idx: number) => (
                     <View key={idx} className="mb-3.5">
                       <Text className="text-[12.5px] font-bold text-white mb-1.5 leading-[18px] block whitespace-normal">

@@ -15,7 +15,7 @@ const Education: React.FC<DefaultComponentProps> = ({ className }) => {
     <View className={className}>
       <View>
         <Text
-          className="uppercase font-['Norwester'] text-xl mb-4"
+          className="resume-section-title uppercase font-['Norwester'] text-xl mb-4"
           style={{
             color: settings?.mainSectionTextColor?.hex,
           }}
@@ -28,7 +28,7 @@ const Education: React.FC<DefaultComponentProps> = ({ className }) => {
           data.items.map((item, itemIndex) => (
             <View
               key={itemIndex}
-              className="bi-avoid bb-always mt-4 font-['Lato']"
+              className="resume-avoid-break bi-avoid mt-4 font-['Lato']"
             >
               <Text
                 className="font-['LatoBlack'] uppercase text-sm font-semibold"

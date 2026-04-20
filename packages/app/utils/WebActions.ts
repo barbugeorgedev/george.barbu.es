@@ -1,25 +1,43 @@
+/** Matches blobPDF upload: george_barbu-{sanitySlug}-ats.pdf */
+const PDF_BLOB_PREFIX = (
+  process.env.NEXT_PUBLIC_PDF_BLOB_FILENAME_PREFIX || "george_barbu-"
+).trim() || "george_barbu-";
+
+export const pdfRoleFromSlug = (slug: string, isATS: boolean): string => {
+  let key =
+    slug === "/" || slug === ""
+      ? "george.barbu"
+      : slug.replace(/^\/+|\/+$/g, "");
+  if (key.startsWith("_")) key = key.slice(1);
+  if (!key) key = "george.barbu";
+  return isATS ? `${key}-ats` : key;
+};
+
+export const getPdfDownloadFilename = (slug: string, isATS: boolean): string => {
+  return `${PDF_BLOB_PREFIX}${pdfRoleFromSlug(slug, isATS)}.pdf`;
+};
+
 export const getPdfUrl = (slug: string, isATS: boolean = false) => {
   const SITE_URL =
     process.env.NODE_ENV !== "development"
       ? process.env.NEXT_PUBLIC_API_URL
       : "http://localhost:3000";
 
-  // Normalize slug: remove leading slash, use "george.barbu" for homepage
-  const normalizedSlug = slug === "/" ? "george.barbu" : slug.replace(/^\//, "");
-  
-  // For ATS version, append -ats to the slug for the API
-  // Explicitly check isATS to ensure we don't accidentally get ATS version
-  const apiSlug = isATS === true ? `${normalizedSlug}-ats` : normalizedSlug;
+  const apiSlug = pdfRoleFromSlug(slug, isATS === true);
 
-  // Construct URL with role query parameter
-  // The API route uses the slug in the path and role in query
-  return `${SITE_URL}/api/pdf/${apiSlug}?role=${apiSlug}`;
+  return `${SITE_URL}/api/pdf/${encodeURIComponent(apiSlug)}?role=${encodeURIComponent(apiSlug)}`;
 };
 
-export const fetchPDFBlob = async (slug: string, isATS: boolean = false): Promise<Blob | null> => {
+export type FetchPdfResult = { blob: Blob; filename: string };
+
+export const fetchPDFBlob = async (
+  slug: string,
+  isATS: boolean = false,
+): Promise<FetchPdfResult | null> => {
   try {
-    // First, get the latest PDF URL from API
-    const response = await fetch(getPdfUrl(slug, isATS));
+    const response = await fetch(getPdfUrl(slug, isATS), {
+      cache: "no-store",
+    });
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Fetch PDF URL Error:", errorText);
@@ -28,14 +46,22 @@ export const fetchPDFBlob = async (slug: string, isATS: boolean = false): Promis
       );
     }
 
-    const data = await response.json();
+    const data = (await response.json()) as {
+      url?: string;
+      filename?: string;
+    };
     if (!data.url) throw new Error("No valid PDF URL found.");
 
-    // Now fetch the actual PDF
-    const pdfResponse = await fetch(data.url);
+    const pdfResponse = await fetch(data.url, { cache: "no-store" });
     if (!pdfResponse.ok) throw new Error("Failed to fetch the PDF file.");
 
-    return await pdfResponse.blob();
+    const blob = await pdfResponse.blob();
+    const filename =
+      (typeof data.filename === "string" && data.filename.endsWith(".pdf")
+        ? data.filename
+        : null) ?? getPdfDownloadFilename(slug, isATS);
+
+    return { blob, filename };
   } catch (error) {
     console.error("Error fetching PDF:", error);
     return null;
@@ -43,16 +69,13 @@ export const fetchPDFBlob = async (slug: string, isATS: boolean = false): Promis
 };
 
 export const downloadPDFweb = async (slug: string, isATS: boolean = false): Promise<void> => {
-  const blob = await fetchPDFBlob(slug, isATS);
-  if (!blob) return;
+  const result = await fetchPDFBlob(slug, isATS);
+  if (!result) return;
 
-  const blobUrl = window.URL.createObjectURL(blob);
+  const blobUrl = window.URL.createObjectURL(result.blob);
   const link = document.createElement("a");
   link.href = blobUrl;
-
-  const baseSlug = slug === "/" ? "george.barbu" : slug;
-  const fileName = isATS ? `${baseSlug}-ats.pdf` : `${baseSlug}.pdf`;
-  link.download = fileName;
+  link.setAttribute("download", result.filename);
 
   document.body.appendChild(link);
   link.click();
@@ -62,10 +85,10 @@ export const downloadPDFweb = async (slug: string, isATS: boolean = false): Prom
 
 export const printPDF = async (slug: string, isATS: boolean = false): Promise<void> => {
   try {
-    const blob = await fetchPDFBlob(slug, isATS);
-    if (!blob) return;
+    const result = await fetchPDFBlob(slug, isATS);
+    if (!result) return;
 
-    const blobUrl = URL.createObjectURL(blob);
+    const blobUrl = URL.createObjectURL(result.blob);
     const iframe = document.createElement("iframe");
 
     // Set iframe styles to be invisible

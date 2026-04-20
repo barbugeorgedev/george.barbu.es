@@ -11,26 +11,31 @@ const Footer: React.FC = () => {
     ? resumeData?.footer[0]?.social || []
     : [];
   
-  // Detect if we're on an ATS page
   let isATS = false;
   if (typeof window !== "undefined") {
     const pathname = window.location.pathname;
-    isATS = pathname === "/ats" || (pathname.length > 4 && pathname.endsWith("-ats"));
+    const isATSv2 =
+      pathname === "/ats-v2" || (pathname.length > 8 && pathname.endsWith("-ats-v2"));
+    isATS =
+      !isATSv2 &&
+      (pathname === "/ats" || (pathname.length > 4 && pathname.endsWith("-ats")));
   }
+
+  const darkATSChrome = isATS;
 
   return (
     <ViewWEB
       data-exclude="true"
-      className="max-w-screen-pdf py-6 mb-5 mx-auto items-center justify-between w-full md:flex lg:flex-row  print:invisible"
+      className="max-w-screen-pdf py-6 mb-5 mx-auto items-center justify-between w-full md:flex lg:flex-row print:invisible"
       style={{
-        backgroundColor: isATS ? "#313638" : "transparent",
+        backgroundColor: darkATSChrome ? "#313638" : "transparent",
       }}
     >
       <View className="flex-row items-center tracking-wide mb-5 md:mb-0 justify-center ml-2 sm:ml-0">
         <Text
           className="text-sm mr-1 "
           style={{
-            color: isATS ? "#525659" : settings?.footerTextColor?.hex,
+            color: darkATSChrome ? "#525659" : settings?.footerTextColor?.hex,
           }}
         >
           © {new Date().getFullYear()} | Developed with
@@ -46,7 +51,7 @@ const Footer: React.FC = () => {
         <Text
           className=" text-sm mr-1"
           style={{
-            color: isATS ? "#525659" : settings?.footerTextColor?.hex,
+            color: darkATSChrome ? "#525659" : settings?.footerTextColor?.hex,
           }}
         >
           by
@@ -72,7 +77,7 @@ const Footer: React.FC = () => {
             <Text className="ml-4 last:ml-o">
               <Icon
                 name={item.service}
-                color={isATS ? "#525659" : settings?.footerIconsColor?.hex}
+                color={darkATSChrome ? "#525659" : settings?.footerIconsColor?.hex}
                 className="!text-[28px]"
               />
             </Text>

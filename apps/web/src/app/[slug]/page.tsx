@@ -4,6 +4,7 @@ import { ResumeDataProvider } from "app/context/ResumeContext";
 import { useQuery } from "@apollo/client";
 import { Home } from "app/screens/Home";
 import { HomeATS } from "app/screens/HomeATS";
+import { HomeATSv2 } from "app/screens/HomeATSv2";
 import LoadingScreen from "app/screens/Loading";
 import ErrorScreen from "app/screens/Error";
 import dynamic from "next/dynamic";
@@ -23,14 +24,19 @@ const Page = () => {
     slug = slug.join("/");
   }
 
-  // Check if this is an ATS version route
-  // Routes: /ats (homepage) or /{slug}-ats
-  const isATS = slug === "ats" || slug.endsWith("-ats");
-  
-  // Extract the base slug for data fetching (remove -ats suffix)
-  const baseSlug = isATS 
-    ? (slug === "ats" ? "/" : slug.replace(/-ats$/, ""))
-    : slug;
+  // ATS-v2 first: /ats-v2 or /{slug}-ats-v2 (must precede -ats check: *-ats-v2 also ends with -ats)
+  const isATSv2 = slug === "ats-v2" || slug.endsWith("-ats-v2");
+  const isATS = !isATSv2 && (slug === "ats" || slug.endsWith("-ats"));
+
+  const baseSlug = isATSv2
+    ? slug === "ats-v2"
+      ? "/"
+      : slug.replace(/-ats-v2$/, "")
+    : isATS
+      ? slug === "ats"
+        ? "/"
+        : slug.replace(/-ats$/, "")
+      : slug;
 
   const getResumeFilter = (slug: string) => {
     if (slug === "/") {
@@ -65,11 +71,13 @@ const Page = () => {
 
   return (
     <ResumeDataProvider value={resumeData}>
-      <TemplateComponent isATS={isATS}>
+      <TemplateComponent isATS={isATS} isATSv2={isATSv2}>
         {loading ? (
           <LoadingScreen />
         ) : error ? (
           <ErrorScreen message={error.message} />
+        ) : isATSv2 ? (
+          <HomeATSv2 />
         ) : isATS ? (
           <HomeATS />
         ) : (

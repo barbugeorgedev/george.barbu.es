@@ -13,6 +13,7 @@ module.exports = withExpo({
     ],
   },
   transpilePackages: [
+    "app",
     "react-native",
     "react-native-web",
     "ui",

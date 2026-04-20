@@ -5,7 +5,7 @@ import Footer from "app/components/Footer";
 import { TemplateProps } from "types/components";
 import { useSettings } from "app/hooks/useSettings";
 
-const DefaultTemplate: React.FC<TemplateProps> = ({ children, isATS = false }) => {
+const DefaultTemplate: React.FC<TemplateProps> = ({ children, isATS = false, isATSv2 = false }) => {
   const settings = useSettings();
   return (
     <SafeAreaView>
@@ -13,7 +13,7 @@ const DefaultTemplate: React.FC<TemplateProps> = ({ children, isATS = false }) =
         contentInsetAdjustmentBehavior="automatic"
         className="w-full h-full  pt-8"
         style={{
-          backgroundColor: isATS ? "#313638" : settings?.mainBackground?.hex,
+          backgroundColor: isATSv2 ? "#ffffff" : isATS ? "#313638" : settings?.mainBackground?.hex,
         }}
       >
         <Header />

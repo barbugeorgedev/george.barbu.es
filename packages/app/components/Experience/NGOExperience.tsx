@@ -14,7 +14,7 @@ const NGOExperience: React.FC<DefaultComponentProps> = ({ className }) => {
   return (
     <View className={className}>
       <Text
-        className="uppercase font-['Norwester'] text-xl mt-11"
+        className="resume-section-title uppercase font-['Norwester'] text-xl mt-11"
         style={{
           color: settings?.mainSectionTextColor?.hex,
         }}
@@ -22,7 +22,7 @@ const NGOExperience: React.FC<DefaultComponentProps> = ({ className }) => {
         {data.label}
       </Text>
       {data.items.map((item, index) => (
-        <View key={index} className="bi-avoid bb-always mt-4 font-['Lato']">
+        <View key={index} className="resume-avoid-break bi-avoid mt-4 font-['Lato']">
           <Text
             className="font-['LatoBlack'] uppercase text-sm font-semibold"
             style={{

@@ -19,23 +19,27 @@ const Header: React.FC = () => {
   let baseSlug = slug; // Default to slug from page data
   
   if (isWEB && typeof window !== "undefined") {
-    const pathname = window.location.pathname;
-    // Only set isATS to true if we're explicitly on an ATS route
-    // Check for exact match "/ats" or ends with "-ats" (but not just "ats" as a word)
-    isATS = pathname === "/ats" || (pathname.length > 4 && pathname.endsWith("-ats"));
-    
-    if (isATS) {
-      // Extract base slug from pathname for ATS pages
+    const pathname = (window.location.pathname || "/").replace(/\/+$/, "") || "/";
+    const isATSv2 =
+      pathname === "/ats-v2" || (pathname.length > 8 && pathname.endsWith("-ats-v2"));
+    // /ats-v2 must not match -ats (pathname ...-ats-v2 also ends with -ats)
+    isATS =
+      !isATSv2 &&
+      (pathname === "/ats" || (pathname.length > 4 && pathname.endsWith("-ats")));
+
+    if (isATSv2) {
+      baseSlug = pathname === "/ats-v2" ? "/" : pathname.replace(/-ats-v2$/, "") || "/";
+    } else if (isATS) {
       if (pathname === "/ats") {
         baseSlug = "/";
       } else {
-        // Remove -ats suffix, keep the path structure
         const extracted = pathname.replace(/-ats$/, "");
         baseSlug = extracted === "" ? "/" : extracted;
       }
     }
-    // For regular pages (isATS = false), use slug from page data (already set above)
   }
+
+  const darkATSChrome = isATS;
 
   const downloadPDF = () => {
     if (isWEB) {
@@ -51,14 +55,14 @@ const Header: React.FC = () => {
       data-exclude="true"
       className="w-full flex flex-row items-center justify-center pt-6 sm:pb-2 lg:pb-5 print:invisible"
       style={{
-        backgroundColor: isATS ? "#313638" : "transparent",
+        backgroundColor: darkATSChrome ? "#313638" : "transparent",
       }}
     >
       <TouchableOpacity onPress={downloadPDF} className="mr-2">
         <Icon
           type="fa"
           name="download"
-          color={isATS ? "#525659" : settings?.headerIconsColor?.hex}
+          color={darkATSChrome ? "#525659" : settings?.headerIconsColor?.hex}
           className="!text-[28px] pb-1 sm:mb-0"
         />
       </TouchableOpacity>
@@ -67,7 +71,7 @@ const Header: React.FC = () => {
           <Icon
             type="ai"
             name="AiFillPrinter"
-            color={isATS ? "#525659" : settings?.headerIconsColor?.hex}
+            color={darkATSChrome ? "#525659" : settings?.headerIconsColor?.hex}
             size={30}
             className="!text-[28px] pb-1 sm:mb-0"
           />
