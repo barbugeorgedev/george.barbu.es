@@ -19,7 +19,7 @@ const isAiSkillsSection = (label?: string) => {
 };
 
 /**
- * ATS resume: single column, linear order, minimal chrome — optimized for parsers and quick scanning.
+ * ATS v1 (`/ats-v1`, `/{slug}-ats-v1`): single column, linear order, minimal chrome — parsers + quick scan.
  */
 export const HomeATS: React.FC = () => {
   const resumeData = useResumeData();
@@ -335,7 +335,9 @@ export const HomeATS: React.FC = () => {
               .map((item) => item.title || item.name)
               .filter(Boolean) as string[];
             if (!names.length) return null;
-            const line = `${skillSection.label || "Skills"}: ${names.join(", ")}`;
+            const lb = (skillSection.label || "Skills").trim();
+            const head = /:\s*$/.test(lb) ? lb : `${lb}:`;
+            const line = `${head} ${names.join(", ")}`;
             return (
               <Text key={sectionIdx} className="text-sm text-neutral-800 leading-6 mb-2">
                 {line}

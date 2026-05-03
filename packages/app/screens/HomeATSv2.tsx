@@ -40,8 +40,7 @@ const AtsV2EarlySingleBullet: React.FC<{ duties?: string[] }> = ({ duties }) => 
 };
 
 /**
- * ATS-v2: single-column, high-contrast, linear document flow.
- * Optimized for parsers (plain hierarchy: title → meta → bullets; minimal decoration).
+ * ATS v2 (`/ats-v2`, `/{slug}-ats-v2`): single-column, parser-focused flow (contact block, timelines where useful).
  */
 export const HomeATSv2: React.FC = () => {
   const resumeData = useResumeData();
@@ -248,8 +247,7 @@ export const HomeATSv2: React.FC = () => {
         ) : null}
 
         {content?.earlyCareerExperienceSection?.items &&
-        content.earlyCareerExperienceSection.items.length > 0 &&
-        !content.earlyCareerExperienceSection.disabled ? (
+        content.earlyCareerExperienceSection.items.length > 0 ? (
           <AtsV2Section title={content.earlyCareerExperienceSection.label || "EARLY CAREER"}>
             {groupItemsByCompany(content.earlyCareerExperienceSection.items).map(([companyKey, groupItems]) => {
               const displayCompany = companyKey.startsWith("__orphan_") ? "" : companyKey;
@@ -411,8 +409,10 @@ export const HomeATSv2: React.FC = () => {
             .map((item: { title?: string; name?: string }) => item.title || item.name)
             .filter(Boolean);
           if (labels.length === 0) return null;
+          const rawTitle = (skillSection.label || "SKILLS").toUpperCase().trim();
+          const title = /:\s*$/.test(rawTitle) ? rawTitle : `${rawTitle}:`;
           return (
-            <AtsV2Section key={sectionIdx} title={(skillSection.label || "SKILLS").toUpperCase()}>
+            <AtsV2Section key={sectionIdx} title={title}>
               <Text className="text-sm text-neutral-800 leading-7">{labels.join(", ")}</Text>
             </AtsV2Section>
           );

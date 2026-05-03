@@ -1,14 +1,15 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { ExperienceItem } from "types/components";
-import { formatDurationLabel } from "app/utils/experienceDuration";
 import { AtsHiddenEmployerContext } from "app/components/AtsHiddenEmployerContext";
+
+const MAX_SKILLS_PER_JOB = 4;
 
 interface CompanyExperienceBlockProps {
   company: string;
   items: ExperienceItem[];
   settings: any;
-  /** One • line with all duties joined (e.g. Early career) */
+  /** If true, one bullet with all duties joined (unused in current layouts) */
   singleDutyBullet?: boolean;
   /** Extra classes on the outer wrapper (e.g. print page-break for PDF) */
   wrapperClassName?: string;
@@ -20,6 +21,7 @@ const DutiesAndSkills: React.FC<{ item: ExperienceItem; singleBullet?: boolean }
   singleBullet,
 }) => {
   const duties = item.duties?.filter(Boolean) ?? [];
+  const skillTags = (item.skills ?? []).slice(0, MAX_SKILLS_PER_JOB);
   return (
   <>
     <View className="mb-2">
@@ -34,8 +36,8 @@ const DutiesAndSkills: React.FC<{ item: ExperienceItem; singleBullet?: boolean }
       )}
     </View>
     <View className="flex flex-row flex-wrap mt-1">
-      {item.skills && item.skills.length > 0
-        ? item.skills.map((skill, skillIdx) => (
+      {skillTags.length > 0
+        ? skillTags.map((skill, skillIdx) => (
             <Text
               className="mr-2 mb-1 border opacity-90 rounded-md p-1 text-xs"
               key={skillIdx}
@@ -71,11 +73,6 @@ const CompanyExperienceBlock: React.FC<CompanyExperienceBlockProps> = ({
     const item = items[0];
     if (!item) return null;
     const yearRange = `${item.experienceDates?.startDate?.substring(0, 4) || "N/A"} - ${item.experienceDates?.presentDate ? "Present" : item.experienceDates?.endDate?.substring(0, 4) || "N/A"}`;
-    const duration = formatDurationLabel(
-      item.experienceDates?.startDate,
-      item.experienceDates?.endDate,
-      item.experienceDates?.presentDate
-    );
     const companyDatesLine = companyTrim ? `${companyTrim} | ${yearRange}` : yearRange;
     return (
       <View className={wrapClass}>
@@ -92,7 +89,6 @@ const CompanyExperienceBlock: React.FC<CompanyExperienceBlockProps> = ({
           style={{ color: settings?.mainSectionPrimaryTextColor?.hex }}
         >
           {companyDatesLine}
-          {duration}
         </Text>
         {/* Duties and skills for single experience */}
         <DutiesAndSkills item={item} singleBullet={singleDutyBullet} />
@@ -107,11 +103,6 @@ const CompanyExperienceBlock: React.FC<CompanyExperienceBlockProps> = ({
   const endYear = newest?.experienceDates?.presentDate
     ? "Present"
     : newest?.experienceDates?.endDate?.substring(0, 4) || "N/A";
-  const companyDuration = formatDurationLabel(
-    oldest?.experienceDates?.startDate,
-    newest?.experienceDates?.presentDate ? undefined : newest?.experienceDates?.endDate,
-    newest?.experienceDates?.presentDate
-  );
   return (
     <View className={wrapClass}>
       {companyTrim ? (
@@ -127,7 +118,6 @@ const CompanyExperienceBlock: React.FC<CompanyExperienceBlockProps> = ({
         style={{ color: settings?.mainSectionPrimaryTextColor?.hex }}
       >
         {startYear} - {endYear}
-        {companyDuration}
       </Text>
       {/* Vertical continuity line for roles at the same employer */}
       <View
@@ -135,11 +125,6 @@ const CompanyExperienceBlock: React.FC<CompanyExperienceBlockProps> = ({
         style={{ borderColor: settings?.mainSectionLineColor?.hex }}
       >
         {items.map((item, idx) => {
-          const roleDuration = formatDurationLabel(
-            item.experienceDates?.startDate,
-            item.experienceDates?.endDate,
-            item.experienceDates?.presentDate
-          );
           const yStart = item.experienceDates?.startDate?.substring(0, 4) || "N/A";
           const yEnd = item.experienceDates?.presentDate
             ? "Present"
@@ -161,12 +146,7 @@ const CompanyExperienceBlock: React.FC<CompanyExperienceBlockProps> = ({
                 }}
               />
               {companyTrim ? (
-                <AtsHiddenEmployerContext
-                  employer={companyTrim}
-                  jobTitle={item.role}
-                  dateRange={roleRange}
-                  durationSuffix={roleDuration}
-                />
+                <AtsHiddenEmployerContext employer={companyTrim} jobTitle={item.role} dateRange={roleRange} />
               ) : null}
               <Text
                 className="font-['LatoBlack'] uppercase text-sm font-semibold"
@@ -182,7 +162,6 @@ const CompanyExperienceBlock: React.FC<CompanyExperienceBlockProps> = ({
                   {yStart}
                   &nbsp; - &nbsp;
                   {yEnd}
-                  {roleDuration}
                 </Text>
               </View>
               <DutiesAndSkills item={item} singleBullet={singleDutyBullet} />

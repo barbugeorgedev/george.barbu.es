@@ -35,7 +35,6 @@ const EarlyCareer: React.FC<DefaultComponentProps> = ({ className }) => {
             company={key.startsWith("__orphan_") ? "" : key}
             items={items}
             settings={settings}
-            singleDutyBullet
           />
         ))}
       </View>

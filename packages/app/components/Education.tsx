@@ -11,60 +11,65 @@ const Education: React.FC<DefaultComponentProps> = ({ className }) => {
 
   if (!data || data.disabled || !data.items || data.items.length === 0) return null;
 
+  const ink = settings?.mainTextColor?.hex ?? "#000000";
+  const accent = settings?.mainSectionPrimaryTextColor?.hex ?? "#571926";
+
   return (
     <View className={className}>
       <View>
         <Text
-          className="resume-section-title uppercase font-['Norwester'] text-xl mb-4"
+          className="resume-section-title uppercase font-['Norwester'] text-xl mb-1 tracking-wide"
           style={{
             color: settings?.mainSectionTextColor?.hex,
           }}
         >
           {data.label}
         </Text>
-        {data.items.length === 0 ? (
-          <Text>No education data available</Text>
-        ) : (
-          data.items.map((item, itemIndex) => (
+        {data.items.map((item, itemIndex) => {
+          const studyLine = [item.degree, item.type]
+            .filter((p) => p?.trim())
+            .join(" | ")
+            .replace(/\s+\|\s*$/, "")
+            .trim();
+          const certs = (item.certifications ?? []).filter((c) => c?.trim());
+
+          return (
             <View
               key={itemIndex}
-              className="resume-avoid-break bi-avoid mt-4 font-['Lato']"
+              className={`resume-avoid-break bi-avoid font-['Lato'] w-full max-w-full ${itemIndex === 0 ? "mt-4" : "mt-6"}`}
             >
-              <Text
-                className="font-['LatoBlack'] uppercase text-sm font-semibold"
-                style={{
-                  color: settings?.mainSectionSecondaryTextColor?.hex,
-                }}
-              >
-                {item.institution}
-              </Text>
-              <View className="text-xs font-semibold mb-4 flex flex-row">
+              {item.institution ? (
                 <Text
-                  className="border-r-2 border-solid mr-1 pr-1 font-['LatoBlack'] text-xs"
-                  style={{
-                    color: settings?.mainSectionPrimaryTextColor?.hex,
-                    borderColor: settings?.mainSectionLineColor?.hex,
-                  }}
+                  className="font-['LatoBlack'] uppercase text-sm font-semibold leading-tight tracking-wide"
+                  style={{ color: ink }}
                 >
-                  {item.degree}
+                  {item.institution}
                 </Text>
+              ) : null}
+              {studyLine ? (
                 <Text
-                  className="font-['LatoBlack'] text-xs"
-                  style={{
-                    color: settings?.mainSectionPrimaryTextColor?.hex,
-                  }}
+                  className="font-['Lato'] text-xs mt-1 leading-snug"
+                  style={{ color: accent }}
                 >
-                  {item.type}
+                  {studyLine}
                 </Text>
-              </View>
-              <View className="text-xs flex flex-col">
-                {item.certifications.map((cert, certIndex) => (
-                  <Text key={certIndex}>- {cert}</Text>
-                ))}
-              </View>
+              ) : null}
+              {certs.length > 0 ? (
+                <View className="text-xs flex flex-col mt-2 gap-0.5">
+                  {certs.map((cert, certIndex) => (
+                    <Text
+                      key={certIndex}
+                      className="font-['Lato'] leading-snug"
+                      style={{ color: ink }}
+                    >
+                      – {cert}
+                    </Text>
+                  ))}
+                </View>
+              ) : null}
             </View>
-          ))
-        )}
+          );
+        })}
       </View>
     </View>
   );

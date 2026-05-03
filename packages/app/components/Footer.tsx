@@ -3,6 +3,7 @@ import Icon from "ui/icon";
 import { View as ViewWEB } from "ui/view";
 import { useResumeData } from "app/context/ResumeContext";
 import { useSettings } from "app/hooks/useSettings";
+import { parseAtsPathname } from "app/utils/atsRoutes";
 
 const Footer: React.FC = () => {
   const settings = useSettings();
@@ -12,17 +13,12 @@ const Footer: React.FC = () => {
     : [];
   
   let isATS = false;
-  let isATSv2 = false;
   if (typeof window !== "undefined") {
     const pathname = window.location.pathname;
-    isATSv2 =
-      pathname === "/ats-v2" || (pathname.length > 8 && pathname.endsWith("-ats-v2"));
-    isATS =
-      !isATSv2 &&
-      (pathname === "/ats" || (pathname.length > 4 && pathname.endsWith("-ats")));
+    isATS = parseAtsPathname(pathname).mode !== "none";
   }
 
-  const lightAtsPage = isATSv2 || isATS;
+  const lightAtsPage = isATS;
 
   return (
     <ViewWEB

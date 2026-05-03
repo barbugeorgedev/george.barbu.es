@@ -26,31 +26,29 @@ const Skills: React.FC = ({}) => {
           <View
             className={`flex flex-wrap ${skill.view === "tags" ? "flex-row" : "flex-col"}`}
           >
-            {skill.items?.map(
-              (subskill: { title: string }, subIndex: number) => (
-                <Text key={subskill.title} className="mx-1">
-                  {skill.view === "styled-list" && (
-                    <Text
-                      className="text-[0.70rem] font-['Lato'] leading-3 mr-1"
-                      style={{
-                        color: settings?.sidebarTextColor?.hex,
-                      }}
-                    >
-                      •{" "}
-                    </Text>
-                  )}
+            {skill.items?.map((subskill: { title: string }, subIndex: number) => (
+              <Text key={`${subskill.title}-${subIndex}`} className="mx-1">
+                {skill.view === "styled-list" && (
                   <Text
-                    className="text-[0.70rem] font-['Lato'] leading-3"
+                    className="text-[0.70rem] font-['Lato'] leading-3 mr-1"
                     style={{
                       color: settings?.sidebarTextColor?.hex,
                     }}
                   >
-                    {subskill.title}
-                    {skill.view === "tags" && subIndex !== (skill.items?.length ?? 0) - 1 ? "," : ""}
+                    •{" "}
                   </Text>
+                )}
+                <Text
+                  className="text-[0.70rem] font-['Lato'] leading-3"
+                  style={{
+                    color: settings?.sidebarTextColor?.hex,
+                  }}
+                >
+                  {subskill.title}
+                  {skill.view === "tags" && subIndex !== (skill.items?.length ?? 0) - 1 ? "," : ""}
                 </Text>
-              ),
-            )}
+              </Text>
+            ))}
           </View>
         </View>
       ))}

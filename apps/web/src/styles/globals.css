@@ -183,12 +183,14 @@ body {
     page-break-after: avoid;
   }
 
-  html.pdf-export .ats-pdf-inner {
+  html.pdf-export .ats-pdf-inner,
+  html.pdf-export .ats-default-pdf-inner {
     padding-top: 0.75rem !important;
     padding-bottom: 0.75rem !important;
   }
 
-  html.pdf-export .ats-pdf-header {
+  html.pdf-export .ats-pdf-header,
+  html.pdf-export .ats-default-pdf-header {
     margin-bottom: 1rem !important;
     padding-top: 0.5rem !important;
     padding-bottom: 0.75rem !important;
@@ -209,11 +211,13 @@ body {
    * Print/PDF pagination can reorder fragments so section headings appear before the header block.
    * Force normal block flow for the resume subtree only.
    */
-  body:has(.ats-pdf-root) {
+  body:has(.ats-pdf-root),
+  body:has(.ats-default-pdf-root) {
     display: block !important;
   }
 
-  body:has(.ats-pdf-root) #__next {
+  body:has(.ats-pdf-root) #__next,
+  body:has(.ats-default-pdf-root) #__next {
     display: block !important;
     flex: unset !important;
     flex-direction: unset !important;
@@ -222,12 +226,15 @@ body {
     flex-basis: unset !important;
   }
 
-  body:has(.ats-pdf-root) main {
+  body:has(.ats-pdf-root) main,
+  body:has(.ats-default-pdf-root) main {
     display: block !important;
   }
 
   body:has(.ats-pdf-root) .ats-pdf-root,
-  body:has(.ats-pdf-root) .ats-pdf-inner {
+  body:has(.ats-pdf-root) .ats-pdf-inner,
+  body:has(.ats-default-pdf-root) .ats-default-pdf-root,
+  body:has(.ats-default-pdf-root) .ats-default-pdf-inner {
     display: block !important;
   }
 
@@ -247,7 +254,8 @@ body {
    */
   body:has(.ats-pdf-root) .cv-intro-block,
   body:has(.ats-pdf-root) .ats-experience-section,
-  body:has(.ats-pdf-root) .ats-experience-entries {
+  body:has(.ats-pdf-root) .ats-experience-entries,
+  body:has(.ats-default-pdf-root) .ats-default-experience-section {
     display: block !important;
   }
 

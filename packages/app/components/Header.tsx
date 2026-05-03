@@ -6,6 +6,7 @@ import { downloadPDFweb, printPDF } from "app/utils/WebActions";
 import { downloadPDFmobile, sharePDFmobile } from "app/utils/MobileActions";
 import { useSettings } from "app/hooks/useSettings";
 import { usePage } from "app/hooks/usePage";
+import { parseAtsPathname } from "app/utils/atsRoutes";
 
 const Header: React.FC = () => {
   const settings = useSettings();
@@ -14,33 +15,19 @@ const Header: React.FC = () => {
 
   const isWEB = Platform.OS === "web";
   
-  // Detect if we're on an ATS page by checking the current pathname
   let isATS = false;
-  let isATSv2 = false;
-  let baseSlug = slug; // Default to slug from page data
+  let baseSlug = slug;
 
   if (isWEB && typeof window !== "undefined") {
     const pathname = (window.location.pathname || "/").replace(/\/+$/, "") || "/";
-    isATSv2 =
-      pathname === "/ats-v2" || (pathname.length > 8 && pathname.endsWith("-ats-v2"));
-    // /ats-v2 must not match -ats (pathname ...-ats-v2 also ends with -ats)
-    isATS =
-      !isATSv2 &&
-      (pathname === "/ats" || (pathname.length > 4 && pathname.endsWith("-ats")));
-
-    if (isATSv2) {
-      baseSlug = pathname === "/ats-v2" ? "/" : pathname.replace(/-ats-v2$/, "") || "/";
-    } else if (isATS) {
-      if (pathname === "/ats") {
-        baseSlug = "/";
-      } else {
-        const extracted = pathname.replace(/-ats$/, "");
-        baseSlug = extracted === "" ? "/" : extracted;
-      }
+    const { mode, baseSlug: atsBase } = parseAtsPathname(pathname);
+    isATS = mode !== "none";
+    if (isATS) {
+      baseSlug = atsBase;
     }
   }
 
-  const lightAtsPage = isATSv2 || isATS;
+  const lightAtsPage = isATS;
 
   /** Vercel blobs are named from Sanity slug (blobPDF.js), not the synthetic "/" → george.barbu key. */
   const cmsSlug = pageData?.slug?.current;
@@ -50,7 +37,7 @@ const Header: React.FC = () => {
   const downloadPDF = () => {
     if (isWEB) {
       // Ensure isATS is explicitly false for regular pages
-      const shouldDownloadATS = isATS === true;
+      const shouldDownloadATS = isATS;
       return downloadPDFweb(pdfSlug, shouldDownloadATS);
     }
     return downloadPDFmobile(slug);
