@@ -5,6 +5,9 @@ import { useResumeData } from "app/context/ResumeContext";
 import { useSettings } from "app/hooks/useSettings";
 import CompanyExperienceBlock from 'app/components/Blocks/CompanyExperienceBlock';
 
+/** Visual resume PDF/print: start this employer on a new page (non-ATS layout only). */
+const ENTAIN_GROUP_KEY = "entain";
+
 const Experience: React.FC<DefaultComponentProps> = ({ className }) => {
   const settings = useSettings();
   const resumeData = useResumeData();
@@ -39,14 +42,23 @@ const Experience: React.FC<DefaultComponentProps> = ({ className }) => {
         {data.label}
       </Text>
 
-      {Object.entries(groups).map(([key, companyExperiences], index) => (
-        <CompanyExperienceBlock
-          key={index}
-          company={key.startsWith("__orphan_") ? "" : key}
-          items={companyExperiences}
-          settings={settings}
-        />
-      ))}
+      {Object.entries(groups).map(([key, companyExperiences], index) => {
+        const displayCompany = key.startsWith("__orphan_") ? "" : key;
+        const pdfBreakBefore =
+          !key.startsWith("__orphan_") &&
+          key.trim().toLowerCase() === ENTAIN_GROUP_KEY
+            ? "resume-pdf-break-before-company"
+            : undefined;
+        return (
+          <CompanyExperienceBlock
+            key={index}
+            company={displayCompany}
+            items={companyExperiences}
+            settings={settings}
+            wrapperClassName={pdfBreakBefore}
+          />
+        );
+      })}
     </View>
   );
 };

@@ -10,6 +10,8 @@ interface CompanyExperienceBlockProps {
   settings: any;
   /** One • line with all duties joined (e.g. Early career) */
   singleDutyBullet?: boolean;
+  /** Extra classes on the outer wrapper (e.g. print page-break for PDF) */
+  wrapperClassName?: string;
 }
 
 // DutiesAndSkills: Shared subcomponent for rendering duties and skills for an experience item
@@ -56,7 +58,11 @@ const CompanyExperienceBlock: React.FC<CompanyExperienceBlockProps> = ({
   items,
   settings,
   singleDutyBullet,
+  wrapperClassName,
 }) => {
+  const wrapClass =
+    "mb-10 resume-avoid-break bi-avoid" +
+    (wrapperClassName ? ` ${wrapperClassName}` : "");
   if (!items || items.length === 0) return null;
   const companyTrim = company?.trim() ?? "";
 
@@ -72,7 +78,7 @@ const CompanyExperienceBlock: React.FC<CompanyExperienceBlockProps> = ({
     );
     const companyDatesLine = companyTrim ? `${companyTrim} | ${yearRange}` : yearRange;
     return (
-      <View className="mb-10 resume-avoid-break bi-avoid">
+      <View className={wrapClass}>
         {/* Single experience: title, company, years */}
         <Text
           className="font-['LatoBlack'] uppercase text-sm font-semibold"
@@ -107,7 +113,7 @@ const CompanyExperienceBlock: React.FC<CompanyExperienceBlockProps> = ({
     newest?.experienceDates?.presentDate
   );
   return (
-    <View className="mb-10 resume-avoid-break bi-avoid">
+    <View className={wrapClass}>
       {companyTrim ? (
         <Text
           className="font-['LatoBlack'] uppercase text-sm font-semibold"

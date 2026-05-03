@@ -102,8 +102,10 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Stable download name: george_barbu-{sanitySlug}-ats.pdf
-    const filename = `${stemPrefixed}.pdf`;
+    const isAtsRole = role.endsWith("-ats");
+    const baseKey = isAtsRole ? role.slice(0, -"-ats".length) : role;
+    const sep = isAtsRole ? "_" : "-";
+    const filename = `George-Barbu${sep}${baseKey}.pdf`;
 
     const headers = new Headers({ "Access-Control-Allow-Origin": "*" });
     return NextResponse.json(

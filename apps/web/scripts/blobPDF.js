@@ -162,31 +162,36 @@ const generateAndUploadPDF = async (page, route, isATS = false) => {
     } else {
       // For ATS version, add styles to match margins with background
       await page.evaluate(() => {
-        const style = document.createElement('style');
+        document.documentElement.classList.add("pdf-export");
+        const style = document.createElement("style");
         style.textContent = `
           @page {
-            background-color: #313638;
+            background-color: #ffffff;
             margin: 30px;
           }
           @page:first {
-            background-color: #313638;
+            background-color: #ffffff;
             margin-top: 30px;
           }
           @page:last {
-            background-color: #313638;
+            background-color: #ffffff;
             margin-bottom: 30px;
           }
           body {
-            background-color: #313638 !important;
+            background-color: #ffffff !important;
             margin: 0;
             padding: 0;
           }
           html {
-            background-color: #313638 !important;
+            background-color: #ffffff !important;
           }
         `;
         document.head.appendChild(style);
       });
+    }
+
+    if (isATS) {
+      const innerTextOrder = await page.evaluate(() => document.body.innerText);
     }
 
     console.log(`🖨️ Generating ${isATS ? "ATS " : ""}PDF...`);

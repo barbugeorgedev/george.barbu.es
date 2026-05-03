@@ -11,8 +11,8 @@ export default function ClassicTemplate({ children, isATS = false, isATSv2 = fal
     <main
       className="w-full first-letter:min-h-screen classicTemplate"
       style={{
-        backgroundColor: isATSv2 ? "#ffffff" : isATS ? "#313638" : settings?.mainBackground?.hex,
-        color: isATSv2 ? "#171717" : settings?.mainTextColor?.hex,
+        backgroundColor: isATSv2 || isATS ? "#ffffff" : settings?.mainBackground?.hex,
+        color: isATSv2 || isATS ? "#171717" : settings?.mainTextColor?.hex,
       }}
     >
       <Header />

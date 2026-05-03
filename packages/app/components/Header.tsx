@@ -16,11 +16,12 @@ const Header: React.FC = () => {
   
   // Detect if we're on an ATS page by checking the current pathname
   let isATS = false;
+  let isATSv2 = false;
   let baseSlug = slug; // Default to slug from page data
-  
+
   if (isWEB && typeof window !== "undefined") {
     const pathname = (window.location.pathname || "/").replace(/\/+$/, "") || "/";
-    const isATSv2 =
+    isATSv2 =
       pathname === "/ats-v2" || (pathname.length > 8 && pathname.endsWith("-ats-v2"));
     // /ats-v2 must not match -ats (pathname ...-ats-v2 also ends with -ats)
     isATS =
@@ -39,13 +40,18 @@ const Header: React.FC = () => {
     }
   }
 
-  const darkATSChrome = isATS;
+  const lightAtsPage = isATSv2 || isATS;
+
+  /** Vercel blobs are named from Sanity slug (blobPDF.js), not the synthetic "/" → george.barbu key. */
+  const cmsSlug = pageData?.slug?.current;
+  const pdfSlug =
+    baseSlug === "/" && cmsSlug && cmsSlug !== "/" ? cmsSlug : baseSlug;
 
   const downloadPDF = () => {
     if (isWEB) {
       // Ensure isATS is explicitly false for regular pages
       const shouldDownloadATS = isATS === true;
-      return downloadPDFweb(baseSlug, shouldDownloadATS);
+      return downloadPDFweb(pdfSlug, shouldDownloadATS);
     }
     return downloadPDFmobile(slug);
   };
@@ -55,23 +61,23 @@ const Header: React.FC = () => {
       data-exclude="true"
       className="w-full flex flex-row items-center justify-center pt-6 sm:pb-2 lg:pb-5 print:invisible"
       style={{
-        backgroundColor: darkATSChrome ? "#313638" : "transparent",
+        backgroundColor: "transparent",
       }}
     >
       <TouchableOpacity onPress={downloadPDF} className="mr-2">
         <Icon
           type="fa"
           name="download"
-          color={darkATSChrome ? "#525659" : settings?.headerIconsColor?.hex}
+          color={lightAtsPage ? "#171717" : settings?.headerIconsColor?.hex}
           className="!text-[28px] pb-1 sm:mb-0"
         />
       </TouchableOpacity>
       {isWEB ? (
-        <TouchableOpacity onPress={() => printPDF(baseSlug, isATS)} className="ml-2">
+        <TouchableOpacity onPress={() => printPDF(pdfSlug, isATS)} className="ml-2">
           <Icon
             type="ai"
             name="AiFillPrinter"
-            color={darkATSChrome ? "#525659" : settings?.headerIconsColor?.hex}
+            color={lightAtsPage ? "#171717" : settings?.headerIconsColor?.hex}
             size={30}
             className="!text-[28px] pb-1 sm:mb-0"
           />

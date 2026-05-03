@@ -13,7 +13,7 @@ const DefaultTemplate: React.FC<TemplateProps> = ({ children, isATS = false, isA
         contentInsetAdjustmentBehavior="automatic"
         className="w-full h-full  pt-8"
         style={{
-          backgroundColor: isATSv2 ? "#ffffff" : isATS ? "#313638" : settings?.mainBackground?.hex,
+          backgroundColor: isATSv2 || isATS ? "#ffffff" : settings?.mainBackground?.hex,
         }}
       >
         <Header />

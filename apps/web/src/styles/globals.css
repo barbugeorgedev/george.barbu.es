@@ -84,6 +84,56 @@ html {
   box-sizing: border-box;
 }
 
+/* ATS experience: explicit column stack so print/PDF order matches DOM (title → meta → list) */
+.ats-exp-role {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* Section headings: block box so PDF text order stays “heading → body” (RN-web Text is often inline) */
+.resume-section-title {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ats-experience-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ats-experience-entries {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* One job = one atomic block for print/PDF (ATS parsers): role + meta + bullets stay together when possible */
+html.pdf-export .experience-item {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+html.pdf-export .experience-item h3,
+html.pdf-export .experience-item > p {
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+html.pdf-export .experience-item ul {
+  orphans: 2;
+  widows: 2;
+}
+
+html.pdf-export .experience-item li {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
 body {
   display: flex;
   /* Allows you to scroll below the viewport; default value is visible */
@@ -152,5 +202,61 @@ body {
   html.pdf-export .atsv2-pdf-header {
     margin-bottom: 0.75rem !important;
     padding-bottom: 0.75rem !important;
+  }
+
+  /*
+   * ATS CV (Chromium / Puppeteer): body + #__next use flex in globals for screen.
+   * Print/PDF pagination can reorder fragments so section headings appear before the header block.
+   * Force normal block flow for the resume subtree only.
+   */
+  body:has(.ats-pdf-root) {
+    display: block !important;
+  }
+
+  body:has(.ats-pdf-root) #__next {
+    display: block !important;
+    flex: unset !important;
+    flex-direction: unset !important;
+    flex-grow: unset !important;
+    flex-shrink: unset !important;
+    flex-basis: unset !important;
+  }
+
+  body:has(.ats-pdf-root) main {
+    display: block !important;
+  }
+
+  body:has(.ats-pdf-root) .ats-pdf-root,
+  body:has(.ats-pdf-root) .ats-pdf-inner {
+    display: block !important;
+  }
+
+  .ats-pdf-root .cv-intro-block {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .ats-pdf-root .cv-experience {
+    break-before: auto;
+    page-break-before: auto;
+  }
+
+  /*
+   * ATS (HomeATS): inner sections still use flex-col; flex fragmentation in Chromium
+   * can insert an empty page between intro and experience. Force block flow for print/PDF.
+   */
+  body:has(.ats-pdf-root) .cv-intro-block,
+  body:has(.ats-pdf-root) .ats-experience-section,
+  body:has(.ats-pdf-root) .ats-experience-entries {
+    display: block !important;
+  }
+
+  /*
+   * Visual resume (Home) only: main column is .resume-pdf-maincol; ATS routes do not use it.
+   * Scope the Entain page-break here so /ats print/PDF is unaffected.
+   */
+  .resume-pdf-maincol .resume-pdf-break-before-company {
+    break-before: page;
+    page-break-before: always;
   }
 }

@@ -1,8 +1,3 @@
-/** Matches blobPDF upload: george_barbu-{sanitySlug}-ats.pdf */
-const PDF_BLOB_PREFIX = (
-  process.env.NEXT_PUBLIC_PDF_BLOB_FILENAME_PREFIX || "george_barbu-"
-).trim() || "george_barbu-";
-
 export const pdfRoleFromSlug = (slug: string, isATS: boolean): string => {
   let key =
     slug === "/" || slug === ""
@@ -13,8 +8,11 @@ export const pdfRoleFromSlug = (slug: string, isATS: boolean): string => {
   return isATS ? `${key}-ats` : key;
 };
 
+/** User-facing download name: George-Barbu-SLUG.pdf (non-ATS) / George-Barbu_SLUG.pdf (ATS). */
 export const getPdfDownloadFilename = (slug: string, isATS: boolean): string => {
-  return `${PDF_BLOB_PREFIX}${pdfRoleFromSlug(slug, isATS)}.pdf`;
+  const baseKey = pdfRoleFromSlug(slug, false);
+  const sep = isATS ? "_" : "-";
+  return `George-Barbu${sep}${baseKey}.pdf`;
 };
 
 export const getPdfUrl = (slug: string, isATS: boolean = false) => {

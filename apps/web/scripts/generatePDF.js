@@ -127,6 +127,14 @@ const generatePDF = async (page, route, isATS = false) => {
       await page.evaluate((asideContent) => {
         document.body.insertAdjacentHTML("beforeend", asideContent);
       }, asideHTML);
+    } else {
+      await page.evaluate(() => {
+        document.documentElement.classList.add("pdf-export");
+      });
+    }
+
+    if (isATS) {
+      const innerTextOrder = await page.evaluate(() => document.body.innerText);
     }
 
     // Generate PDF with custom header, footer, and aside (only for non-ATS)
