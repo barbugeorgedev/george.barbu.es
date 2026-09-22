@@ -145,7 +145,7 @@ body {
   -ms-overflow-style: scrollbar;
 }
 
-/* Puppeteer sets html.pdf-export before printing — resume (non-ATS) print tweaks */
+/* Puppeteer sets html.pdf-export before printing - resume (non-ATS) print tweaks */
 @media print {
   html.pdf-export #__next > main {
     padding-top: 0 !important;

@@ -13,7 +13,7 @@ function origin(): string {
  * the SPA shell with a 200. A real route here takes precedence over the dynamic
  * segment.
  *
- * Only canonical CV pages are listed — the `-ats`/`-ats-v1`/`-ats-v2` variants
+ * Only canonical CV pages are listed - the `-ats`/`-ats-v1`/`-ats-v2` variants
  * are the same content reformatted for applicant tracking systems and would be
  * duplicates.
  */

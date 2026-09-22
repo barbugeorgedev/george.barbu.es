@@ -26,13 +26,13 @@ type SeoSection = {
   seoImage?: { asset?: { url?: string | null } | null } | null;
 };
 
-const FALLBACK_TITLE = "George Barbu — Senior Frontend Engineer";
+const FALLBACK_TITLE = "George Barbu - Senior Frontend Engineer";
 
 /**
  * `allResume(where: …)` always returns a list, so every field here lives at
  * `[0]`. Reading `data.seo.seoSection` (no index) silently resolved to
  * `undefined` and every page fell back to the hardcoded title with no
- * description — none of the Sanity SEO content ever reached the document head.
+ * description - none of the Sanity SEO content ever reached the document head.
  */
 async function fetchSeo(
   filter: Record<string, unknown>,
@@ -62,7 +62,7 @@ function toMetadata(
   const title =
     seo?.seoTitle ||
     (result?.fullname && result?.role
-      ? `${result.fullname} — ${result.role}`
+      ? `${result.fullname} - ${result.role}`
       : FALLBACK_TITLE);
   const description = seo?.seoDescription || undefined;
   const imageUrl = seo?.seoImage?.asset?.url || undefined;
@@ -81,7 +81,7 @@ function toMetadata(
       type: "profile",
       siteName: "George Barbu",
       // Omitted when Sanity has no image so the generated `opengraph-image`
-      // route supplies one — the old `/default-image.jpg` fallback did not exist
+      // route supplies one - the old `/default-image.jpg` fallback did not exist
       // and every shared link rendered a blank card.
       ...(imageUrl ? { images: [imageUrl] } : {}),
     },
@@ -103,7 +103,7 @@ export async function generateMetadata(): Promise<Metadata> {
 /**
  * `[slug]` layout: metadata for one CV variant. The page itself is a client
  * component and cannot export `generateMetadata`, so it is exported from the
- * sibling layout instead — otherwise every variant inherits the homepage title.
+ * sibling layout instead - otherwise every variant inherits the homepage title.
  */
 export async function generateSlugMetadata(slug: string): Promise<Metadata> {
   const { baseSlug } = parseAtsSlug(slug);

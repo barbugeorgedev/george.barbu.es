@@ -62,7 +62,7 @@ const Education: React.FC<DefaultComponentProps> = ({ className }) => {
                       className="font-['Lato'] leading-snug"
                       style={{ color: ink }}
                     >
-                      – {cert}
+                      - {cert}
                     </Text>
                   ))}
                 </View>

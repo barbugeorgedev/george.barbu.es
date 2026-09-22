@@ -31,22 +31,22 @@ const looksLikeBareHostname = (value: string) => {
 
 const isLanguagesSection = (label?: string) => /^languages?$/i.test((label || "").trim());
 
-/** ATS: category line reads "Frontend: …" — don’t double if CMS already ends with ":" */
+/** ATS: category line reads "Frontend: …" - don’t double if CMS already ends with ":" */
 const skillLabelWithColon = (label: string) => {
   const t = (label || "Skills").trim();
   return /:\s*$/.test(t) ? t : `${t}:`;
 };
 
-/** "English — C1 — Professional …" → name + level (DOCX v3 languages table). */
+/** "English - C1 - Professional …" → name + level (DOCX v3 languages table). */
 const splitLanguageTitle = (title: string): { name: string; level: string } => {
   const t = title.trim();
-  const m = t.match(/^(.+?)\s+[—–\-]\s+(.+)$/);
+  const m = t.match(/^(.+?)\s+-\s+(.+)$/);
   if (!m) return { name: t, level: "" };
   return { name: m[1]!.trim(), level: m[2]!.trim() };
 };
 
 /**
- * Default ATS (`/ats`, `/{slug}-ats`): aligned with Frontend-Platform-Lead v3 DOCX — section rules,
+ * Default ATS (`/ats`, `/{slug}-ats`): aligned with Frontend-Platform-Lead v3 DOCX - section rules,
  * name uppercase, role · company row, skills/languages grid, education + certs, NGO. Accent from theme.
  */
 export const HomeATSDefault: React.FC = () => {
@@ -82,7 +82,7 @@ export const HomeATSDefault: React.FC = () => {
     if (!start && !end) return "";
     if (!start) return end;
     if (!end) return start;
-    return `${start} – ${end}`;
+    return `${start} - ${end}`;
   };
 
   const groupItemsByCompany = <T extends { company?: string }>(items: T[]) => {
@@ -364,7 +364,7 @@ export const HomeATSDefault: React.FC = () => {
         const yEnd = item.experienceDates?.presentDate
           ? "Present"
           : formatDate(item.experienceDates?.endDate) || "";
-        const roleRange = yStart && yEnd ? `${yStart} – ${yEnd}` : "";
+        const roleRange = yStart && yEnd ? `${yStart} - ${yEnd}` : "";
         const hidden =
           !!displayCompany && (
             <AtsHiddenEmployerContext employer={displayCompany} jobTitle={item.role || ""} dateRange={roleRange} />

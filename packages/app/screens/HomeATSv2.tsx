@@ -62,7 +62,7 @@ export const HomeATSv2: React.FC = () => {
     if (!start && !end) return "";
     if (!start) return end;
     if (!end) return start;
-    return `${start} – ${end}`;
+    return `${start} - ${end}`;
   };
 
   const groupItemsByCompany = <T extends { company?: string }>(items: T[]) => {
@@ -97,7 +97,7 @@ export const HomeATSv2: React.FC = () => {
           </View>
         ) : null}
 
-        {/* Contact — one fact per line for parsers */}
+        {/* Contact - one fact per line for parsers */}
         {sidebar?.contactSection?.items && sidebar.contactSection.items.length > 0 ? (
           <AtsV2Section title={sidebar.contactSection.label || "CONTACT"}>
             <View>
@@ -201,7 +201,7 @@ export const HomeATSv2: React.FC = () => {
                     <Text className="text-base font-bold text-neutral-900 mb-1">{displayCompany}</Text>
                   ) : null}
                   <Text className="text-sm text-neutral-700 mb-3">
-                    {startYear} – {endYear}
+                    {startYear} - {endYear}
                     {companyDuration}
                   </Text>
                   <View className="relative border-l border-neutral-300 border-solid">
@@ -215,7 +215,7 @@ export const HomeATSv2: React.FC = () => {
                       const yEnd = item.experienceDates?.presentDate
                         ? "Present"
                         : formatDate(item.experienceDates?.endDate) || "N/A";
-                      const roleRange = `${yStart} – ${yEnd}`;
+                      const roleRange = `${yStart} - ${yEnd}`;
                       return (
                         <View
                           key={idx}
@@ -232,7 +232,7 @@ export const HomeATSv2: React.FC = () => {
                           ) : null}
                           <Text className="text-sm font-bold text-neutral-900">{item.role || ""}</Text>
                           <Text className="text-sm text-neutral-600 mt-0.5">
-                            {yStart} – {yEnd}
+                            {yStart} - {yEnd}
                             {roleDuration}
                           </Text>
                           <AtsV2BulletList items={item.duties || []} />
@@ -298,7 +298,7 @@ export const HomeATSv2: React.FC = () => {
                     <Text className="text-base font-bold text-neutral-900 mb-1">{displayCompany}</Text>
                   ) : null}
                   <Text className="text-sm text-neutral-700 mb-3">
-                    {startYear} – {endYear}
+                    {startYear} - {endYear}
                     {companyDuration}
                   </Text>
                   <View className="relative border-l border-neutral-300 border-solid">
@@ -322,13 +322,13 @@ export const HomeATSv2: React.FC = () => {
                             <AtsHiddenEmployerContext
                               employer={displayCompany}
                               jobTitle={item.role || ""}
-                              dateRange={`${yStart} – ${yEnd}`}
+                              dateRange={`${yStart} - ${yEnd}`}
                               durationSuffix={roleDuration}
                             />
                           ) : null}
                           <Text className="text-sm font-bold text-neutral-900">{item.role || ""}</Text>
                           <Text className="text-sm text-neutral-600 mt-0.5">
-                            {yStart} – {yEnd}
+                            {yStart} - {yEnd}
                             {roleDuration}
                           </Text>
                           <AtsV2EarlySingleBullet duties={item.duties} />

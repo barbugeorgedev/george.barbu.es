@@ -29,7 +29,7 @@ const NGOExperience: React.FC<DefaultComponentProps> = ({ className }) => {
         const y1 = item.experienceDates.presentDate
           ? "Present"
           : item.experienceDates.endDate?.substring(0, 4) ?? "N/A";
-        const range = `${y0} – ${y1}`;
+        const range = `${y0} - ${y1}`;
         const duties = item.duties?.filter(Boolean) ?? [];
 
         return (
@@ -67,7 +67,7 @@ const NGOExperience: React.FC<DefaultComponentProps> = ({ className }) => {
               <View className="text-xs flex flex-col mt-2 gap-0.5">
                 {duties.map((resp, respIndex) => (
                   <Text key={respIndex} className="font-['Lato'] leading-snug" style={{ color: ink }}>
-                    – {resp}
+                    - {resp}
                   </Text>
                 ))}
               </View>

@@ -5,7 +5,7 @@ type Props = {
   employer: string;
   jobTitle: string;
   dateRange: string;
-  /** e.g. from formatDurationLabel — " (2 ani)" */
+  /** e.g. from formatDurationLabel - " (2 ani)" */
   durationSuffix?: string;
 };
 

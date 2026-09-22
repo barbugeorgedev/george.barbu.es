@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "George Barbu — Senior Frontend Engineer";
+export const alt = "George Barbu - Senior Frontend Engineer";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -63,7 +63,7 @@ async function getHeader() {
 
 /**
  * Replaces the `/default-image.jpg` reference in the old metadata, which never
- * existed — every share of the site on LinkedIn, Slack or WhatsApp rendered a
+ * existed - every share of the site on LinkedIn, Slack or WhatsApp rendered a
  * blank card.
  */
 export default async function Image() {

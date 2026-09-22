@@ -11,7 +11,7 @@ import { useSettings } from "app/hooks/useSettings";
  * The CMS holds nine; the rest are WordPress/Divi/Elementor builds that read as
  * agency work next to a senior React rate, so they stay in Sanity but off the
  * page. There is no `featured` field on the schema to drive this from the
- * Studio — add one and this list can go.
+ * Studio - add one and this list can go.
  */
 const PROMOTED_PROJECTS = [
   "liceul-luca-app",
@@ -45,7 +45,7 @@ function withProtocol(url: string): string {
   return /^https?:\/\//i.test(url) ? url : `https://${url}`;
 }
 
-/** Store listings first — an app a reader can install is the strongest proof here. */
+/** Store listings first - an app a reader can install is the strongest proof here. */
 function linksFor(project: ProjectItem): { label: string; url: string }[] {
   const links: { label: string; url: string }[] = [];
   if (project.appStoreLink) links.push({ label: "App Store", url: project.appStoreLink });
@@ -91,7 +91,7 @@ const Projects: React.FC<DefaultComponentProps> = ({ className }) => {
               style={{ color: settings?.mainSectionPrimaryTextColor?.hex }}
             >
               {project.title}
-              {project.client?.name ? ` — ${project.client.name}` : ""}
+              {project.client?.name ? ` - ${project.client.name}` : ""}
             </Text>
 
             {technologies.length > 0 && (

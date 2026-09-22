@@ -12,14 +12,14 @@ const normContactService = (s?: string) => String(s || "").toLowerCase().trim();
 const isWebsiteContactRow = (item: { service?: string; label?: string }) =>
   normContactService(item.service) === "website" || /\bwebsite\b/i.test(item.label || "");
 
-/** CMS skill group titled "AI" (or similar) — excluded from ATS skills block */
+/** CMS skill group titled "AI" (or similar) - excluded from ATS skills block */
 const isAiSkillsSection = (label?: string) => {
   const t = (label || "").trim();
   return /^ai$/i.test(t) || /^artificial intelligence$/i.test(t);
 };
 
 /**
- * ATS v1 (`/ats-v1`, `/{slug}-ats-v1`): single column, linear order, minimal chrome — parsers + quick scan.
+ * ATS v1 (`/ats-v1`, `/{slug}-ats-v1`): single column, linear order, minimal chrome - parsers + quick scan.
  */
 export const HomeATS: React.FC = () => {
   const resumeData = useResumeData();
@@ -46,7 +46,7 @@ export const HomeATS: React.FC = () => {
     if (!start && !end) return "";
     if (!start) return end;
     if (!end) return start;
-    return `${start} – ${end}`;
+    return `${start} - ${end}`;
   };
 
   const groupItemsByCompany = <T extends { company?: string }>(items: T[]) => {
@@ -154,7 +154,7 @@ export const HomeATS: React.FC = () => {
           : formatDate(item.experienceDates?.endDate) || "";
         const roleRange =
           yStart && yEnd
-            ? `${yStart} – ${yEnd}`
+            ? `${yStart} - ${yEnd}`
             : formatDateRange(
                 item.experienceDates?.startDate,
                 item.experienceDates?.endDate,
