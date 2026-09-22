@@ -214,3 +214,24 @@ export const PAGE = gql`
     }
   }
 `;
+
+export const PROJECTS = gql`
+  fragment Projects on Project {
+    title
+    slug {
+      current
+    }
+    objective
+    website
+    technologies
+    appStoreLink
+    playStoreLink
+    client {
+      name
+    }
+    customLinks {
+      label
+      url
+    }
+  }
+`;

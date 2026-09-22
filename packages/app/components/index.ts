@@ -4,5 +4,6 @@ export { default as Contact } from "./Contact";
 export { default as Summary } from "./Summary";
 export { default as Skills } from "./Skills";
 export { default as Education } from "./Education";
+export { default as Projects } from "./Projects";
 export { default as Sidebar } from "./Sidebar";
 export * from "./index";

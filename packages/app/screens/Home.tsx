@@ -7,6 +7,7 @@ import {
   NGOExperience,
 } from "app/components/Experience";
 import Education from "app/components/Education";
+import Projects from "app/components/Projects";
 import TopSide from "app/components/TopSide";
 import { useSettings } from "app/hooks/useSettings";
 
@@ -34,6 +35,8 @@ export const Home: React.FC = () => {
       >
         <View className="resume-pdf-maincol py-10 print:pt-48 lg:pt-60 lg:mt-5">
           <Experience />
+
+          <Projects className="mt-11" />
 
           <EarlyCareer />
           <NGOExperience />

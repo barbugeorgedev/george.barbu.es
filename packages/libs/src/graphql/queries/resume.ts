@@ -10,6 +10,7 @@ import {
   SETTINGS,
   SEO,
   PAGE,
+  PROJECTS,
 } from "libs/graphql/fragments";
 
 export const GET_RESUME = gql`
@@ -38,6 +39,11 @@ export const GET_RESUME = gql`
     page: allResume(where: $filter) {
       ...PAGE
     }
+    # Not filtered server-side: there are single digits of these and the
+    # promoted subset + ordering lives in PROMOTED_PROJECTS on the client.
+    projects: allProject {
+      ...Projects
+    }
   }
   ${RESUME_HEADER}
   ${RESUME_SIDEBAR}
@@ -49,4 +55,5 @@ export const GET_RESUME = gql`
   ${SETTINGS}
   ${SEO}
   ${PAGE}
+  ${PROJECTS}
 `;

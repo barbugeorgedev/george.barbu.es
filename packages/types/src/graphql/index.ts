@@ -128,8 +128,21 @@ interface NGOExperienceData {
   disabled?: boolean;
 }
 
+export interface ProjectItem {
+  title?: string;
+  slug?: { current?: string };
+  objective?: string;
+  website?: string;
+  technologies?: string[];
+  appStoreLink?: string;
+  playStoreLink?: string;
+  client?: { name?: string } | null;
+  customLinks?: { label?: string; url?: string }[] | null;
+}
+
 export interface ResumeData {
   page: PageData[];
+  projects?: ProjectItem[];
   content: {
     experienceSection?: ExperienceData;
     earlyCareerExperienceSection?: EarlyCareerExperienceData;
