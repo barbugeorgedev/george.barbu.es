@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
   return (
     <ViewWEB
       data-exclude="true"
-      className="max-w-screen-pdf py-6 mb-5 mx-auto items-center justify-between w-full md:flex lg:flex-row print:invisible"
+      className="resume-site-footer max-w-screen-pdf py-6 mb-5 mx-auto items-center justify-between w-full md:flex lg:flex-row print:invisible"
       style={{
         backgroundColor: "transparent",
       }}

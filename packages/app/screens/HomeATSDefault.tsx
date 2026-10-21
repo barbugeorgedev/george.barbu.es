@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Platform, Linking, TouchableOpacity } from "react-native";
 import { useResumeData } from "app/context/ResumeContext";
 import { useSettings } from "app/hooks/useSettings";
-import { AtsHiddenEmployerContext } from "app/components/AtsHiddenEmployerContext";
+import { formatDateRange, formatYear } from "app/utils/formatDates";
 
 /** DOCX v3 includes 7+ bullets for some roles */
 const MAX_BULLETS_PER_ROLE = 24;
@@ -68,22 +68,6 @@ export const HomeATSDefault: React.FC = () => {
     (s: { label?: string; items?: unknown[] }) =>
       s?.items && Array.isArray(s.items) && s.items.length > 0 && isLanguagesSection(s.label),
   );
-
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return dateString;
-    return `${date.getFullYear()}`;
-  };
-
-  const formatDateRange = (startDate?: string, endDate?: string, presentDate?: boolean) => {
-    const start = formatDate(startDate);
-    const end = presentDate ? "Present" : formatDate(endDate);
-    if (!start && !end) return "";
-    if (!start) return end;
-    if (!end) return start;
-    return `${start} - ${end}`;
-  };
 
   const groupItemsByCompany = <T extends { company?: string }>(items: T[]) => {
     const groups: Record<string, T[]> = {};
@@ -236,15 +220,14 @@ export const HomeATSDefault: React.FC = () => {
     duties: string[] | undefined,
     skills: { title?: string }[] | undefined,
     marginClass: string,
-    hiddenEmployerContext?: React.ReactNode,
   ) => {
     const bullets = (duties ?? []).filter(Boolean).slice(0, MAX_BULLETS_PER_ROLE);
     return (
       <section
         key={reactKey}
-        className={`experience-item ats-default-exp-item flex flex-col items-stretch ${marginClass} resume-avoid-break bi-avoid`}
+        className={`experience-item ats-default-exp-item flex flex-col items-stretch ${marginClass}`}
       >
-        <div className="flex flex-row justify-between gap-4 items-start w-full">
+        <div className="ats-default-exp-head flex flex-row justify-between gap-4 items-start w-full">
           <div className="min-w-0 flex-1">
             <h3 className="text-base font-bold text-neutral-900 leading-snug m-0">
               {roleTitle}
@@ -265,16 +248,18 @@ export const HomeATSDefault: React.FC = () => {
           ) : null}
         </div>
         {bullets.length > 0 ? (
-          <ul className="mt-2 list-disc pl-5 text-sm text-neutral-800 leading-6 space-y-1 [list-style-position:outside]">
+          // The bullet is real text, not a CSS marker, so it survives in the PDF text layer and
+          // parsers split the role into separate achievements instead of one paragraph.
+          <ul className="mt-2 list-none pl-0 text-sm text-neutral-800 leading-6 space-y-1">
             {bullets.map((duty, i) => (
-              <li key={i} className="ps-1">
-                {duty}
+              <li key={i} className="flex flex-row gap-2">
+                <span className="shrink-0">•</span>
+                <span>{duty}</span>
               </li>
             ))}
           </ul>
         ) : null}
         {stackLine(skills)}
-        {(hiddenEmployerContext ?? null) as React.ReactNode}
       </section>
     );
   };
@@ -287,7 +272,6 @@ export const HomeATSDefault: React.FC = () => {
     duties: string[] | undefined,
     skills: { title?: string }[] | undefined,
     marginClass: string,
-    hiddenEmployerContext?: React.ReactNode,
   ) => {
     const bullets = (duties ?? []).filter(Boolean).slice(0, MAX_BULLETS_PER_ROLE);
     return (
@@ -319,79 +303,46 @@ export const HomeATSDefault: React.FC = () => {
           </View>
         ) : null}
         {stackLine(skills)}
-        {(hiddenEmployerContext ?? null) as React.ReactNode}
       </View>
     );
   };
 
-  const renderGroupedExperience = (items: any[]) =>
+  /** Every role already shows its employer visibly, so no hidden per-role context is needed here. */
+  const renderGroupedExperience = (items: any[], formatDate?: (date?: string) => string) =>
     groupItemsByCompany(items).map(([companyKey, groupItems]) => {
       const displayCompany = companyKey.startsWith("__orphan_") ? "" : companyKey;
 
-      if (groupItems.length === 1) {
-        const item = groupItems[0]!;
+      const grouped = groupItems.map((item: any, idx: number) => {
         const range = formatDateRange(
           item.experienceDates?.startDate,
           item.experienceDates?.endDate,
           item.experienceDates?.presentDate,
+          formatDate,
         );
+        const marginClass = groupItems.length === 1 || idx === 0 ? "mb-6" : "mb-6 mt-2";
+        const reactKey = groupItems.length === 1 ? companyKey : idx;
         if (Platform.OS === "web") {
           return renderExperienceRoleWeb(
-            companyKey,
+            reactKey,
             item.role || "",
             displayCompany,
             range,
             item.duties,
             item.skills,
-            "mb-6",
-            undefined,
+            marginClass,
           );
         }
         return renderExperienceRoleNative(
-          companyKey,
+          reactKey,
           item.role || "",
           displayCompany,
           range,
           item.duties,
           item.skills,
-          "mb-6",
-          undefined,
-        );
-      }
-
-      const grouped = groupItems.map((item: any, idx: number) => {
-        const yStart = formatDate(item.experienceDates?.startDate) || "";
-        const yEnd = item.experienceDates?.presentDate
-          ? "Present"
-          : formatDate(item.experienceDates?.endDate) || "";
-        const roleRange = yStart && yEnd ? `${yStart} - ${yEnd}` : "";
-        const hidden =
-          !!displayCompany && (
-            <AtsHiddenEmployerContext employer={displayCompany} jobTitle={item.role || ""} dateRange={roleRange} />
-          );
-        if (Platform.OS === "web") {
-          return renderExperienceRoleWeb(
-            idx,
-            item.role || "",
-            displayCompany,
-            roleRange,
-            item.duties,
-            item.skills,
-            idx === 0 ? "mb-6" : "mb-6 mt-2",
-            hidden,
-          );
-        }
-        return renderExperienceRoleNative(
-          idx,
-          item.role || "",
-          displayCompany,
-          roleRange,
-          item.duties,
-          item.skills,
-          idx === 0 ? "mb-6" : "mb-6 mt-2",
-          hidden,
+          marginClass,
         );
       });
+      if (groupItems.length === 1) return grouped[0];
 
       if (Platform.OS === "web") {
         return (
@@ -420,22 +371,18 @@ export const HomeATSDefault: React.FC = () => {
         if (!names.length) return null;
         const label = skillLabelWithColon(skillSection.label || "Skills");
         const k = `${keyPrefix}-${sectionIdx}`;
+        // Label and values on one line (not a two-column grid), so text extraction keeps "Frontend: React, …" together.
         if (Platform.OS === "web") {
           return (
-            <div
-              key={k}
-              className="grid grid-cols-[minmax(10.5rem,auto)_1fr] gap-x-6 gap-y-1 mb-2 items-start"
-            >
-              <span className="text-sm font-bold text-neutral-900">{label}</span>
-              <span className="text-sm text-neutral-800 leading-6">{names.join(", ")}</span>
-            </div>
+            <p key={k} className="text-sm text-neutral-800 leading-6 mt-0 mb-1.5">
+              <span className="font-bold text-neutral-900">{label}</span> {names.join(", ")}
+            </p>
           );
         }
         return (
-          <View key={k} className="flex flex-row gap-6 mb-2 items-start">
-            <Text className="text-sm font-bold text-neutral-900 w-[168px] shrink-0">{label}</Text>
-            <Text className="text-sm text-neutral-800 leading-6 flex-1">{names.join(", ")}</Text>
-          </View>
+          <Text key={k} className="text-sm text-neutral-800 leading-6 mb-1.5">
+            <Text className="font-bold text-neutral-900">{label}</Text> {names.join(", ")}
+          </Text>
         );
       },
     );
@@ -453,31 +400,17 @@ export const HomeATSDefault: React.FC = () => {
       }
     }
     if (!rows.length) return null;
-    return rows.map((row, idx) => {
-      const k = `lang-row-${idx}`;
-      if (Platform.OS === "web") {
-        return (
-          <div
-            key={k}
-            className="grid grid-cols-[minmax(10.5rem,auto)_1fr] gap-x-6 gap-y-1 mb-2 items-start"
-          >
-            <span className="text-sm font-bold text-neutral-900">{row.name}</span>
-            <span className="text-sm text-neutral-800 leading-6">{row.level}</span>
-          </div>
-        );
-      }
-      return (
-        <View key={k} className="flex flex-row gap-6 mb-2 items-start">
-          <Text className="text-sm font-bold text-neutral-900 w-[168px] shrink-0">{row.name}</Text>
-          <Text className="text-sm text-neutral-800 leading-6 flex-1">{row.level}</Text>
-        </View>
-      );
-    });
+    const line = rows.map((row) => (row.level ? `${row.name}: ${row.level}` : row.name)).join("  |  ");
+    return Platform.OS === "web" ? (
+      <p className="text-sm text-neutral-800 leading-6 m-0">{line}</p>
+    ) : (
+      <Text className="text-sm text-neutral-800 leading-6">{line}</Text>
+    );
   };
 
   return (
     <View className="ats-default-pdf-root printColor flex flex-col w-full bg-white font-sans [writing-mode:horizontal-tb] print:bg-white">
-      <View className="ats-default-pdf-inner flex flex-col w-full max-w-[820px] mx-auto box-border bg-white print:bg-white print:px-[15mm] print:py-[12mm] px-4 py-6 md:px-8 md:py-8">
+      <View className="ats-default-pdf-inner flex flex-col w-full max-w-[820px] mx-auto box-border bg-white print:bg-white print:px-[10mm] print:py-[8mm] px-4 py-6 md:px-8 md:py-8">
         {header?.fullname ? (
           <View className="ats-default-pdf-header w-full shrink-0 pb-5 border-b border-neutral-200 mb-8">
             {Platform.OS === "web" ? (
@@ -563,6 +496,14 @@ export const HomeATSDefault: React.FC = () => {
           </View>
         ) : null}
 
+        {/* Skills sit right after the summary: recruiters scan the top third, and keywords there are seen first. */}
+        {skillBlocks.length > 0 ? (
+          <View className="w-full shrink-0 mb-8">
+            {sectionHeading("Skills")}
+            {renderSkillTableRows(skillBlocks, "sk")}
+          </View>
+        ) : null}
+
         {content?.experienceSection?.items && content.experienceSection.items.length > 0 ? (
           <View className="cv-experience ats-default-experience-section w-full max-w-full box-border flex flex-col mb-2">
             {sectionHeading((content.experienceSection.label || "Professional experience").toUpperCase())}
@@ -577,13 +518,6 @@ export const HomeATSDefault: React.FC = () => {
             <View className="flex w-full flex-col">
               {renderGroupedExperience(content.earlyCareerExperienceSection.items)}
             </View>
-          </View>
-        ) : null}
-
-        {skillBlocks.length > 0 ? (
-          <View className="w-full mt-8 mb-2">
-            {sectionHeading("Skills")}
-            {renderSkillTableRows(skillBlocks, "sk")}
           </View>
         ) : null}
 
@@ -627,7 +561,9 @@ export const HomeATSDefault: React.FC = () => {
         {content?.ngoExperienceSection?.items && content.ngoExperienceSection.items.length > 0 ? (
           <View className="w-full mt-8 mb-2">
             {sectionHeading((content.ngoExperienceSection.label || "Leadership").toUpperCase())}
-            <View className="flex w-full flex-col">{renderGroupedExperience(content.ngoExperienceSection.items)}</View>
+            <View className="flex w-full flex-col">
+              {renderGroupedExperience(content.ngoExperienceSection.items, formatYear)}
+            </View>
           </View>
         ) : null}
       </View>

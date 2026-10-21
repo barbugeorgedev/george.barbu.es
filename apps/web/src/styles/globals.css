@@ -124,6 +124,31 @@ html.pdf-export .experience-item > p {
   page-break-after: avoid;
 }
 
+/*
+ * Default ATS: the only direct <p> of a job is the closing "Stack:" line. A
+ * break-after: avoid there glues every job to the next one, Chromium finds no
+ * valid break and moves the whole experience list to page 2.
+ */
+html.pdf-export .ats-default-exp-item > p {
+  break-after: auto;
+  page-break-after: auto;
+}
+
+/*
+ * Default ATS: a job may continue on the next page (bullets never split, see `li`
+ * below), but its title row always stays with the first bullet. Keeping whole jobs
+ * together left a third of a page empty before every long job.
+ */
+html.pdf-export .ats-default-exp-item {
+  break-inside: auto;
+  page-break-inside: auto;
+}
+
+html.pdf-export .ats-default-exp-head {
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
 html.pdf-export .experience-item ul {
   orphans: 2;
   widows: 2;
@@ -196,6 +221,40 @@ body {
     padding-bottom: 0.75rem !important;
   }
 
+  /* Default ATS: tighter type, line height and job spacing so the CV needs one page less. */
+  html.pdf-export .ats-default-pdf-root .text-sm {
+    font-size: 13px;
+  }
+
+  html.pdf-export .ats-default-pdf-root .leading-6 {
+    line-height: 1.15rem;
+  }
+
+  html.pdf-export .ats-default-pdf-root .space-y-1 > * + * {
+    margin-top: 0.125rem;
+  }
+
+  html.pdf-export .ats-default-pdf-root .ats-default-exp-item {
+    margin-bottom: 1rem;
+  }
+
+  html.pdf-export .ats-default-pdf-root .mt-8 {
+    margin-top: 1rem;
+  }
+
+  html.pdf-export .ats-default-pdf-root .mb-8 {
+    margin-bottom: 1rem;
+  }
+
+  html.pdf-export .ats-default-pdf-root .resume-section-title {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.25rem;
+  }
+
+  html.pdf-export .ats-default-pdf-root .ats-default-exp-item h3 {
+    font-size: 14px;
+  }
+
   html.pdf-export .atsv2-pdf-inner {
     padding-top: 0.75rem !important;
     padding-bottom: 0.75rem !important;
@@ -258,13 +317,28 @@ body {
   body:has(.ats-default-pdf-root) .ats-default-experience-section {
     display: block !important;
   }
-
   /*
    * Visual resume (Home) only: main column is .resume-pdf-maincol; ATS routes do not use it.
-   * Scope the Entain page-break here so /ats print/PDF is unaffected.
+   *
+   * The visual PDF is not printed with html.pdf-export (only ATS is), so the
+   * html.pdf-export avoid-break rules above never reach it. Without this a job
+   * title can be left alone at the bottom of a page with its bullets on the next.
    */
-  .resume-pdf-maincol .resume-pdf-break-before-company {
-    break-before: page;
-    page-break-before: always;
+  .resume-pdf-maincol .resume-avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .resume-pdf-maincol .resume-section-title {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /*
+   * The site footer is only invisible (print:invisible / visibility) in the PDF, so
+   * it still takes up space and can spill onto an empty trailing page.
+   */
+  .resume-site-footer {
+    display: none !important;
   }
 }

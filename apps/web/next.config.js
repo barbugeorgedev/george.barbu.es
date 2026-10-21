@@ -53,4 +53,16 @@ module.exports = withExpo({
   experimental: {
     serverComponentsExternalPackages: ["puppeteer-core", "@sparticuz/chromium"],
   },
+  // CV variants removed from Sanity: old links land on the main CV instead of an empty page.
+  async redirects() {
+    const removed = "senior-frontend-performance-engineer|full-stack-technical-lead";
+    return [
+      {
+        source: `/:slug(${removed})-:variant(ats|ats-v1|ats-v2)`,
+        destination: "/:variant",
+        permanent: true,
+      },
+      { source: `/:slug(${removed})`, destination: "/", permanent: true },
+    ];
+  },
 });
