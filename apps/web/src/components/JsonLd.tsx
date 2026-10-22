@@ -53,7 +53,8 @@ export default async function JsonLd({ slug = "/" }: Props) {
     "@context": "https://schema.org",
     "@type": "Person",
     name: header.fullname,
-    jobTitle: header.role,
+    // The role may span several lines (title, then stack); the first line is the job title.
+    jobTitle: header.role?.split("\n")[0]?.trim() || undefined,
     description: seo?.seoDescription || undefined,
     url: "https://george.barbu.es",
     email: contact("email") ? `mailto:${contact("email")}` : undefined,

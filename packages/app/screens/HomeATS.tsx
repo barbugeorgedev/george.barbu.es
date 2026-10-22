@@ -376,7 +376,7 @@ export const HomeATS: React.FC = () => {
                     <Text role="heading" aria-level={1} className="text-3xl font-bold text-neutral-900">
                       {header.fullname}
                     </Text>
-                    {header.role && <Text className="text-base text-neutral-700 mt-1">{header.role}</Text>}
+                    {header.role && <Text className="text-base text-neutral-700 mt-1">{header.role.replace(/\n+/g, " · ")}</Text>}
                     {headerTagline ? (
                       <Text className="text-sm text-neutral-600 mt-2 leading-6">{headerTagline}</Text>
                     ) : null}
@@ -434,7 +434,7 @@ export const HomeATS: React.FC = () => {
                 <Text role="heading" aria-level={1} className="text-3xl font-bold text-neutral-900">
                   {header.fullname}
                 </Text>
-                {header.role && <Text className="text-base text-neutral-700 mt-1">{header.role}</Text>}
+                {header.role && <Text className="text-base text-neutral-700 mt-1">{header.role.replace(/\n+/g, " · ")}</Text>}
                 {headerTagline ? (
                   <Text className="text-sm text-neutral-600 mt-2 leading-6">{headerTagline}</Text>
                 ) : null}
