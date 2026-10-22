@@ -433,11 +433,20 @@ export const HomeATSDefault: React.FC = () => {
                 {header.fullname}
               </Text>
             )}
-            {header.role ? (
-              <Text className="text-base font-bold mt-2 leading-snug" style={{ color: accent }}>
-                {header.role}
-              </Text>
-            ) : null}
+            {/* The CMS role may hold several lines (title, then stack); each gets its own line. */}
+            {String(header.role ?? "")
+              .split(/\r?\n/)
+              .map((line) => line.trim())
+              .filter(Boolean)
+              .map((line, idx) => (
+                <Text
+                  key={idx}
+                  className={`text-base font-bold leading-snug ${idx === 0 ? "mt-2" : "mt-0.5"}`}
+                  style={{ color: accent }}
+                >
+                  {line}
+                </Text>
+              ))}
             {headerTagline ? (
               <Text className="text-sm mt-2 leading-6" style={{ color: metaColor }}>
                 {headerTagline}

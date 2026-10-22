@@ -86,15 +86,22 @@ const TopSide: React.FC = () => {
                 </Text>
               )}
 
-              {field === "role" && (
-                <FitLine
-                  text={String(data?.role ?? "")}
-                  lineHeight={24}
-                  className="text-[1rem] font-semibold font-['MontserratSemiBold'] tracking-wide"
-                  wrapperClassName="mb-1 justify-center sm:justify-start print:justify-start"
-                  color={settings.headerTextColor?.hex}
-                />
-              )}
+              {field === "role" &&
+                // The CMS role may hold several lines (title, then stack); each is its own FitLine.
+                String(data?.role ?? "")
+                  .split(/\r?\n/)
+                  .map((line) => line.trim())
+                  .filter(Boolean)
+                  .map((line, idx, lines) => (
+                    <FitLine
+                      key={idx}
+                      text={line}
+                      lineHeight={24}
+                      className="text-[1rem] font-semibold font-['MontserratSemiBold'] tracking-wide"
+                      wrapperClassName={`${idx === lines.length - 1 ? "mb-1" : ""} justify-center sm:justify-start print:justify-start`}
+                      color={settings.headerTextColor?.hex}
+                    />
+                  ))}
               {field === "slogan" && (
                 <FitLine
                   text={String(data?.slogan ?? "")}

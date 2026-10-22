@@ -48,7 +48,8 @@ async function fetchSeo(
       | { role?: string; fullname?: string }
       | undefined;
     if (!seo && !header) return null;
-    return { seo, role: header?.role, fullname: header?.fullname };
+    // A multi-line role keeps only its first line (the job title) for the page title.
+    return { seo, role: header?.role?.split("\n")[0]?.trim(), fullname: header?.fullname };
   } catch {
     return null;
   }
