@@ -374,7 +374,7 @@ export const HomeATSDefault: React.FC = () => {
         // Label and values on one line (not a two-column grid), so text extraction keeps "Frontend: React, …" together.
         if (Platform.OS === "web") {
           return (
-            <p key={k} className="text-sm text-neutral-800 leading-6 mt-0 mb-1.5">
+            <p key={k} className="ats-default-skill-row text-sm text-neutral-800 leading-6 mt-0 mb-1.5">
               <span className="font-bold text-neutral-900">{label}</span> {names.join(", ")}
             </p>
           );
@@ -400,11 +400,18 @@ export const HomeATSDefault: React.FC = () => {
       }
     }
     if (!rows.length) return null;
-    const line = rows.map((row) => (row.level ? `${row.name}: ${row.level}` : row.name)).join("  |  ");
+    const label = skillLabelWithColon(blocks[0]?.label || "Languages");
+    const line = rows.map((row) => (row.level ? `${row.name} (${row.level})` : row.name)).join(", ");
+    // Last line of the Skills block rather than its own section: parsers still read "Languages: …",
+    // and the CV saves a heading's worth of space.
     return Platform.OS === "web" ? (
-      <p className="text-sm text-neutral-800 leading-6 m-0">{line}</p>
+      <p className="ats-default-skill-row text-sm text-neutral-800 leading-6 mt-0 mb-1.5">
+        <span className="font-bold text-neutral-900">{label}</span> {line}
+      </p>
     ) : (
-      <Text className="text-sm text-neutral-800 leading-6">{line}</Text>
+      <Text className="text-sm text-neutral-800 leading-6 mb-1.5">
+        <Text className="font-bold text-neutral-900">{label}</Text> {line}
+      </Text>
     );
   };
 
@@ -497,10 +504,11 @@ export const HomeATSDefault: React.FC = () => {
         ) : null}
 
         {/* Skills sit right after the summary: recruiters scan the top third, and keywords there are seen first. */}
-        {skillBlocks.length > 0 ? (
+        {skillBlocks.length > 0 || languageBlocks.length > 0 ? (
           <View className="w-full shrink-0 mb-8">
             {sectionHeading("Skills")}
             {renderSkillTableRows(skillBlocks, "sk")}
+            {renderLanguageRows(languageBlocks)}
           </View>
         ) : null}
 
@@ -548,13 +556,6 @@ export const HomeATSDefault: React.FC = () => {
                 </View>
               );
             })}
-          </View>
-        ) : null}
-
-        {languageBlocks.length > 0 ? (
-          <View className="w-full mt-8 mb-2">
-            {sectionHeading((languageBlocks[0]?.label || "Languages").toUpperCase())}
-            {renderLanguageRows(languageBlocks)}
           </View>
         ) : null}
 

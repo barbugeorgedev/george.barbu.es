@@ -255,6 +255,20 @@ body {
     font-size: 14px;
   }
 
+  html.pdf-export .ats-default-pdf-root .ats-default-skill-row {
+    margin-bottom: 0.125rem;
+  }
+
+  html.pdf-export .ats-default-pdf-root .ats-default-pdf-header {
+    padding-top: 0 !important;
+    padding-bottom: 0.5rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  html.pdf-export .ats-default-pdf-root .ats-default-pdf-header > p {
+    margin-top: 0.5rem;
+  }
+
   html.pdf-export .atsv2-pdf-inner {
     padding-top: 0.75rem !important;
     padding-bottom: 0.75rem !important;
